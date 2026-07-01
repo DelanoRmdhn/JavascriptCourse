@@ -28,3 +28,13 @@ console.log(
 umur = 2026 - 2006;
 console.log(umur);
 console.log("Variable Umur telah di set dan nilainya : " + umur);
+
+/*
+PENDEKLARASIAN VARIABLE
+
+1. let : digunakan ketika kita ingin reassign / merubah sebuah nilai dari suatu variabel  
+2. const : digunakan ketika nilai yang kita assign pada suatu variable tidak akan dirubah (FIXED VALUE)
+*/
+
+const namaPanjang = "Delano Bariq Ramadhan";
+let umur = 19;
