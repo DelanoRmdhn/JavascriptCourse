@@ -1,4 +1,4 @@
-/* MINI TASK HARIAN */
+/* MINI TASK HARIAN DAY 1 */
 
 // 1. Values & Variables
 
@@ -82,3 +82,43 @@ console.log("Fitur Unggulan : " + fiturUnggulan);
 
 2. let = variable selain namaAgensi & tahunBerdiri kita pilih menggunakan let karena kedepannya bisa jadi saya mau melakukan perubahan value pada variable variable tersebut. --> Nilai Dinamis
 */
+
+// MINI TASK HARIAN DAY 2
+
+// SOAL 1
+
+/**
+Topik: Basic Operators, Operator Precedence, dan Re-assigning Variable.
+Studi Kasus: Sistem Kalkulasi Pajak Invoice Digital "PT. CAHAYA REMBULAN SEJATI".
+
+Klien pertama Anda, sebuah firma arsitektur, sepakat untuk mengambil paket Company Profile yang ada pada data internal agensi Anda. Namun, sebelum invoice final diterbitkan, terjadi dua kondisi:
+
+Pihak agensi memberikan potongan harga sebesar Rp 200.000 langsung pada harga dasar paket tersebut.
+
+Pemerintah memberlakukan kebijakan pajak pertambahan nilai (PPN) sebesar 11% yang dihitung dari harga dasar proyek yang baru (setelah dipotong harga).
+
+Sebagai developer, Anda diminta untuk memproses transaksi ini di dalam file JavaScript agar sistem mengeluarkan laporan keuangan yang valid.
+
+Instruksi Tugas
+Proses data finansial di atas menggunakan operator-operator JavaScript yang sesuai sehingga menghasilkan output akhir di console browser dengan format informasi sebagai berikut:
+
+Harga Paket Awal: (Menampilkan harga sebelum ada penyesuaian)
+
+Harga Paket Setelah Potongan: (Menampilkan harga setelah dikurangi potongan)
+
+Beban Pajak PPN (11%): (Menampilkan nominal uang pajaknya saja)
+
+Total Tagihan Akhir: (Menampilkan jumlah dana bersih yang wajib ditransfer oleh klien)
+ */
+
+const hargaPaketAwal = 1500000;
+const hargaDiscount = 200000;
+
+const ppn = (hargaPaketAwal - hargaDiscount) * 0.11;
+const totalAkhir = hargaPaketAwal - hargaDiscount + ppn;
+console.log("=========== INVOICE PEMBELIAN ===========");
+console.log("Harga : Rp." + hargaPaketAwal);
+console.log("Harga setelah discount : Rp." + (hargaPaketAwal - hargaDiscount));
+console.log("PPN (11%) : Rp." + ppn);
+console.log("=============================");
+console.log("Total Biaya : Rp." + totalAkhir);
