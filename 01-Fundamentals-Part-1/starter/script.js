@@ -37,4 +37,26 @@ PENDEKLARASIAN VARIABLE
 */
 
 const namaPanjang = "Delano Bariq Ramadhan";
-let umur = 19;
+let age = 19;
+
+/*
+BASIC OPERATORS
+
+1. Operator Aritmatika            |2. Operator Logika         |3. Operator Perbandingan 
+- Tambah : +                      |- AND : &&                 |- kurang dari : <
+- Kurang : -                      |- OR : ||                  |- lebih dari : >
+- Kali : *                        |- NOT : !                  |- kurang dari sama dengan : <=
+- Bagi : /                        |                           |- lebih dari sama dengan : >=
+- Pangkat : **                    |                           |
+- sisa bagi : %                   |                           |
+- increment : ++                  |                           |
+- decrement : --                  |                           |
+
+ */
+
+const year = 2026;
+const tahunLahir = 2006;
+const umurSaya = year - tahunLahir;
+
+const umurFairuz = 24;
+console.log(umurFairuz > umurSaya);
