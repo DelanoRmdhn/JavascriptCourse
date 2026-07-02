@@ -1,124 +1,125 @@
-/* MINI TASK HARIAN DAY 1 */
+//MINI TASK HARIAN DAY 3
 
-// 1. Values & Variables
+//SOAL 1
 
-/*SOAL 1
-Values and Variables
-Declare variables called country, continent and population and assign their values according to your own country (population in millions).
+/*
+Mark and John are trying to compare their BMI (Body Mass Index), which is calculated using the formula: BMI = mass / (height * height) (mass in kg and height in meters).
 
-Log their values to the console.
+Your task is to write some code to help them:
+
+Store Mark's and John's mass and height in variables called massMark, heightMark, massJohn and heightJohn.
+
+Calculate both their BMIs using the formula, and store the results in two variables called BMIMark and BMIJohn.
+
+Log the value of BMIMark and BMIJohn to the console.
+
+BONUS: Create a boolean variable markHigherBMI containing information about whether Mark has a higher BMI than John. Log it to the console too
+
+TEST DATA 1: Marks weighs 78 kg and is 1.69 m tall. John weighs 92 kg and is 1.95 m tall.
+
+TEST DATA 2: Marks weights 95 kg and is 1.88 m tall. John weights 85 kg and is 1.76 m tall.
+
+
+Use the BMI example from Challenge #1, and the code you already wrote, and improve it:
+
+1. Print a nice output to the console, telling the user who has the higher BMI. The message can be either:
+
+"Mark's BMI is higher than John's!" or "John's BMI is higher than Mark's!".
+
+2. Modify the outputs above to use template literals to include the BMI values in the outputs.
+
+Example: "Mark's BMI (28.3) is higher than John's (23.9)!" or "John's BMI (29.1) is higher than Mark's (27)!".
+
+Note: Don't round the BMI values. Leave them as they are.
+
 */
 
-let country = "Indonesia";
-let continent = "Asia";
-let population = "240 Milion";
+//Test Data 1
+let massMark = 78;
+let heightMark = 1.69;
+let massJohn = 92;
+let heightJohn = 1.92;
 
-console.log("Country : " + country);
-console.log("Continent : " + continent);
-console.log("Population : " + population);
+let bmiMark = massMark / heightMark ** 2;
+let bmiJohn = massJohn / heightJohn ** 2;
 
-/*SOAL 2
-Berikut adalah format Soal Praktikum Mandiri untuk Day 1, lengkap dengan skenario bisnis, instruksi pengerjaan, dan kriteria pengujian untuk melatih fundamental pemrograman kamu.
+if (bmiMark > bmiJohn) {
+  console.log(
+    `Mark's BMI (${bmiMark}) is Higher than John's BMI (${bmiJohn})! `,
+  );
+} else {
+  console.log(
+    `John's BMI (${bmiJohn}) is Higher than Mark's BMI (${bmiMark})! `,
+  );
+}
 
-SOAL PRAKTIKUM MANDIRI - DAY 1
-Topik: Pengenalan JavaScript, Eksternal File, Variabel, dan Tipe Data Dasar.
-Studi Kasus: Pengaturan Awal Data Agensi Pembuatan Website UMKM.
+//TEST DATA 2
+massMark = 95;
+heightMark = 1.88;
+massJohn = 85;
+heightJohn = 1.76;
 
-Skenario Soal
-Anda sedang membangun sebuah agensi digital yang berfokus pada jasa pembuatan website untuk UMKM dan Arsitek. Sebelum membuat tampilan UI yang kompleks di browser, Anda diminta oleh tim senior untuk menyiapkan fondasi arsitektur data awal agensi Anda di sisi JavaScript. Data ini nantinya akan digunakan untuk kalkulasi otomatis pada sistem kasir dan komponen React di masa mendatang.
+bmiMark = massMark / heightMark ** 2;
+bmiJohn = massJohn / heightJohn ** 2;
+
+if (bmiMark > bmiJohn) {
+  console.log(
+    `Mark's BMI (${bmiMark}) is Higher than John's BMI (${bmiJohn})! `,
+  );
+} else {
+  console.log(
+    `John's BMI (${bmiJohn}) is Higher than Mark's BMI (${bmiMark})! `,
+  );
+}
+
+//SOAL 2
+
+/* 
+Topik: Strings, Template Literals, & if/else Statements
+
+Studi Kasus: Sistem Otomasi Kualifikasi Klien PT. CAHAYA REMBULAN SEJATI
+
+Skenario
+Agensi Anda kedatangan seorang calon klien yang ingin berkonsultasi mengenai pembuatan website. Sistem pada database agensi Anda telah menyimpan data mentah berupa nominal anggaran yang disiapkan oleh klien tersebut.
+
+Anda diminta untuk membangun sebuah skrip logika penentu keputusan otomatis di dalam file JavaScript. Sistem harus membaca nominal anggaran tersebut, menentukan klasifikasi produk paket mana yang paling masuk akal untuk direkomendasikan, dan menghitung sisa efisiensi anggaran klien setelah dialokasikan ke paket tersebut.
 
 Instruksi Tugas
-Deklarasi Data Variabel (di dalam script.js):
-Buatlah variabel-variabel berikut dengan memilih kata kunci deklarasi yang tepat (const atau let) berdasarkan sifat nilainya:
 
-namaAgensi (Tipe Data: String): Berisi nama agensi web development pilihan Anda. (Nilai tidak boleh berubah).
+Siapkan variabel nilai anggaran klien (Anda bebas menguji dengan nominal angka berapa saja untuk memastikan semua kondisi logika berjalan lancar).
 
-tahunBerdiri (Tipe Data: Number): Tahun sekarang agensi Anda resmi berjalan (2026).
+Buatlah sebuah sistem pengecekan kondisi terstruktur dengan ketentuan bisnis sebagai berikut:
 
-hargaLandingPage (Tipe Data: Number): Nilai harga dasar paket landing page (contoh: 4000000). Jangan gunakan titik atau koma sebagai pemisah ribuan.
+Jika anggaran yang dimiliki klien nilainya berada di bawah 3.000.000, maka jalankan perintah untuk merekomendasikan paket Landing Page (dengan harga acuan dasar 1.500.000).
 
-hargaCompanyProfile (Tipe Data: Number): Nilai harga dasar paket company profile (contoh: 8000000).
+Jika anggaran yang dimiliki klien nilainya berada di angka 3.000.000 atau lebih, maka jalankan perintah untuk merekomendasikan paket Company Profile (dengan harga acuan dasar 3.000.000).
 
-isOpenForBooking (Tipe Data: Boolean): Menandakan status apakah agensi Anda saat ini sedang membuka kuota untuk klien baru atau tidak (true/false).
+Aturan Mutlak: Seluruh teks informasi yang dicetak menuju console browser wajib disusun menggunakan sintaks Template Literals, memanfaatkan simbol backtick (``) dan placeholder ${}, tanpa ada kontaminasi operator penggabung string manual (+).
 
-fiturUnggulan (Tipe Data: String): Kalimat pendek yang menjelaskan kelebihan desain agensi Anda (misal: "Integrasi Figma ke Code dengan Detail dan Presisi").
+Pastikan console browser menampilkan output informasi dengan format terstruktur seperti di bawah ini:
 
-Output Pengujian:
+Target Output di Console jika Anggaran di Bawah 3 Juta:
 
-Tampilkan semua variabel tersebut ke dalam Console Browser menggunakan perintah console.log().
+Anggaran Klien: Rp. [Nilai Budget]
+Rekomendasi: Paket Landing Page (Harga Mulai: Rp. 1500000)
+Sisa budget klien setelah dikurangi harga paket adalah: Rp. [Sisa Anggaran]
+Target Output di Console jika Anggaran 3 Juta ke Atas:
 
-Berikan label penjelas pada setiap output agar teks di console terbaca rapi oleh tim penguji.
 
-Kriteria Penilaian & Kelulusan (Checklist Mandiri)
-[ ] File HTML berhasil memuat file JS eksternal tanpa memicu error File not found.
-
-[ ] Variabel nama agensi menggunakan const (karena nama perusahaan bersifat permanen).
-
-[ ] Tipe data harga dideklarasikan sebagai Number murni (contoh: 4000000), BUKAN sebagai string bertanda kutip (seperti "4.000.000"), agar nantinya bisa dihitung secara matematis pada hari Selasa.
-
-[ ] Variabel boolean ditulis murni tanpa tanda kutip (true / false).
-
-[ ] Saat file HTML dibuka di browser dan ditekan F12 (Menu Console), data profil agensi tercetak dengan rapi tanpa ada Red Error Text (Syntax Error/Reference Error).
-
+Anggaran Klien: Rp. [Nilai Budget]
+Rekomendasi: Paket Company Profile (Harga Mulai: Rp. 3000000)
+Sisa budget klien setelah dikurangi harga paket adalah: Rp. [Sisa Anggaran]
 */
 
-const namaAgensi = "PT.CAHAYA REMBULAN SEJATI";
-const tahunBerdiri = 2026;
-let hargaLandingPage = 1500000;
-let hargaCompanyProfile = 3000000;
-let isOpenForBooking = true;
-let fiturUnggulan = "Integrasi Figma ke Code dengan Detail dan Presisi";
-
-console.log("Nama Agensi : " + namaAgensi);
-console.log("Tahun Berdiri : " + tahunBerdiri);
-console.log("Harga Landing Page : " + hargaLandingPage);
-console.log("Harga Company Profile : " + hargaCompanyProfile);
-console.log("Apakah kita sedang open for booking : " + isOpenForBooking);
-console.log("Fitur Unggulan : " + fiturUnggulan);
-
-/*REASON PEMILIHAN VARIABLE
-
-1. const = variable namaAgensi & tahunBerdiri kita pilih menggunakan const karena nilainya bersifat tetap dan tidak akan diganti kedepannya. --> nilai Statis
-
-2. let = variable selain namaAgensi & tahunBerdiri kita pilih menggunakan let karena kedepannya bisa jadi saya mau melakukan perubahan value pada variable variable tersebut. --> Nilai Dinamis
-*/
-
-// MINI TASK HARIAN DAY 2
-
-// SOAL 1
-
-/**
-Topik: Basic Operators, Operator Precedence, dan Re-assigning Variable.
-Studi Kasus: Sistem Kalkulasi Pajak Invoice Digital "PT. CAHAYA REMBULAN SEJATI".
-
-Klien pertama Anda, sebuah firma arsitektur, sepakat untuk mengambil paket Company Profile yang ada pada data internal agensi Anda. Namun, sebelum invoice final diterbitkan, terjadi dua kondisi:
-
-Pihak agensi memberikan potongan harga sebesar Rp 200.000 langsung pada harga dasar paket tersebut.
-
-Pemerintah memberlakukan kebijakan pajak pertambahan nilai (PPN) sebesar 11% yang dihitung dari harga dasar proyek yang baru (setelah dipotong harga).
-
-Sebagai developer, Anda diminta untuk memproses transaksi ini di dalam file JavaScript agar sistem mengeluarkan laporan keuangan yang valid.
-
-Instruksi Tugas
-Proses data finansial di atas menggunakan operator-operator JavaScript yang sesuai sehingga menghasilkan output akhir di console browser dengan format informasi sebagai berikut:
-
-Harga Paket Awal: (Menampilkan harga sebelum ada penyesuaian)
-
-Harga Paket Setelah Potongan: (Menampilkan harga setelah dikurangi potongan)
-
-Beban Pajak PPN (11%): (Menampilkan nominal uang pajaknya saja)
-
-Total Tagihan Akhir: (Menampilkan jumlah dana bersih yang wajib ditransfer oleh klien)
- */
-
-const hargaPaketAwal = 1500000;
-const hargaDiscount = 200000;
-
-const ppn = (hargaPaketAwal - hargaDiscount) * 0.11;
-const totalAkhir = hargaPaketAwal - hargaDiscount + ppn;
-console.log("=========== INVOICE PEMBELIAN ===========");
-console.log("Harga : Rp." + hargaPaketAwal);
-console.log("Harga setelah discount : Rp." + (hargaPaketAwal - hargaDiscount));
-console.log("PPN (11%) : Rp." + ppn);
-console.log("=============================");
-console.log("Total Biaya : Rp." + totalAkhir);
+let anggaranKlien = 2500000;
+if (anggaranKlien < 3000000) {
+  console.log(
+    `Anggaran Klien: Rp. [${anggaranKlien}] \nRekomendasi Paket: Paket Landing Page (Harga Mulai : Rp.1500000) \nSisa Budget Klien Setelah dikurangi harga paket adalah: Rp. [${anggaranKlien - 1500000}]`,
+  );
+} else if (anggaranKlien >= 3000000) {
+  console.log(
+    `Anggaran Klien: Rp. [${anggaranKlien}] \nRekomendasi Paket: Paket Company Profile (Harga Mulai : Rp.3000000) \nSisa Budget Klien Setelah dikurangi harga paket adalah: Rp. [${anggaranKlien - 1500000}]`,
+  );
+} else {
+  console.log(`Anggaran Klien tidak memenuhi!`);
+}
