@@ -1,33 +1,88 @@
 //MINI TASK HARIAN DAY 5
 
 /*
-There are two gymnastics teams: Dolphins and Koalas. They compete against each other 3 times. The winner with the highest average score wins a trophy!
+SOAL 2 
 
-Your tasks:
+Skenario
+Agensi Anda memiliki jadwal operasional mingguan yang bervariasi untuk melayani klien UMKM dan Arsitek. Selain itu, agensi memiliki sistem kuota proyek harian yang statusnya bisa penuh atau tersedia.
 
-1. Calculate the average score for each team, using the test data included below. The average score for Dolphins should be assigned to the scoreDolphins variable, and the average score of Koalas should be assigned to the scoreKoalas variable.
+Anda diminta membuat sistem skrip yang membaca dua data input: nama hari saat ini dan jumlah proyek yang sedang berjalan (active projects). Sistem tersebut harus mengeluarkan informasi mengenai jam operasional hari tersebut serta status ketersediaan slot agensi menggunakan struktur kode JavaScript modern.
 
-2. Compare the team's average scores to determine the winner of the competition, and print to the console:
+Instruksi Tugas
 
-"Dolphins win the trophy" if Dolphins win, or
+Deklarasikan dua variabel awal untuk pengujian (Anda bebas mengubah nilainya saat melakukan uji coba):
 
-"Koalas win the trophy" if Koalas win, or
+let inputHari = "Sabtu"; (Gunakan format teks dengan huruf kapital di awal).
 
-"Both win the trophy" if their average scores are equal.
+let jumlahProyekAktif = 4; (Berupa angka murni).
 
-TEST DATA: Dolphins scored 96, 108, and 89. Koalas scored 88, 91, and 110.
+Tugas Pertama (Menggunakan switch):
 
+Tentukan pesan jam operasional berdasarkan inputHari dengan ketentuan:
+
+Jika hari Senin hingga Jumat, agensi beroperasi penuh dari jam "09.00 - 17.00 WIB".
+
+Jika hari Sabtu, agensi beroperasi setengah hari dari jam "09.00 - 13.00 WIB".
+
+Jika hari Minggu, agensi "Libur Operasional".
+
+Jika input di luar nama hari yang valid, berikan pesan kesalahan standar.
+
+Wajib menggunakan struktur switch statement murni.
+
+Tugas Kedua (Menggunakan Ternary Operator):
+
+Tentukan status kuota booking agensi berdasarkan variabel jumlahProyekAktif.
+
+Jika jumlah proyek aktif bernilai lebih besar atau sama dengan 5, maka simpan teks "Kuota Penuh" ke dalam sebuah variabel.
+
+Jika di bawah itu, maka simpan teks "Slot Tersedia" ke dalam variabel tersebut.
+
+Wajib ditulis menggunakan sintaks Ternary Operator dalam 1 baris kode, tanpa ada kata kunci if atau else.
+
+Tampilkan hasil akhir pengujian tersebut ke dalam console browser menggunakan Template Literals dengan format terstruktur.
+
+Target Output di Console Browser:
+
+Plaintext
+=== STATUS OPERASIONAL AGENSI ===
+Hari diinput: Sabtu
+Jadwal Operasional: 09.00 - 13.00 WIB
+Status Slot Proyek: Slot Tersedia
 */
 
-const avgDolphinsScore = (96 + 108 + 89) / 3;
-const avgKoalasScore = (88 + 91 + 110) / 3;
+let inputHari = prompt("Masukan Hari : ");
+let hari = inputHari[0].toUpperCase() + inputHari.slice(1);
+let jumlahProyekAktif = 5;
+// console.log(hari);
 
-if (avgDolphinsScore > avgKoalasScore) {
-  console.log(
-    `Dolphins win the trophy with average Score (${avgDolphinsScore})`,
-  );
-} else if (avgDolphinsScore < avgKoalasScore) {
-  console.log(`Koalas win the trophy with average Score (${avgKoalasScore})`);
-} else if (avgDolphinsScore === avgKoalasScore) {
-  console.log(`Both Win the trophy`);
+const cekProyekAktif =
+  jumlahProyekAktif >= 5 ? "Kouta Penuh 🙏" : "Kouta Tersedia";
+
+console.log(`=== STATUS OPERASIONAL AGENSI ===`);
+switch (hari) {
+  case "Senin":
+  case "Selasa":
+  case "Rabu":
+  case "Kamis":
+  case "Jumat":
+    console.log(
+      `Hari diinput : ${hari}\nJadwal Operasional : 09.00 - 17.00 WIB\nStatus Slot Proyek : ${cekProyekAktif}`,
+    );
+    break;
+
+  case "Sabtu":
+    console.log(
+      `Hari diinput : ${hari}\nJadwal Operasional : 09.00 - 13.00 WIB\nStatus Slot Proyek : ${cekProyekAktif}`,
+    );
+    break;
+
+  case "Minggu":
+    console.log(
+      `Hari diinput : ${hari}\nJadwal Operasional : Tidak Beroperasional 🙏`,
+    );
+    break;
+
+  default:
+    console.log(`Tidak ada hari dengan nama ${hari}`);
 }
