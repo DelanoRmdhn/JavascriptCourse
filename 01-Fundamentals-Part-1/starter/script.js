@@ -1,52 +1,30 @@
-//MINI TASK HARIAN DAY 4
+//DAY 5
 
 /*
-Sistem penerimaan formulir digital pada website agensi Anda menangkap dua data mentah dari calon klien. Data pertama adalah nominal anggaran proyek yang masuk ke sistem dalam bentuk teks. Data kedua adalah nama instansi klien, namun ada indikasi data tersebut kosong karena user langsung menekan tombol submit tanpa mengisi form.
+EQUALITY OPERATORS : == VS ===
 
-Sebagai penanggung jawab backend log, Anda diminta membuat skrip pemrosesan data untuk:
+Adalah sebuah operator untuk memvalidasi / membandingkan suatu nilai yang mengembalikan sebuah nilai berupa true atau false.
 
-Menyelamatkan data anggaran teks agar bisa dioperasikan secara matematis dengan tipe data yang benar.
+== : loose equality operator. Type coercion diterapkan. 
 
-Melakukan pengujian keamanan untuk memastikan sistem menolak memproses data jika ditemukan nilai-nilai yang tidak valid (falsy).
-
-Instruksi Tugas
-Deklarasikan dua variabel dengan nilai awal persis seperti di bawah ini (menyimulasikan data mentah dari form web):
-
-const rawBudget = "2500000";
-
-const rawClientName = "";
-
-Lakukan konversi tipe data yang sesuai pada variabel rawBudget secara eksplisit, lalu simpan hasil konversinya ke dalam variabel baru bernama validBudget.
-
-Buatlah struktur pengecekan kondisi untuk menguji variabel rawClientName dengan memanfaatkan sifat Truthy/Falsy bawaan JavaScript.
-
-Tampilkan seluruh hasil pemrosesan tersebut ke dalam console browser dengan format informasi yang terstruktur seperti target di bawah ini:
-
-Target Output di Console Browser:
-
-Plaintext
-=== LOG VALIDASI INPUT ===
-Tipe data awal budget: string
-Tipe data setelah diproses: number
-Kalkulasi Budget + Bonus Rp500.000: [Tampilkan hasil penjumlahan validBudget dengan angka 500000]
-Status Validasi Nama: Gagal, data klien terdeteksi Falsy!
-
+=== : ini adalah strict equality operator. yang berarti type coercion tidak diterapkan. Dimana dia hanya akan mengembalikan nilai true apabila kedua nilai sama persis. (gunakan ini untuk menghindari Bug)  
 */
 
-const inputAnggaran = prompt("Masukan Nilai Anggaran : ");
-const inputNamaClient = prompt("Nama Client : ");
+const umur1 = 20;
+const umur2 = 20;
+//===
+if (umur1 === 20) console.log(`Kamu sudah dewasa! umur anda ${umur1} tahun.`);
+//==
+if (umur2 == "20") console.log(`Kamus sudah dewasa! umur anda ${umur2} tahun.`);
 
-//konversi
-const anggaran = Number(inputAnggaran);
+let input = prompt(`Masukan Angka : `);
 
-//TAMPILAN LOG
-console.log(`Tipe data awal budget : ${typeof inputAnggaran}`);
-console.log(`Tipe data setelah diproses  : ${typeof anggaran}`);
-
-if (inputNamaClient) {
+//latihan penasaran
+if (!Number.isNaN(Number(input))) {
+  input = Number(input);
   console.log(
-    `Hasil Penjumlahan Anggaran + Bonus : Rp.${anggaran + 500000} \nSelamat ${inputNamaClient}`,
+    `Angka Favorit Kamu adalah : ${input} tipe datanya : ${typeof input}`,
   );
 } else {
-  console.log("Validasi Gagal!. Client tidak menginputkan nama!");
+  console.log(`Yang kamu Input Bukan angka!`);
 }
