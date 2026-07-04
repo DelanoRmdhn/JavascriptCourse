@@ -1,52 +1,33 @@
-//MINI TASK HARIAN DAY 4
+//MINI TASK HARIAN DAY 5
 
 /*
-Sistem penerimaan formulir digital pada website agensi Anda menangkap dua data mentah dari calon klien. Data pertama adalah nominal anggaran proyek yang masuk ke sistem dalam bentuk teks. Data kedua adalah nama instansi klien, namun ada indikasi data tersebut kosong karena user langsung menekan tombol submit tanpa mengisi form.
+There are two gymnastics teams: Dolphins and Koalas. They compete against each other 3 times. The winner with the highest average score wins a trophy!
 
-Sebagai penanggung jawab backend log, Anda diminta membuat skrip pemrosesan data untuk:
+Your tasks:
 
-Menyelamatkan data anggaran teks agar bisa dioperasikan secara matematis dengan tipe data yang benar.
+1. Calculate the average score for each team, using the test data included below. The average score for Dolphins should be assigned to the scoreDolphins variable, and the average score of Koalas should be assigned to the scoreKoalas variable.
 
-Melakukan pengujian keamanan untuk memastikan sistem menolak memproses data jika ditemukan nilai-nilai yang tidak valid (falsy).
+2. Compare the team's average scores to determine the winner of the competition, and print to the console:
 
-Instruksi Tugas
-Deklarasikan dua variabel dengan nilai awal persis seperti di bawah ini (menyimulasikan data mentah dari form web):
+"Dolphins win the trophy" if Dolphins win, or
 
-const rawBudget = "2500000";
+"Koalas win the trophy" if Koalas win, or
 
-const rawClientName = "";
+"Both win the trophy" if their average scores are equal.
 
-Lakukan konversi tipe data yang sesuai pada variabel rawBudget secara eksplisit, lalu simpan hasil konversinya ke dalam variabel baru bernama validBudget.
-
-Buatlah struktur pengecekan kondisi untuk menguji variabel rawClientName dengan memanfaatkan sifat Truthy/Falsy bawaan JavaScript.
-
-Tampilkan seluruh hasil pemrosesan tersebut ke dalam console browser dengan format informasi yang terstruktur seperti target di bawah ini:
-
-Target Output di Console Browser:
-
-Plaintext
-=== LOG VALIDASI INPUT ===
-Tipe data awal budget: string
-Tipe data setelah diproses: number
-Kalkulasi Budget + Bonus Rp500.000: [Tampilkan hasil penjumlahan validBudget dengan angka 500000]
-Status Validasi Nama: Gagal, data klien terdeteksi Falsy!
+TEST DATA: Dolphins scored 96, 108, and 89. Koalas scored 88, 91, and 110.
 
 */
 
-const inputAnggaran = prompt("Masukan Nilai Anggaran : ");
-const inputNamaClient = prompt("Nama Client : ");
+const avgDolphinsScore = (96 + 108 + 89) / 3;
+const avgKoalasScore = (88 + 91 + 110) / 3;
 
-//konversi
-const anggaran = Number(inputAnggaran);
-
-//TAMPILAN LOG
-console.log(`Tipe data awal budget : ${typeof inputAnggaran}`);
-console.log(`Tipe data setelah diproses  : ${typeof anggaran}`);
-
-if (inputNamaClient) {
+if (avgDolphinsScore > avgKoalasScore) {
   console.log(
-    `Hasil Penjumlahan Anggaran + Bonus : Rp.${anggaran + 500000} \nSelamat ${inputNamaClient}`,
+    `Dolphins win the trophy with average Score (${avgDolphinsScore})`,
   );
-} else {
-  console.log("Validasi Gagal!. Client tidak menginputkan nama!");
+} else if (avgDolphinsScore < avgKoalasScore) {
+  console.log(`Koalas win the trophy with average Score (${avgKoalasScore})`);
+} else if (avgDolphinsScore === avgKoalasScore) {
+  console.log(`Both Win the trophy`);
 }
