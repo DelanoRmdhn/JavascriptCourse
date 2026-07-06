@@ -2,93 +2,59 @@
 
 //MINI TASK MINGGU 2
 
-/* 
-SOAL 1 
+/*
+SOAL 2
+Back to the two gymnastics teams, the Dolphins and the Koalas! There is a new gymnastics discipline, which works differently.
 
-Topik: Function Expressions, Arrow Functions, & Advance Input Safeguard
+Each team competes 3 times, and then the average of the 3 scores is calculated (so one average score per team).
 
-Studi Kasus: Modul Kurs Valuta Asing Pembayaran Internasional Agen
+A team only wins if it has at least double the average score of the other team. Otherwise, no team wins!
 
-Skenario
-Agensi Anda sedang menjajaki kerja sama dengan firma arsitektur asal Singapura yang memberikan penawaran anggaran dalam bentuk USD (United States Dollar). Untuk menyamakan pembukuan keuangan internal agensi, tim keuangan membutuhkan sebuah fungsi utilitas yang bisa mengubah nominal USD tersebut ke dalam IDR (Rupiah) secara instan.
 
-Sebagai Software Engineer, Anda diminta untuk membuat dua versi fungsi konversi dengan ketentuan nilai kurs tetap (fixed rate) yaitu: 1 USD = Rp15.500.
 
-Instruksi Tugas
-Fungsi Pertama (Gaya Function Expression):
+Your tasks:
 
-Buat sebuah fungsi bernama konversiKeIdrExpression menggunakan gaya Function Expression.
+Create an arrow function calcAverage to calculate the average of 3 scores. This function should have three parameters and return a single number (the average score).
 
-Fungsi ini menerima satu parameter yaitu nominalUsd.
+Create two new variables — scoreDolphins and scoreKoalas, and assign the value returned from the calcAverage function to them (you will need to call this function, and pass scores as arguments).
 
-Wajib memiliki Safeguard: Di dalam fungsi, cek apakah input yang dimasukkan benar-benar sebuah angka dan bernilai positif (lebih besar dari 0). Jika input bukan angka (seperti teks atau NaN) atau bernilai 0 ke bawah, fungsi harus langsung mengembalikan teks pesan error: "Input USD harus berupa angka positif!".
+Create a function checkWinner that takes the average score of each team as parameters (avgDolphins and avgKoalas), and then logs the winner to the console, together with the victory points, according to the rule above. Example: Koalas win (30 vs. 13) (use avgDolphins and avgKoalas instead of hard-coded values).
 
-Fungsi Kedua (Gaya Arrow Function):
+Use the checkWinner function to determine the winner for both DATA 1 and DATA 2.
 
-Buat sebuah fungsi bernama konversiKeIdrArrow menggunakan gaya Arrow Function.
+Ignore draws this time. Instead, log No team wins... to the console if there is no winner.
 
-Fungsi ini memiliki tugas dan struktur safeguard yang sama persis dengan fungsi pertama, namun ditulis total menggunakan sintaks modern tanda panah (=>).
 
-Uji Coba & Output Console:
 
-Lakukan pemanggilan kedua fungsi tersebut di bagian bawah kode Anda menggunakan Template Literals.
+TEST DATA 1: Dolphins scored 44, 23, and 71. Koalas scored 65, 54, and 49.
 
-Lakukan uji stres (stress test) pada fungsi Anda dengan menguji dua kondisi: data yang benar (Happy Path) dan data yang salah (Unhappy Path/Edge Case).
-
-Contoh target output di console browser jika kodenya berhasil:
-
-Plaintext
-=== PENGUJIAN KURS EXPRESSION ===
-Input: 100 USD  -> Hasil: Rp. 1550000
-Input: "seratus" -> Hasil: Input USD harus berupa angka positif!
-
-=== PENGUJIAN KURS ARROW ===
-Input: 250 USD  -> Hasil: Rp. 3875000
-Input: -50 USD  -> Hasil: Input USD harus berupa angka positif!
-💡 Tembok Pertahanan Kunci (Tips Tipis):
-
-Gunakan fungsi bawaan JavaScript isNaN(variabel) di dalam gerbang safeguard-mu untuk mendeteksi apakah input dari user itu bukan angka atau bukan.
+TEST DATA 2: Dolphins scored 85, 54, and 41. Koalas scored 23, 34, and 27.
 */
 
-//FUNCTION EXPRPESSION
-const konversiKeIdrExpression = function (nominalUsd) {
-  /*Melakukan pengecekan berupa : 
-  1. input benar benar sebuah angka ✅
-  2. angka harus positif ✅
-  3. Jika input bukan angka (seperti teks atau NaN) atau bernilai 0 ke bawah, fungsi harus langsung mengembalikan teks pesan error: "Input USD harus berupa angka positif!"
-  */
+const calcAverage = (score1, score2, score3) => (score1 + score2 + score3) / 3;
 
-  if (isNaN(nominalUsd) || nominalUsd <= 0) {
-    return `Input USD harus berupa angka positif!`;
+//simpan hasil yang dikembalikan function ke dalam sebuah variabel
+const scoreDolphins = calcAverage(44, 23, 71);
+const scoreKoalas = calcAverage(85, 54, 41);
+
+const checkWinner = function (avgDolphins, avgKoalas) {
+  if (avgDolphins >= avgKoalas * 2) {
+    console.log(`Dolphins win (${avgDolphins} vs. ${avgKoalas})`);
+  } else if (avgDolphins * 2 <= avgKoalas) {
+    console.log(`Koalas win (${avgKoalas} vs. ${avgDolphins})`);
+  } else {
+    console.log(`No teams wins....`);
   }
-  return nominalUsd * 15500;
 };
 
-//ARROW FUNCTION
-const konversiKeIdrArrow = (nominalUsd) => {
-  if (isNaN(nominalUsd) || nominalUsd <= 0) {
-    return `Input USD harus berupa angka positif!`;
-  }
-  return nominalUsd * 15500;
-};
+// Test Data 1
+const scoreDolphins1 = calcAverage(44, 23, 71);
+const scoreKoalas1 = calcAverage(65, 54, 49);
 
-//TESTING FUNCTION
+checkWinner(scoreDolphins1, scoreKoalas1);
 
-const testingExpressionFunction = function (nominal) {
-  console.log(`=== PENGUJIAN KURS EXPRESSION ===`);
-  console.log(`Input : ${nominal}`);
-  console.log(`Hasil Konversi : ${konversiKeIdrExpression(nominal)}`);
-};
+// Test Data 2
+const scoreDolphins2 = calcAverage(85, 54, 41);
+const scoreKoalas2 = calcAverage(23, 34, 27);
 
-const testingArrowFunction = (nominal) => {
-  console.log(`=== PENGUJIAN KURS ARROW ===`);
-  console.log(`Input : ${nominal}`);
-  console.log(`Hasil Konversi : ${konversiKeIdrArrow(nominal)}`);
-};
-
-//TESTING
-testingExpressionFunction(100);
-testingArrowFunction(25);
-testingArrowFunction(-100);
-testingArrowFunction(-25);
-testingArrowFunction("haloooo");
+checkWinner(scoreDolphins2, scoreKoalas2);
