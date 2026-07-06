@@ -3,58 +3,57 @@
 //MINI TASK MINGGU 2
 
 /*
-SOAL 2
-Back to the two gymnastics teams, the Dolphins and the Koalas! There is a new gymnastics discipline, which works differently.
+SOAL 3
 
-Each team competes 3 times, and then the average of the 3 scores is calculated (so one average score per team).
+Topik: Nested Functions, Lexical Scope, & Return Values
 
-A team only wins if it has at least double the average score of the other team. Otherwise, no team wins!
+Studi Kasus: Sistem Pengamanan Kalkulasi Biaya Proyek PT. CAHAYA REMBULAN SEJATI
 
+Skenario
+Manajemen agensi ingin memastikan rumus perhitungan pajak PPN (11%) untuk pengerjaan website arsitek dan UMKM bersifat rahasia dan tidak bisa dimanipulasi oleh skrip luar. Kamu diminta membuat fungsi utama bernama hitungTotalBiayaProyek yang di dalamnya mengurung fungsi rahasia hitungPajak.
 
+Instruksi Tugas
+Buat Fungsi Utama (Outer Function):
 
-Your tasks:
+Buat sebuah fungsi (boleh menggunakan Function Expression atau Arrow Function) bernama hitungTotalBiayaProyek.
 
-Create an arrow function calcAverage to calculate the average of 3 scores. This function should have three parameters and return a single number (the average score).
+Fungsi ini menerima satu parameter: hargaDasar.
 
-Create two new variables — scoreDolphins and scoreKoalas, and assign the value returned from the calcAverage function to them (you will need to call this function, and pass scores as arguments).
+Wajib memiliki Safeguard: Di baris paling atas, cek apakah hargaDasar bernilai angka positif. Jika bukan angka atau di bawah atau sama dengan 0, langsung tendang keluar (Guard Clause) dengan pesan: "Error: Harga dasar proyek tidak valid!".
 
-Create a function checkWinner that takes the average score of each team as parameters (avgDolphins and avgKoalas), and then logs the winner to the console, together with the victory points, according to the rule above. Example: Koalas win (30 vs. 13) (use avgDolphins and avgKoalas instead of hard-coded values).
+Buat Fungsi Dalam (Inner Function):
 
-Use the checkWinner function to determine the winner for both DATA 1 and DATA 2.
+Di dalam fungsi utama (tepat di bawah guard clause), deklarasikan fungsi baru bernama hitungPajak.
 
-Ignore draws this time. Instead, log No team wins... to the console if there is no winner.
+Fungsi hitungPajak ini tidak perlu menerima parameter baru. Dia harus memanfaatkan Lexical Scope untuk langsung mengambil nilai hargaDasar dari fungsi luar, lalu mengembalikannya setelah dikalikan dengan rate PPN murni sebesar 0.11.
 
+Proses Akhir & Pengembalian Nilai:
 
+Di bagian akhir fungsi utama, panggil fungsi hitungPajak() tersebut, jumlahkan hasilnya dengan hargaDasar, lalu kembalikan (return) nilai total akhir tersebut.
 
-TEST DATA 1: Dolphins scored 44, 23, and 71. Koalas scored 65, 54, and 49.
+Uji Coba & Output Console:
 
-TEST DATA 2: Dolphins scored 85, 54, and 41. Koalas scored 23, 34, and 27.
+Panggil fungsi utama tersebut dengan dua skenario data (Happy Path dengan angka nyata, dan Unhappy Path dengan teks/angka negatif) di dalam console.log().
+
+Contoh target output di console browser:
+
+Plaintext
+=== SIMULASI HITUNG BIAYA PROYEK ===
+Total Biaya (Landing Page 1.5jt) : Rp. 1665000
+Total Biaya (Input Rusak)        : Error: Harga dasar proyek tidak valid!
 */
 
-const calcAverage = (score1, score2, score3) => (score1 + score2 + score3) / 3;
-
-//simpan hasil yang dikembalikan function ke dalam sebuah variabel
-const scoreDolphins = calcAverage(44, 23, 71);
-const scoreKoalas = calcAverage(85, 54, 41);
-
-const checkWinner = function (avgDolphins, avgKoalas) {
-  if (avgDolphins >= avgKoalas * 2) {
-    console.log(`Dolphins win (${avgDolphins} vs. ${avgKoalas})`);
-  } else if (avgDolphins * 2 <= avgKoalas) {
-    console.log(`Koalas win (${avgKoalas} vs. ${avgDolphins})`);
-  } else {
-    console.log(`No teams wins....`);
+const hitungTotalBiayaProyek = function (hargaDasar) {
+  if (isNaN(hargaDasar) || hargaDasar < 0) {
+    return `Error: Harga dasar proyek tidak valid!`;
   }
+
+  const hitungPajak = () => hargaDasar * 0.11;
+  return hargaDasar + hitungPajak();
 };
 
-// Test Data 1
-const scoreDolphins1 = calcAverage(44, 23, 71);
-const scoreKoalas1 = calcAverage(65, 54, 49);
-
-checkWinner(scoreDolphins1, scoreKoalas1);
-
-// Test Data 2
-const scoreDolphins2 = calcAverage(85, 54, 41);
-const scoreKoalas2 = calcAverage(23, 34, 27);
-
-checkWinner(scoreDolphins2, scoreKoalas2);
+console.log(`=== SIMULASI HITUNG BIAYA PROYEK ===`);
+console.log(
+  `Total Biaya (Landing Page 1.5jt) : Rp. ${hitungTotalBiayaProyek(1500000)}`,
+);
+console.log(`Total Biaya (Input Rusak): ${hitungTotalBiayaProyek(-1)}`);
