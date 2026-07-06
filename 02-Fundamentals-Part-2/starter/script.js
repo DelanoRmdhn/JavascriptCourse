@@ -1,59 +1,65 @@
 "use strict";
 
-//MINI TASK MINGGU 2
+//DAY 7
 
-/*
-SOAL 3
+/* INTRODUCTION TO ARRAY 
+Array adalah sebuah struktur data yang dimana kita bisa menyimpan sebuah value di dalamnya. kalau di analogikan, array seperti sebuah Box Mainan yang di dalamnya memiliki berbagai jenis mainan.
 
-Topik: Nested Functions, Lexical Scope, & Return Values
-
-Studi Kasus: Sistem Pengamanan Kalkulasi Biaya Proyek PT. CAHAYA REMBULAN SEJATI
-
-Skenario
-Manajemen agensi ingin memastikan rumus perhitungan pajak PPN (11%) untuk pengerjaan website arsitek dan UMKM bersifat rahasia dan tidak bisa dimanipulasi oleh skrip luar. Kamu diminta membuat fungsi utama bernama hitungTotalBiayaProyek yang di dalamnya mengurung fungsi rahasia hitungPajak.
-
-Instruksi Tugas
-Buat Fungsi Utama (Outer Function):
-
-Buat sebuah fungsi (boleh menggunakan Function Expression atau Arrow Function) bernama hitungTotalBiayaProyek.
-
-Fungsi ini menerima satu parameter: hargaDasar.
-
-Wajib memiliki Safeguard: Di baris paling atas, cek apakah hargaDasar bernilai angka positif. Jika bukan angka atau di bawah atau sama dengan 0, langsung tendang keluar (Guard Clause) dengan pesan: "Error: Harga dasar proyek tidak valid!".
-
-Buat Fungsi Dalam (Inner Function):
-
-Di dalam fungsi utama (tepat di bawah guard clause), deklarasikan fungsi baru bernama hitungPajak.
-
-Fungsi hitungPajak ini tidak perlu menerima parameter baru. Dia harus memanfaatkan Lexical Scope untuk langsung mengambil nilai hargaDasar dari fungsi luar, lalu mengembalikannya setelah dikalikan dengan rate PPN murni sebesar 0.11.
-
-Proses Akhir & Pengembalian Nilai:
-
-Di bagian akhir fungsi utama, panggil fungsi hitungPajak() tersebut, jumlahkan hasilnya dengan hargaDasar, lalu kembalikan (return) nilai total akhir tersebut.
-
-Uji Coba & Output Console:
-
-Panggil fungsi utama tersebut dengan dua skenario data (Happy Path dengan angka nyata, dan Unhappy Path dengan teks/angka negatif) di dalam console.log().
-
-Contoh target output di console browser:
-
-Plaintext
-=== SIMULASI HITUNG BIAYA PROYEK ===
-Total Biaya (Landing Page 1.5jt) : Rp. 1665000
-Total Biaya (Input Rusak)        : Error: Harga dasar proyek tidak valid!
+untuk mengakses nilai yang ada di dalam array kita bisa mendapatkannya dengan mengetahui index / posisi si nilai yang ingin kita ambil. indexing pada array dimulai dari 0 bukan 1.
 */
 
-const hitungTotalBiayaProyek = function (hargaDasar) {
-  if (isNaN(hargaDasar) || hargaDasar < 0) {
-    return `Error: Harga dasar proyek tidak valid!`;
-  }
+const boxMainan = ["Boneka", "PS5", "Xbox One", "Mobil-Mobilan"];
 
-  const hitungPajak = () => hargaDasar * 0.11;
-  return hargaDasar + hitungPajak();
-};
+console.log(boxMainan[0]); // untuk mengakses Boneka
+console.log(boxMainan[boxMainan.length - 1]); //di dalam [] kita bisa menambahkan expression juga
 
-console.log(`=== SIMULASI HITUNG BIAYA PROYEK ===`);
+//contoh implementasi
+const informasiSaya = [
+  "Delano",
+  "Delano Bariq Ramadhan",
+  2006,
+  54,
+  177,
+  "S1 Rekayasa Perangkat Lunak",
+];
+
+const hitungUsia = (tahunLahir) => 2026 - tahunLahir;
+
 console.log(
-  `Total Biaya (Landing Page 1.5jt) : Rp. ${hitungTotalBiayaProyek(1500000)}`,
+  `Haloo Semuanyaa, Perkenalkan nama saya ${informasiSaya[1]}. Biasa dipanggil ${informasiSaya[0]}.saya lahir pada tahun ${informasiSaya[2]}, jadi umur saya saat ini ${hitungUsia(informasiSaya[2])} tahun. dengan tinggi badan ${informasiSaya[4]} cm dan berat ${informasiSaya[3]}. Saya merupakan mahasiswa aktif di Telkom University, dan sedang mengambil jurusan ${informasiSaya[informasiSaya.length - 1]}.`,
 );
-console.log(`Total Biaya (Input Rusak): ${hitungTotalBiayaProyek(-1)}`);
+
+//contoh implementasi
+const dataTahunLahir = [1991, 2005, 2001, 1998];
+const dataUmur = [
+  hitungUsia(dataTahunLahir[0]),
+  hitungUsia(dataTahunLahir[1]),
+  hitungUsia(dataTahunLahir[2]),
+  hitungUsia(dataTahunLahir[3]),
+];
+
+console.log(
+  `Jika saya lahir pada tahun ${dataTahunLahir[0]} maka umur saya ${dataUmur[0]} tahun.`,
+);
+console.log(
+  `Jika saya lahir pada tahun ${dataTahunLahir[1]} maka umur saya ${dataUmur[1]} tahun.`,
+);
+console.log(
+  `Jika saya lahir pada tahun ${dataTahunLahir[2]} maka umur saya ${dataUmur[2]} tahun.`,
+);
+console.log(
+  `Jika saya lahir pada tahun ${dataTahunLahir[3]} maka umur saya ${dataUmur[3]} tahun.`,
+);
+
+//Melakukan manipulasi / perubahan isi pada array
+const temanSaya = ["fairuz", "ezra", "nandana"];
+temanSaya[temanSaya.length - 1] = "Tiansen";
+console.log(temanSaya[2]);
+
+const arrayCobaCoba = [
+  "Delano",
+  arrayCobaCoba[0] === "Delano" ? true : false,
+  hitungUsia(2006),
+];
+
+console.log(arrayCobaCoba);
