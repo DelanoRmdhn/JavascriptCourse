@@ -3,7 +3,7 @@
 //DAY 7
 
 /* INTRODUCTION TO ARRAY 
-Array adalah sebuah struktur data yang dimana kita bisa menyimpan sebuah value di dalamnya. kalau di analogikan, array seperti sebuah Box Mainan yang di dalamnya memiliki berbagai jenis mainan.
+Array adalah struktur data yang digunakan untuk menyimpan sekumpulan nilai dalam satu variabel. Setiap nilai di dalam array memiliki index yang dimulai dari 0. kalau di analogikan, array seperti sebuah Box Mainan yang di dalamnya memiliki berbagai jenis mainan.
 
 untuk mengakses nilai yang ada di dalam array kita bisa mendapatkannya dengan mengetahui index / posisi si nilai yang ingin kita ambil. indexing pada array dimulai dari 0 bukan 1.
 */
@@ -56,10 +56,29 @@ const temanSaya = ["fairuz", "ezra", "nandana"];
 temanSaya[temanSaya.length - 1] = "Tiansen";
 console.log(temanSaya[2]);
 
-const arrayCobaCoba = [
-  "Delano",
-  arrayCobaCoba[0] === "Delano" ? true : false,
-  hitungUsia(2006),
-];
+const arrayCobaCoba = ["Delano", hitungUsia(2006)];
 
 console.log(arrayCobaCoba);
+
+/*
+METHOD IN ARRAY : Method merupakan sebuah fungsi, berikut ini merupakan fungsi fungsi yang terikat dengan array. biasanya method pada array digunakan untuk memanipulasi nilai yang ada pada array (menambah,menghapus,mengganti) dan bisa juga digunakan untuk lain lain
+*/
+
+//Memanipulasi nilai pada Array
+const temanDelano = ["Nandana", "Fairuz", "Tiansen", "Ezra", "Nafis"];
+
+//masukan nilai ke dalam array
+temanDelano.push("Ghani"); // Tambah diakhir
+temanDelano.unshift("Helza"); // Tambah diawal
+
+console.log(temanDelano);
+
+//Hapus nilai dari sebuah array
+temanDelano.pop();
+temanDelano.shift();
+
+console.log(temanDelano);
+
+//Method lainnya
+console.log(temanDelano.includes("Tiansen")); //cek apakah ada nilai pada array temanDelano dengan value 'Tiansen'
+console.log(temanDelano.indexOf("Tiansen")); // cek posisi 'Tiansen' berada pada posisi keberapa dalam array temanDelano
