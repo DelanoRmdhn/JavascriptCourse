@@ -2,35 +2,58 @@
 
 //MINI TASK MINGGU 2 DAY 7 : ARRAY
 
-/*SOAL 1 
-Steven wants you to improve his tip calculator, using the same rules as before — tip 15% of the bill if the bill value is between 50 and 300, and if the value is different, the tip is 20%.
+/*SOAL 2 
+Topik: Array Basics & Array Methods
 
-Your tasks:
+Studi Kasus: Dynamic Skillset Portfolio Management
 
-Write a function calcTip that takes any bill value as an input and returns the corresponding tip, calculated based on the rules above (you can check out the code from the first tip calculator challenge if you need to). Use the function type you like the most. Test the function using a bill value of 100.
+Skenario
+Anda sedang membangun sistem manajemen data untuk halaman portfolio pribadi. Daftar keahlian (skillset) yang ditampilkan harus dapat diperbarui secara dinamis berdasarkan modul teknologi yang berhasil diselesaikan, fokus kompetensi utama yang ingin ditonjolkan, maupun teknologi yang diputuskan untuk dipangkas dari daftar prioritas.
 
-Steven needs a very simple tip calculator for whenever he goes to eat in a restaurant. In his country, it's usual to tip 15% if the bill value is between 50 and 300. If the value is different, the tip is 20%.
+Instruksi Tugas
+Inisialisasi Data:
 
+Buat sebuah array bernama skillsetFrontend yang berisi data awal: "HTML", "CSS", dan "Figma".
 
-And now let's use arrays! So, create an array called bills containing the test data below.
+Manipulasi Data (Wajib Menggunakan Array Methods):
 
-Create an array called tips containing the tip value for each bill, calculated from the function you created before.
+Tambahkan teknologi "Tailwind CSS" ke urutan paling terakhir di dalam array.
 
-BONUS: Create an array totals containing the total values, so the bill + tip.
+Tambahkan teknologi "Framer" ke urutan paling pertama di dalam array.
 
-TEST DATA: 125, 555, and 44.
+Hapus teknologi "CSS" dari dalam array berdasarkan posisi indeksnya secara dinamis.
+
+Periksa apakah teknologi "Next.js" sudah tersedia di dalam array hasil manipulasi tersebut. Simpan hasil pengecekan ke dalam variabel isNextJsMastered.
+
+Output:
+
+Cetak hasil akhir array ke console.
+
+Cetak jumlah total panjang array ke console.
+
+Cetak status penguasaan "Next.js" menggunakan evaluasi kondisi dari variabel isNextJsMastered.
+
+Target Tampilan Output Console:
+Plaintext
+=== PORTFOLIO SKILLSET MANAGEMENT ===
+Daftar Skill Akhir : [ 'Framer', 'HTML', 'Figma', 'Tailwind CSS' ]
+Jumlah Total Skill : 4 Item
+Status Skill Next.js: Belum Menguasai Next.js, Perlu Belajar Lagi!
 
 */
+const skillsetFrontend = ["HTML", "CSS", "Figma"];
+console.log(`Skill Awal Saya : ${skillsetFrontend}`);
 
-const bills = [125, 555, 44];
+skillsetFrontend.push("Tailwind CSS");
+skillsetFrontend.unshift("Framer");
 
-const calcTip = (bill) =>
-  bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
+if (skillsetFrontend.includes("CSS")) {
+  skillsetFrontend.splice(skillsetFrontend.indexOf("CSS"), 1);
+}
 
-const tips = [calcTip(bills[0]), calcTip(bills[1]), calcTip(bills[2])];
+const totalSkill = skillsetFrontend.length;
 
-const totals = [bills[0] + tips[0], bills[1] + tips[1], bills[2] + tips[2]];
-
-console.log(bills);
-console.log(tips);
-console.log(totals);
+console.log(`=== PORTFOLIO SKILLSET MANAGEMENT ===\n
+Daftar Skill Akhir : ${skillsetFrontend}\n
+Jumlah Total Skill : ${totalSkill}\n
+Status Skill Next.js:${skillsetFrontend.includes("Next.js") ? "Sudah ada Skill Next.JS" : "Belum Menguasai Next.js, Perlu Belajar Lagi!"}`);
