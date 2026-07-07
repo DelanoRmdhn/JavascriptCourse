@@ -1,59 +1,36 @@
 "use strict";
 
-//MINI TASK MINGGU 2
+//MINI TASK MINGGU 2 DAY 7 : ARRAY
 
-/*
-SOAL 3
+/*SOAL 1 
+Steven wants you to improve his tip calculator, using the same rules as before — tip 15% of the bill if the bill value is between 50 and 300, and if the value is different, the tip is 20%.
 
-Topik: Nested Functions, Lexical Scope, & Return Values
+Your tasks:
 
-Studi Kasus: Sistem Pengamanan Kalkulasi Biaya Proyek PT. CAHAYA REMBULAN SEJATI
+Write a function calcTip that takes any bill value as an input and returns the corresponding tip, calculated based on the rules above (you can check out the code from the first tip calculator challenge if you need to). Use the function type you like the most. Test the function using a bill value of 100.
 
-Skenario
-Manajemen agensi ingin memastikan rumus perhitungan pajak PPN (11%) untuk pengerjaan website arsitek dan UMKM bersifat rahasia dan tidak bisa dimanipulasi oleh skrip luar. Kamu diminta membuat fungsi utama bernama hitungTotalBiayaProyek yang di dalamnya mengurung fungsi rahasia hitungPajak.
+Steven needs a very simple tip calculator for whenever he goes to eat in a restaurant. In his country, it's usual to tip 15% if the bill value is between 50 and 300. If the value is different, the tip is 20%.
 
-Instruksi Tugas
-Buat Fungsi Utama (Outer Function):
 
-Buat sebuah fungsi (boleh menggunakan Function Expression atau Arrow Function) bernama hitungTotalBiayaProyek.
+And now let's use arrays! So, create an array called bills containing the test data below.
 
-Fungsi ini menerima satu parameter: hargaDasar.
+Create an array called tips containing the tip value for each bill, calculated from the function you created before.
 
-Wajib memiliki Safeguard: Di baris paling atas, cek apakah hargaDasar bernilai angka positif. Jika bukan angka atau di bawah atau sama dengan 0, langsung tendang keluar (Guard Clause) dengan pesan: "Error: Harga dasar proyek tidak valid!".
+BONUS: Create an array totals containing the total values, so the bill + tip.
 
-Buat Fungsi Dalam (Inner Function):
+TEST DATA: 125, 555, and 44.
 
-Di dalam fungsi utama (tepat di bawah guard clause), deklarasikan fungsi baru bernama hitungPajak.
-
-Fungsi hitungPajak ini tidak perlu menerima parameter baru. Dia harus memanfaatkan Lexical Scope untuk langsung mengambil nilai hargaDasar dari fungsi luar, lalu mengembalikannya setelah dikalikan dengan rate PPN murni sebesar 0.11.
-
-Proses Akhir & Pengembalian Nilai:
-
-Di bagian akhir fungsi utama, panggil fungsi hitungPajak() tersebut, jumlahkan hasilnya dengan hargaDasar, lalu kembalikan (return) nilai total akhir tersebut.
-
-Uji Coba & Output Console:
-
-Panggil fungsi utama tersebut dengan dua skenario data (Happy Path dengan angka nyata, dan Unhappy Path dengan teks/angka negatif) di dalam console.log().
-
-Contoh target output di console browser:
-
-Plaintext
-=== SIMULASI HITUNG BIAYA PROYEK ===
-Total Biaya (Landing Page 1.5jt) : Rp. 1665000
-Total Biaya (Input Rusak)        : Error: Harga dasar proyek tidak valid!
 */
 
-const hitungTotalBiayaProyek = function (hargaDasar) {
-  if (isNaN(hargaDasar) || hargaDasar < 0) {
-    return `Error: Harga dasar proyek tidak valid!`;
-  }
+const bills = [125, 555, 44];
 
-  const hitungPajak = () => hargaDasar * 0.11;
-  return hargaDasar + hitungPajak();
-};
+const calcTip = (bill) =>
+  bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
 
-console.log(`=== SIMULASI HITUNG BIAYA PROYEK ===`);
-console.log(
-  `Total Biaya (Landing Page 1.5jt) : Rp. ${hitungTotalBiayaProyek(1500000)}`,
-);
-console.log(`Total Biaya (Input Rusak): ${hitungTotalBiayaProyek(-1)}`);
+const tips = [calcTip(bills[0]), calcTip(bills[1]), calcTip(bills[2])];
+
+const totals = [bills[0] + tips[0], bills[1] + tips[1], bills[2] + tips[2]];
+
+console.log(bills);
+console.log(tips);
+console.log(totals);
