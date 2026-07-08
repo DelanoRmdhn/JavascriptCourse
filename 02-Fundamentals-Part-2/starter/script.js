@@ -1,59 +1,39 @@
 "use strict";
 
-//MINI TASK MINGGU 2 DAY 7 : ARRAY
+/*DAY 8 
 
-/*SOAL 2 
-Topik: Array Basics & Array Methods
+OBJECT 
+selain array terdapat object yang merupakan sebuah struktur data lainnya. Object prinsipnya sama seperti array yakni dia mampu menampung banyak value/expression di dalamnya, namun yang membedakan ia dari array pada bagian mengakses value yang ada di dalamnya.
 
-Studi Kasus: Dynamic Skillset Portfolio Management
-
-Skenario
-Anda sedang membangun sistem manajemen data untuk halaman portfolio pribadi. Daftar keahlian (skillset) yang ditampilkan harus dapat diperbarui secara dinamis berdasarkan modul teknologi yang berhasil diselesaikan, fokus kompetensi utama yang ingin ditonjolkan, maupun teknologi yang diputuskan untuk dipangkas dari daftar prioritas.
-
-Instruksi Tugas
-Inisialisasi Data:
-
-Buat sebuah array bernama skillsetFrontend yang berisi data awal: "HTML", "CSS", dan "Figma".
-
-Manipulasi Data (Wajib Menggunakan Array Methods):
-
-Tambahkan teknologi "Tailwind CSS" ke urutan paling terakhir di dalam array.
-
-Tambahkan teknologi "Framer" ke urutan paling pertama di dalam array.
-
-Hapus teknologi "CSS" dari dalam array berdasarkan posisi indeksnya secara dinamis.
-
-Periksa apakah teknologi "Next.js" sudah tersedia di dalam array hasil manipulasi tersebut. Simpan hasil pengecekan ke dalam variabel isNextJsMastered.
-
-Output:
-
-Cetak hasil akhir array ke console.
-
-Cetak jumlah total panjang array ke console.
-
-Cetak status penguasaan "Next.js" menggunakan evaluasi kondisi dari variabel isNextJsMastered.
-
-Target Tampilan Output Console:
-Plaintext
-=== PORTFOLIO SKILLSET MANAGEMENT ===
-Daftar Skill Akhir : [ 'Framer', 'HTML', 'Figma', 'Tailwind CSS' ]
-Jumlah Total Skill : 4 Item
-Status Skill Next.js: Belum Menguasai Next.js, Perlu Belajar Lagi!
+pada array untuk mengakses value kita menggunakan index.
+sedangkan pada object kita bisa sett nama untuk dapat mengakses nilai tersebut.
 
 */
-const skillsetFrontend = ["HTML", "CSS", "Figma"];
-console.log(`Skill Awal Saya : ${skillsetFrontend}`);
 
-skillsetFrontend.push("Tailwind CSS");
-skillsetFrontend.unshift("Framer");
+const delano = {
+  namaPanjang: "Delano Bariq Ramadhan",
+  namaPanggilan: "Delano",
+  nim: 103022400045,
+  universitas: "Telkom University",
+  teman: ["ilham", "Ali", "Yusuf"],
+};
 
-if (skillsetFrontend.includes("CSS")) {
-  skillsetFrontend.splice(skillsetFrontend.indexOf("CSS"), 1);
+//cara Mengakses sebuah properti pada object
+//1. Dot
+console.log(delano.namaPanjang);
+
+//2.[] : dengan bracket kita bisa menempatkan expression ke dalamnya
+let jenis = "Panggilan";
+console.log(delano[`nama${jenis}`]);
+
+console.log(
+  `${delano.namaPanggilan} memiliki ${delano.teman.length}, dan teman terdekat saya adalah ${delano.teman[0]}`,
+);
+
+const input = prompt(
+  `Masukan informasi dari ${delano.namaPanjang} yang ingin kamu ketahui \n(namaPanjang,namaPanggilan,nim,universitas,teman):`,
+);
+
+if (delano[input]) {
+  console.log(`${input} dari Delano : ${delano[input]}`);
 }
-
-const totalSkill = skillsetFrontend.length;
-
-console.log(`=== PORTFOLIO SKILLSET MANAGEMENT ===\n
-Daftar Skill Akhir : ${skillsetFrontend}\n
-Jumlah Total Skill : ${totalSkill}\n
-Status Skill Next.js:${skillsetFrontend.includes("Next.js") ? "Sudah ada Skill Next.JS" : "Belum Menguasai Next.js, Perlu Belajar Lagi!"}`);
