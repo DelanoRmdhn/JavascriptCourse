@@ -2,38 +2,47 @@
 
 /*DAY 8 
 
-OBJECT 
-selain array terdapat object yang merupakan sebuah struktur data lainnya. Object prinsipnya sama seperti array yakni dia mampu menampung banyak value/expression di dalamnya, namun yang membedakan ia dari array pada bagian mengakses value yang ada di dalamnya.
+Diving deeper in Object 
 
-pada array untuk mengakses value kita menggunakan index.
-sedangkan pada object kita bisa sett nama untuk dapat mengakses nilai tersebut.
+1. Function di dalam sebuah object : kita bisa memasukan function ke dalam sebuah object, dengan syarat kita perlu mendeklarasikan function tersebut dalam format function expression / arrow function.
 
+2. this keyowrd pada object: this adalah sebuah keyword di JavaScript yang mereferensikan object yang sedang menjalankan (memanggil) suatu function.
 */
 
 const delano = {
   namaPanjang: "Delano Bariq Ramadhan",
   namaPanggilan: "Delano",
+  tahunLahir: 2006,
   nim: 103022400045,
   universitas: "Telkom University",
   teman: ["ilham", "Ali", "Yusuf"],
+  pekerjaan: "Mahasiswa",
+  simMengemudi: true,
+
+  hitungUsia: function () {
+    this.age = 2026 - this.tahunLahir;
+    return this.age;
+  },
+
+  rangkumanSaya: function () {
+    return `${this.namaPanggilan} adalah seorang ${this.pekerjaan} dengan umur ${this.age}, dan dia ${this.simMengemudi === true && this.age >= 17 ? "Punya" : "Tidak Punya"} SIM Mengemudi`;
+  },
 };
 
-//cara Mengakses sebuah properti pada object
-//1. Dot
-console.log(delano.namaPanjang);
+console.log(delano);
+console.log(delano);
+console.log(delano.hitungUsia()); //ketika function ini dipanggil maka di dalam function hitungUsia akan membuat properti baru berupa age yang menyimpan hasil perhitungannya
+console.log(delano.age); // jadi kita bisa langsung akses properti age tanpa perlu jalanin function hitungUsia lagi, tapi kalau function hitungUsia belum di jalanin maka properti age tidak akan punya nilai / undefined.
+console.log(delano.simMengemudi);
 
-//2.[] : dengan bracket kita bisa menempatkan expression ke dalamnya
-let jenis = "Panggilan";
-console.log(delano[`nama${jenis}`]);
+console.log(delano.rangkumanSaya());
 
-console.log(
-  `${delano.namaPanggilan} memiliki ${delano.teman.length}, dan teman terdekat saya adalah ${delano.teman[0]}`,
-);
+//Manipulasi dalam Object
+//1. menambah sebuah properti baru pada object
+delano.status = "Jomblo";
 
-const input = prompt(
-  `Masukan informasi dari ${delano.namaPanjang} yang ingin kamu ketahui \n(namaPanjang,namaPanggilan,nim,universitas,teman):`,
-);
+//2. Mengubah sebuah properti pada object
+delano.status = "Jomblo happy";
 
-if (delano[input]) {
-  console.log(`${input} dari Delano : ${delano[input]}`);
-}
+//3. Menghapus sebuah properti pada object
+delete delano.status;
