@@ -2,49 +2,73 @@
 
 //MINI TASK MINGGU 2 DAY 8 : OBJECT
 
-/*SOAL 1
-Let's go back to Mark and John comparing their BMIs!
+/*SOAL 2
+Topik: Object Properties, Object Methods, & Kata Kunci this
 
-This time, let's use objects to implement the calculations! Remember: BMI = mass / (height * height) (mass in kg and height in meters).
+Studi Kasus: Sistem Manajemen Piutang Klien UMKM Arsitektur
 
-Your tasks:
+Skenario
+Agensi PT. CAHAYA REMBULAN SEJATI baru saja mendapatkan proyek pembuatan Company Profile dari sebuah UMKM Firma Arsitektur lokal. Untuk menjaga arus kas (cash flow) agensi tetap sehat, Anda diminta membuat sebuah sistem objek digital yang mampu mencatat data kontrak pengerjaan serta menghitung secara otomatis apakah klien tersebut sudah melunasi pembayarannya sesuai kesepakatan atau belum.
 
-For each of them, create an object with properties for their full name, mass, and height (Mark Miller and John Smith). Name these objects as mark and john, and their properties exactly as fullName, mass and height.
+Instruksi Tugas
+Inisialisasi Data Objek:
 
-Create a calcBMI method on each object to calculate the BMI (the same method on both objects). Assign the BMI value to a property called bmi (lowercase), and also return it from the method.
+Buatlah sebuah objek bernama klienUMKM.
 
-Log to the console who has the higher BMI, together with the full name and the respective BMI. Example: "John Smith's BMI (28.3) is higher than Mark Miller's (23.9)!".
+Di dalam objek tersebut, buat properti-properti berikut beserta nilainya:
 
-TEST DATA: Marks weighs 78 kg and is 1.69 m tall. John weighs 92 kg and is 1.95 m tall.
+namaPerusahaan: "Studio Arsitek Garis Lurus"
 
-IMPORTANT: The ** operator is not supported in this editor. Please make sure to use exactly this formula mass / (height * height), and not this one mass / (height ** 2).
+jenisPaket: "Company Profile"
 
+totalKontrak: 5000000 (Angka murni nominal Rp5.000.000)
+
+jumlahYangDibayar: 3500000 (Angka murni nominal Rp3.500.000)
+
+
+
+Buat Fungsi Internal (Object Method):
+
+Di dalam objek klienUMKM yang sama, buat sebuah method bernama cekStatusPelunasan.
+
+Method ini tidak boleh menerima parameter dari luar. Dia harus memanfaatkan kata kunci this untuk mengakses data keuangan miliknya sendiri di dalam objek.
+
+Logika Pengamanan Keuangan:
+
+Hitung sisa tagihan secara mandiri di dalam fungsi tersebut.
+
+Jika jumlahYangDibayar bernilai sama dengan atau lebih besar dari totalKontrak, method harus mengembalikan (return) teks: "Lunas! Proyek siap dideploy ke server Next.js."
+
+Jika jumlahYangDibayar masih kurang dari totalKontrak, method harus mengembalikan teks yang dinamis: "Belum Lunas! Kurang Rp.[nominal_sisa_tagihan]. Tolong hubungi pihak klien." (Hitung sisa uangnya secara dinamis).
+
+Output Console:
+
+Cetak header pelaporan keuangan yang rapi ke console.
+
+Panggil method klienUMKM.cekStatusPelunasan() di dalam console.log() untuk melihat hasil evaluasi sistem secara nyata.
+
+Target Tampilan Output Console:
+Plaintext
+=== FINANSIAL LOG KLIEN UMKM ===
+Perusahaan      : Studio Arsitek Garis Lurus
+Paket Layanan   : Company Profile
+Status Finansial: Belum Lunas! Kurang Rp.1500000. Tolong hubungi pihak klien.
 */
 
-const mark = {
-  fullName: "Mark Miller",
-  mass: 78,
-  height: 1.69,
-  calcBMI: function () {
-    this.bmi = this.mass / (this.height * this.height);
-    return this.bmi;
+const klienUMKM = {
+  namaPerusahaan: "Studio Arsitek Garis Lurus",
+  jenisPaket: "Company Profile",
+  totalKontrak: 5000000,
+  jumlahYangDibayar: 3500000,
+
+  cekStatusPelunasan: function () {
+    return this.jumlahYangDibayar >= this.totalKontrak
+      ? `Lunas! Proyek siap dideploy ke server Next.js`
+      : `Belum Lunas! Kurang Rp. ${this.totalKontrak - this.jumlahYangDibayar}. Tolong hubungi pihak klien!`;
   },
 };
-const john = {
-  fullName: "John Smith",
-  mass: 92,
-  height: 1.95,
-  calcBMI: mark.calcBMI,
-};
 
-mark.calcBMI();
-john.calcBMI();
-
-// console.log(mark.bmi);
-// console.log(john.bmi);
-
-console.log(
-  mark.bmi > john.bmi
-    ? `${mark.fullName}'s BMI (${mark.bmi}) is higher than ${john.fullName}'s BMI (${john.bmi})!`
-    : `${john.fullName}'s BMI (${john.bmi}) is higher than ${mark.fullName}'s BMI (${mark.bmi})!`,
-);
+console.log(`=== FINANSIAL LOG KLIEN UMKM ===\n
+Perusahaan      : ${klienUMKM.namaPerusahaan}\n
+Paket Layanan   : ${klienUMKM.jenisPaket}\n
+Status Finansial: ${klienUMKM.cekStatusPelunasan()}`);
