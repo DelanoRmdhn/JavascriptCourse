@@ -1,170 +1,212 @@
 "use strict";
 
-//MINI TASK MINGGU 2 DAY 9 : 10 SOAL FOR LOOP
+//MINI TASK MINGGU 2 DAY 9 : 10 SOAL NESTED FOR LOOP
 
-/*
-Soal 1 - Hitung 1 sampai 10
-
-SOAL 1
-Gunakan for untuk mencetak angka:
-
-1
-2
-3
-4
-...
-10
-*/
-
-for (let i = 1; i <= 10; i++) {
-  console.log(i);
-}
-
-/*SOAL 2
-Soal 2 - Hitung Mundur
-
-Output:
-
-10
-9
-8
-...
-1
-*/
-
-for (let i = 10; i >= 1; i--) {
-  console.log(i);
-}
-
-/*SOAL 3
-Soal 3 - Bilangan Genap
-
-Cetak semua bilangan genap dari 2 sampai 20.
+/* 
+Soal 1
 
 Output
 
-2
-4
-6
-...
-20
+*
+**
+***
+****
+*****
+
 */
 
-for (let i = 1; i <= 20; i++) {
-  if (i % 2 === 0) {
-    console.log(i);
+for (let i = 1; i <= 5; i++) {
+  let bintang = "";
+  for (let j = 0; j < i; j++) {
+    bintang += "*";
   }
-}
-
-/*Soal 4 - Bilangan Ganjil
-
-Cetak semua bilangan ganjil dari 1 sampai 19. */
-
-for (let i = 1; i <= 19; i++) {
-  if (i % 2 !== 0) {
-    console.log(i);
-  }
+  console.log(bintang);
 }
 
 /*
-Soal 5 - Jumlah Bilangan
+Soal 2
 
-Hitung jumlah angka dari 1 sampai 100.
 Output
-5050
+
+*****
+****
+***
+**
+*
+
 */
 
-let angka = 0;
-for (let i = 1; i <= 100; i++) {
-  angka += i;
-}
-
-console.log(angka);
-
-/*
-Soal 6 - Faktorial
-
-Hitung faktorial dari angka 5.
-5! = 120
-*/
-
-let hasil = 1;
 for (let i = 5; i >= 1; i--) {
-  hasil = hasil * i;
-}
-console.log(hasil);
-
-/*SOAL 7 Cetak semua kelipatan 3 dari 1 sampai 50. */
-for (let i = 1; i <= 50; i++) {
-  if (i % 3 === 0) {
-    console.log(i);
+  let bintang = "";
+  for (let j = 0; j < i; j++) {
+    bintang += "*";
   }
+  console.log(bintang);
 }
 
-/*Soal 8 - Pangkat
-Hitung
-2^8
-Tanpa menggunakan ** ataupun Math.pow(). */
+/*
+Soal 3
 
-let hasilPangkat = 1;
-for (let i = 1; i <= 8; i++) {
-  hasilPangkat *= 2;
-}
-console.log(hasilPangkat);
+Output
 
-/*Soal 9 - Balik Hitungan
+11111
+22222
+33333
+44444
+55555
+*/
 
-Cetak
-
-100
-90
-80
-70
-...
-0 */
-
-for (let i = 100; i >= 0; i -= 10) {
-  console.log(i);
+for (let i = 1; i <= 5; i++) {
+  let angka = "";
+  for (let j = 1; j <= 5; j++) {
+    angka += i;
+  }
+  console.log(angka);
 }
 
-/*Soal 10 - FizzBuzz (Latihan Legendaris)
+/*
+Soal 4
 
-Cetak angka 1 sampai 30.
+Output
 
-Aturan:
+12345
+12345
+12345
+12345
+12345
+*/
 
-kelipatan 3 → "Fizz"
-kelipatan 5 → "Buzz"
-kelipatan 3 dan 5 → "FizzBuzz"
-selain itu cetak angkanya.
+for (let i = 1; i <= 5; i++) {
+  let angka = "";
+  for (let j = 1; j <= 5; j++) {
+    angka += j;
+  }
+  console.log(angka);
+}
 
-Contoh
+/*Soal 5
+
+Output
 
 1
-2
-Fizz
-4
-Buzz
-Fizz
-7
-8
-Fizz
-Buzz
-11
-Fizz
-13
-14
-FizzBuzz
-... */
+12
+123
+1234
+12345 */
 
-for (let i = 1; i <= 30; i++) {
-  if (i % 3 === 0 && i % 5 === 0) {
-    console.log("FizzBuzz");
-  } else if (i % 3 === 0) {
-    console.log("Fizz");
-  } else if (i % 5 === 0) {
-    console.log("Buzz");
-  } else {
-    console.log(i);
+for (let i = 1; i <= 5; i++) {
+  let angka = "";
+  for (let j = 1; j <= i; j++) {
+    angka += j;
   }
+  console.log(angka);
+}
+
+/*Soal 6
+
+Output
+
+12345
+1234
+123
+12
+1 
+*/
+
+for (let i = 5; i >= 1; i--) {
+  let angka = "";
+  for (let j = 1; j <= i; j++) {
+    angka += j;
+  }
+  console.log(angka);
+}
+
+/*
+Soal 7
+
+Output
+
+A 65
+AB 66
+ABC 67
+ABCD 68
+ABCDE 69
+
+Hint:
+Gunakan
+
+String.fromCharCode()
+*/
+
+for (let i = 65; i <= 69; i++) {
+  let huruf = "";
+  for (let j = 65; j <= i; j++) {
+    huruf += String.fromCharCode(j);
+  }
+  console.log(huruf);
+}
+
+/*
+Soal 8
+
+Output
+
+1
+22
+333
+4444
+55555
+*/
+
+for (let i = 1; i <= 5; i++) {
+  let angka = "";
+  for (let j = 1; j <= i; j++) {
+    angka += i;
+  }
+  console.log(angka);
+}
+
+/*
+Soal 9
+
+Output
+
+54321
+5432
+543
+54
+5
+*/
+
+for (let i = 1; i <= 5; i++) {
+  let angka = "";
+  for (let j = 5; j >= i; j--) {
+    angka += j;
+  }
+  console.log(angka);
+}
+
+/*
+Soal 10 (Lumayan Menantang)
+
+Output
+
+1
+23
+456
+78910
+1112131415
+
+Hint:
+Gunakan satu variabel yang terus bertambah.
+*/
+
+let counter = 1;
+for (let i = 1; i <= 5; i++) {
+  let angka = "";
+  for (let j = 0; j < i; j++) {
+    angka += counter;
+    counter++;
+  }
+  console.log(angka);
 }
