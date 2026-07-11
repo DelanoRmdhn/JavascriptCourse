@@ -1,212 +1,128 @@
 "use strict";
 
-//MINI TASK MINGGU 2 DAY 9 : 10 SOAL NESTED FOR LOOP
+//MINI TASK MINGGU 2 DAY 9 : 10 SOAL WHILE LOOP
+
+// Soal 1
+// Cetak angka 1–10 menggunakan while.
+let counter = 1;
+
+while (counter <= 10) {
+  console.log(counter);
+  counter++;
+}
+
+// Soal 2
+// Cetak angka 10–1 menggunakan while.
+
+counter = 10;
+while (counter >= 1) {
+  console.log(counter);
+  counter--;
+}
+
+// Soal 3
+// Cetak semua bilangan genap dari 2–20.
+
+counter = 2;
+while (counter <= 20) {
+  if (counter % 2 === 0) {
+    console.log(counter);
+  }
+  counter++;
+}
+
+//Soal 4
+// Hitung jumlah angka 1–50.
+let hasil = 0;
+counter = 1;
+
+while (counter <= 50) {
+  hasil += counter;
+  counter++;
+}
+console.log(hasil);
+
+// Soal 5
+// Hitung faktorial 6.
+
+hasil = 1;
+counter = 6;
+while (counter >= 1) {
+  hasil = hasil * counter;
+  counter--;
+}
+
+console.log(hasil);
+
+//Soal 6
+// Cetak
+// 5
+// 10
+// 15
+// 20
+// ...
+// 100
+
+counter = 5;
+while (counter <= 100) {
+  console.log(counter);
+  counter += 5;
+}
 
 /* 
-Soal 1
+Buat countdown
 
-Output
-
-*
-**
-***
-****
-*****
-
+10
+9
+8
+...
+Lift Off!
 */
 
-for (let i = 1; i <= 5; i++) {
-  let bintang = "";
-  for (let j = 0; j < i; j++) {
-    bintang += "*";
+counter = 10;
+while (counter > 0) {
+  console.log(counter);
+  counter--;
+  if (counter === 0) {
+    console.log(`Lift Off!`);
   }
-  console.log(bintang);
 }
 
-/*
-Soal 2
+/* 
+Hitung banyak digit sebuah angka.
 
+Misalnya
+
+const angka = 123456;
 Output
-
-*****
-****
-***
-**
-*
-
-*/
-
-for (let i = 5; i >= 1; i--) {
-  let bintang = "";
-  for (let j = 0; j < i; j++) {
-    bintang += "*";
-  }
-  console.log(bintang);
-}
-
-/*
-Soal 3
-
-Output
-
-11111
-22222
-33333
-44444
-55555
-*/
-
-for (let i = 1; i <= 5; i++) {
-  let angka = "";
-  for (let j = 1; j <= 5; j++) {
-    angka += i;
-  }
-  console.log(angka);
-}
-
-/*
-Soal 4
-
-Output
-
-12345
-12345
-12345
-12345
-12345
-*/
-
-for (let i = 1; i <= 5; i++) {
-  let angka = "";
-  for (let j = 1; j <= 5; j++) {
-    angka += j;
-  }
-  console.log(angka);
-}
-
-/*Soal 5
-
-Output
-
-1
-12
-123
-1234
-12345 */
-
-for (let i = 1; i <= 5; i++) {
-  let angka = "";
-  for (let j = 1; j <= i; j++) {
-    angka += j;
-  }
-  console.log(angka);
-}
-
-/*Soal 6
-
-Output
-
-12345
-1234
-123
-12
-1 
-*/
-
-for (let i = 5; i >= 1; i--) {
-  let angka = "";
-  for (let j = 1; j <= i; j++) {
-    angka += j;
-  }
-  console.log(angka);
-}
-
-/*
-Soal 7
-
-Output
-
-A 65
-AB 66
-ABC 67
-ABCD 68
-ABCDE 69
+6
 
 Hint:
-Gunakan
-
-String.fromCharCode()
+Gunakan pembagian 10.
 */
 
-for (let i = 65; i <= 69; i++) {
-  let huruf = "";
-  for (let j = 65; j <= i; j++) {
-    huruf += String.fromCharCode(j);
-  }
-  console.log(huruf);
+let angka = 123456;
+counter = 0;
+while (angka !== 0) {
+  angka = Math.floor(angka / 10);
+  counter++;
 }
-
-/*
-Soal 8
-
-Output
-
-1
-22
-333
-4444
-55555
-*/
-
-for (let i = 1; i <= 5; i++) {
-  let angka = "";
-  for (let j = 1; j <= i; j++) {
-    angka += i;
-  }
-  console.log(angka);
-}
+console.log(counter);
 
 /*
 Soal 9
 
-Output
+Balik angka.
+
+Misalnya
+
+12345
+
+menjadi
 
 54321
-5432
-543
-54
-5
-*/
-
-for (let i = 1; i <= 5; i++) {
-  let angka = "";
-  for (let j = 5; j >= i; j--) {
-    angka += j;
-  }
-  console.log(angka);
-}
-
-/*
-Soal 10 (Lumayan Menantang)
-
-Output
-
-1
-23
-456
-78910
-1112131415
 
 Hint:
-Gunakan satu variabel yang terus bertambah.
-*/
 
-let counter = 1;
-for (let i = 1; i <= 5; i++) {
-  let angka = "";
-  for (let j = 0; j < i; j++) {
-    angka += counter;
-    counter++;
-  }
-  console.log(angka);
-}
+Gunakan % dan Math.floor().
+*/
