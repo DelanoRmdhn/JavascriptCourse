@@ -1,59 +1,54 @@
 "use strict";
 
-//MINI TASK STUDI KASUS SOAL 1
+//MINI TASK STUDI KASUS SOAL 2
 
-/*Let's improve Steven's tip calculator even more, this time using loops!
+/*
+SOAL PRAKTIKUM MANDIRI - MINGGU 2
+Topik: for Loop, continue Statement, & Array Iteration
 
-Your tasks:
+Studi Kasus: Sistem Filter Proyek Prioritas Utama PT. CAHAYA REMBULAN SEJATI
 
-Create an array called bills containing all 10 test bill values.
+Skenario
+Agensi Anda sedang menangani banyak antrean proyek masuk dari berbagai UMKM. Karena keterbatasan sumber daya tim PSDM dan developer di bulan ini, manajemen memutuskan untuk memprioritaskan proyek-proyek bernilai besar terlebih dahulu, yaitu proyek yang nilainya di atas Rp4.000.000 (lebih dari 4 juta).
 
-Create empty arrays for the tips and the totals (tips and totals)
+Anda diminta membuat sistem filter otomatis menggunakan perulangan. Jika nilai proyek tidak memenuhi syarat (kurang dari atau sama dengan 4 juta), perulangan harus langsung melewati (skip) data tersebut dan lanjut memeriksa proyek berikutnya.
 
-Use the calcTip function we wrote before (included in the starter code) to calculate tips and total values (bill + tip) for every bill value in the bills array. Use a for loop to perform the 10 calculations!
+Instruksi Tugas
+Inisialisasi Data Array:
 
-
-
-TEST DATA: 22, 295, 176, 440, 37, 105, 10, 1100, 86, and 52.
-BONUS:
-
-Write a function calcAverage which takes an array called arr as an argument. This function calculates the average of all numbers in the given array. This is a DIFFICULT challenge (we haven't done this before)! Here is how to solve it if you feel like it:
-
-First, you will need to add up all values in the array. To do the addition, start by creating a variable sum that starts at 0. Then loop over the array using a for loop. In each iteration, add the current value to the sum variable. This way, by the end of the loop, you have all values added together.
-
-To calculate the average, divide the sum you calculated before by the length of the array (because that's the number of elements).
-
-Call the function with the totals array.
+Buatlah sebuah array bernama daftarHargaProyek.
 
 
+Isi array tersebut dengan nominal angka murni berikut: 1500000, 5000000, 3000000, 8000000, 4000000, dan 6500000.
 
-👋 OPTIONAL: You can watch my solution in video format in the next lecture */
+Perulangan dan Penyaringan (Looping & Filtering):
 
-const bills = [22, 295, 176, 440, 37, 105, 10, 1100, 86, 52];
-let tips = [];
-const totals = [];
+Lakukan perulangan menggunakan for loop tradisional untuk menjelajahi setiap elemen di dalam array daftarHargaProyek.
 
-const calcTip = function (bill) {
-  return bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
-};
+Wajib menggunakan continue: Di dalam blok perulangan, buatlah sebuah kondisi pengondisian (if). Jika harga proyek bernilai kurang dari atau sama dengan 4.000.000, maka picu kata kunci continue agar sistem langsung melompati angka tersebut.
 
-for (let i = 0; i < bills.length; i++) {
-  totals.push(bills[i] + calcTip(bills[i]));
-  tips.push(calcTip(bills[i]));
+Di bawah baris kode continue tersebut (jalur aman/lolos seleksi), cetak nilai harga proyek yang berhasil lolos ke console menggunakan console.log() dan Template Literals.
+
+Output Console:
+
+Cetak header informasi penyaringan yang rapi ke console.
+
+Pastikan hanya angka yang bernilai murni lebih dari 4.000.000 saja yang tercetak di console.
+
+Target Tampilan Output Console:
+Plaintext
+=== DAFTAR PROYEK PRIORITAS (> 4 JUTA) ===
+Proyek Lolos: Rp. 5000000
+Proyek Lolos: Rp. 8000000
+Proyek Lolos: Rp. 6500000
+*/
+
+const daftarHargaProyek = [
+  1500000, 5000000, 3000000, 8000000, 4000000, 6500000,
+];
+console.log(`=== DAFTAR PROYEK PRIORITAS (> 4 JUTA) ===`);
+for (let i = 0; i < daftarHargaProyek.length; i++) {
+  if (daftarHargaProyek[i] <= 4000000) continue;
+
+  console.log(`Proyek Lolos : Rp. ${daftarHargaProyek[i]}`);
 }
-
-console.log(tips);
-console.log(totals);
-
-/*BONUS */
-
-const calcAverage = function (arr) {
-  let total = 0;
-  for (let i = 0; i < arr.length; i++) {
-    total += arr[i];
-  }
-  let average = total / arr.length;
-  return average;
-};
-
-console.log(calcAverage(totals));
