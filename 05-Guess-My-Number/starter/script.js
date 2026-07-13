@@ -3,31 +3,27 @@
 /* 
 WEEK 3 : DOM & EVENTS IN JAVASCRIPT
 
-//DOM : DOM (Document Object Model) adalah representasi berbentuk object dari dokumen HTML yang dibuat oleh browser sehingga JavaScript dapat membaca, mengakses, dan memanipulasi halaman web.
-
-DOM bukan bagian dari HTML maupun JavaScript. DOM adalah Web API yang disediakan oleh browser sebagai representasi object dari halaman web agar dapat diakses dan dimanipulasi menggunakan JavaScript.
-
-Browser mengubah dokumen HTML menjadi sekumpulan object yang disebut DOM Tree. JavaScript kemudian dapat memanipulasi object-object tersebut melalui DOM API.
-
-DOM bukanlah data HTML itu sendiri, melainkan representasi HTML yang sedang aktif di dalam browser.
+//EVENTLISTENER 
 */
 
-//Mengakses elemen HTML
-const paragraph = document.querySelector('.between');
-console.log(paragraph);
-console.dir(paragraph); // untuk melihat object yang dimiliki paragraph ada apa saja
+const btnCheck = document.querySelector('.btn.check');
+const inputNumber = document.querySelector('.guess');
+const paragraf = document.querySelector('.message');
 
-//Sett nilai / mengubah nilai
-paragraph.textContent = 'Halooo Delano!';
+let guess = [];
+btnCheck.addEventListener('click', function () {
+  guess.push(inputNumber.value);
+  console.log(typeof inputNumber.value);
+  console.log(guess);
+});
 
-//Sett nilai untuk tag input
-const angkaTebakan = document.querySelector('.guess');
-angkaTebakan.value = 11; //set value sebelumnya kosong menjadi 11
-
-console.log(angkaTebakan.value);
-
-/* 
-textContent = digunakan apabila terdapat isi diantara tag pembuka dan penutup.
-
-value = digunakan untuk void element 
-*/
+btnCheck.addEventListener('click', function () {
+  if (Number(inputNumber.value) === angkaRandom) {
+    paragraf.textContent = '🎉Benar!!!';
+  } else {
+    paragraf.textContent =
+      Number(inputNumber.value) > angkaRandom
+        ? '⬆ ANGKANYA KEBESARAN!'
+        : '⬇ ANGKANYA KEKECILAN!';
+  }
+});
