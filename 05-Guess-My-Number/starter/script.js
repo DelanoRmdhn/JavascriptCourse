@@ -18,11 +18,11 @@ btnCheck.addEventListener('click', function () {
 });
 
 btnCheck.addEventListener('click', function () {
-  if (Number(inputNumber.value) === angkaRandom) {
+  if (Number(inputNumber.value) === 10) {
     paragraf.textContent = '🎉Benar!!!';
   } else {
     paragraf.textContent =
-      Number(inputNumber.value) > angkaRandom
+      Number(inputNumber.value) > 10
         ? '⬆ ANGKANYA KEBESARAN!'
         : '⬇ ANGKANYA KEKECILAN!';
   }
