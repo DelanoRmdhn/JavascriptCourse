@@ -9,14 +9,9 @@ berikut ini adalah beberapa game logic yang diperlukan :
 
 */
 
-//generate angka random dari 1 - 20
-let randomNumber = Math.trunc(Math.random() * 20) + 1;
-
-//simpan score
-let currentScore = 20;
-let highscore = 0;
-
-console.log(randomNumber);
+//Variabel
+let randomNumber, currentScore, highscore;
+let isPlaying = true;
 
 //TAG HTML yang mau dimanipulasi
 const inputNumber = document.querySelector('.guess');
@@ -25,68 +20,78 @@ const message = document.querySelector('.message');
 const score = document.querySelector('.score');
 const btnReset = document.querySelector('.btn.again');
 const highscoreEl = document.querySelector('.highscore');
+const bodyEl = document.querySelector('body');
+const numberEl = document.querySelector('.number');
+
+const initializeGame = function () {
+  //Reset seluruh variabel
+  isPlaying = true;
+  randomNumber = Math.trunc(Math.random() * 20) + 1;
+  currentScore = 20;
+
+  //Reset elemen elemen text
+  message.textContent = 'Start guessing...';
+  numberEl.textContent = '?';
+  inputNumber.value = '';
+  score.textContent = currentScore;
+
+  //Reset Style yang dimanipulasi
+  bodyEl.style.backgroundColor = '#222';
+  numberEl.style.width = '15rem';
+};
+
+//jalankan state
+initializeGame();
 
 //FUNCTION UNTUK BTN CHECK
 btnCheck.addEventListener('click', function () {
-  //ambil hasil inputan user
-  const inputtedNumber = Number(inputNumber.value);
+  if (isPlaying) {
+    //ambil hasil inputan user
+    const inputtedNumber = Number(inputNumber.value);
 
-  ///logic game
+    //Validasi Input Kosong
+    if (!inputtedNumber) {
+      message.textContent = `❌ Input Your Guess!`;
+    }
+    //validasi input < 1 & > 20
+    else if (inputtedNumber < 1 || inputtedNumber > 20) {
+      message.textContent = `❌ Number must be between 1 - 20.`;
+    }
+    //pengecekan > || <
+    else if (inputtedNumber !== randomNumber && currentScore > 0) {
+      message.textContent =
+        inputtedNumber > randomNumber ? `📈 Too High! ` : `📉 Too Low!`;
+      currentScore--;
+      score.textContent = currentScore;
+    }
+    //Kondisi Menang
+    else if (inputtedNumber === randomNumber && currentScore > 0) {
+      message.textContent = `🥇 Correct !`;
+      score.textContent = currentScore;
+      numberEl.textContent = randomNumber;
 
-  //Input Kosong
-  if (!inputtedNumber) {
-    message.textContent = `❌ Input Your Guess!`;
-  }
-  //validasi input < 1 & > 20
-  else if (inputtedNumber < 1 || inputtedNumber > 20) {
-    message.textContent = `❌ Number must be between 1 - 20. your guess : ${inputtedNumber}`;
-  }
-  //pengecekan > || <
-  else if (inputtedNumber !== randomNumber && currentScore > 0) {
-    message.textContent =
-      inputtedNumber > randomNumber ? `📈 Too High! ` : `📉 Too Low!`;
-    currentScore--;
-    score.textContent = currentScore;
-    console.log(currentScore);
-  }
-  //Kondisi Menang
-  else if (inputtedNumber === randomNumber && currentScore > 0) {
-    message.textContent = `🥇 Correct !`;
-    score.textContent = currentScore;
-    document.querySelector('.number').textContent = randomNumber;
+      //Pengecekan Highscore
+      if (currentScore > highscore) {
+        highscore = currentScore;
+        highscoreEl.textContent = currentScore;
+      }
 
-    //Pengecekan Highscore
-    if (currentScore > highscore) {
-      highscore = currentScore;
-      highscoreEl.textContent = currentScore;
+      //Manipulasi Style CSS
+      bodyEl.style.backgroundColor = '#60b347';
+      numberEl.style.width = '30rem';
+
+      isPlaying = false;
     }
 
-    //Manipulasi Style CSS
-    document.querySelector('body').style.backgroundColor = '#60b347';
-    document.querySelector('.number').style.width = '30rem';
-  }
-
-  if (currentScore <= 0) {
-    message.textContent = `GAME OVER`;
-    currentScore = 0;
-    score.textContent = currentScore;
+    if (currentScore <= 0) {
+      message.textContent = `GAME OVER`;
+      currentScore = 0;
+      score.textContent = currentScore;
+      isPlaying = false;
+    }
   }
 });
 
 btnReset.addEventListener('click', function () {
-  //Reset currentScore menjadi 20 lagi
-  currentScore = 20;
-  score.textContent = currentScore;
-
-  //Generate Angka Acak Berbeda
-  randomNumber = Math.trunc(Math.random() * 20) + 1;
-
-  //Reset Text
-  message.textContent = 'Start guessing...';
-  document.querySelector('.number').textContent = '?';
-  inputNumber.value = '';
-
-  //Reset Style yang dimanipulasi
-  document.querySelector('body').style.backgroundColor = '#222';
-  document.querySelector('.number').style.width = '15rem';
+  initializeGame();
 });
