@@ -14,6 +14,7 @@ let randomNumber = Math.trunc(Math.random() * 20) + 1;
 
 //simpan score
 let currentScore = 20;
+let highscore = 0;
 
 console.log(randomNumber);
 
@@ -23,6 +24,7 @@ const btnCheck = document.querySelector('.btn.check');
 const message = document.querySelector('.message');
 const score = document.querySelector('.score');
 const btnReset = document.querySelector('.btn.again');
+const highscoreEl = document.querySelector('.highscore');
 
 //FUNCTION UNTUK BTN CHECK
 btnCheck.addEventListener('click', function () {
@@ -51,8 +53,13 @@ btnCheck.addEventListener('click', function () {
   else if (inputtedNumber === randomNumber && currentScore > 0) {
     message.textContent = `🥇 Correct !`;
     score.textContent = currentScore;
-    document.querySelector('.highscore').textContent = currentScore;
     document.querySelector('.number').textContent = randomNumber;
+
+    //Pengecekan Highscore
+    if (currentScore > highscore) {
+      highscore = currentScore;
+      highscoreEl.textContent = currentScore;
+    }
 
     //Manipulasi Style CSS
     document.querySelector('body').style.backgroundColor = '#60b347';
