@@ -7,6 +7,9 @@ gunakan document.querySelectorAll() apabila sebuah elemen memiliki sebuah class 
 
 dia merupakan sebuah nodeList, dia mirip array tapi bukanlah sebuah array.
 
+//CARA MEMANIPULASI SEBUAH CLASS 
+kita bisa melakukan manipulasi baik itu menambah,menghapus,cek,dll sebuah class. kita bisa menggunakan classList.
+
 */
 
 //Simpan elemen kedalam sebuah variable
@@ -15,8 +18,24 @@ const modal = document.querySelector('.modal');
 const btnCloseModal = document.querySelector('.close-modal');
 const overlay = document.querySelector('.overlay');
 
+//Function tutup Modal
+const closeModal = function () {
+  modal.classList.add('hidden');
+  overlay.classList.add('hidden');
+};
+
+//Buka Modal
 for (let i = 0; i < btnsOpenModal.length; i++) {
   btnsOpenModal[i].addEventListener('click', function () {
     console.log('clicked!');
+
+    //Manipulasi class modal & overlay
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
   });
 }
+
+//Tutup Modal dengan klik btnCloseModal , klik overlay, dan ketika user klik 'Escape'
+
+btnCloseModal.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModal);
