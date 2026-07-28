@@ -49,42 +49,60 @@ const restaurant = {
       close: 24,
     },
   },
+
+  //Destrukturisasi object pada sebuah parameter function
+  orderDelivery: function ({
+    name,
+    starterIndex = 0,
+    mainMenuIndex = 0,
+    address,
+    deliveryTime,
+  }) {
+    console.log(
+      `Hai ${name}, Pesananmu adalah :\n1. Menu Pembuka : ${this.starterMenu[starterIndex]}\n2. Menu Utama : ${this.mainMenu[mainMenuIndex]}.\nAkan segera dikirim ke lokasimu (${address}) pada jam ${deliveryTime}`,
+    );
+  },
 };
 
-//DESTRUKTURISASI ARRAY : Sebuah cara dalam unpack/menguraikan sebuah nilai pada sebuah array atau object dengan membaginya menjadi variabel variabel yaang terpisah
+//DESTRUKTURISASI OBJECT : Sama seperti array pengertian destrukturisasi array juga sama. yang berbeda ialah object basisnya adalah nama dari properti dan bukan dari indexnya.
 
-const arrayUmur = [50, 45, 19, 17, 8];
-const [papa, mama, lano, varra, elan] = arrayUmur;
-console.log(papa, mama, lano, varra, elan);
+//dapatkan nilai dari nama restoran,mainMenu,dan openingHoursnya
+const { name, mainMenu, openingHours } = restaurant;
+console.log(name, mainMenu, openingHours);
 
-//implementasi dengan REST OPERATOR
-const [umurPapa, ...umurAnggotaKeluargaLainnya] = arrayUmur;
-console.log(umurAnggotaKeluargaLainnya);
+//mengganti nama dari properti object yang kita mau destrukturisasi
+const {
+  name: restaurantName,
+  mainMenu: mainCourse,
+  openingHours: hours,
+} = restaurant;
+console.log(restaurantName, mainCourse, hours);
 
-//Menukar nilai dengan cara destrukturisasi
-let [mainCategory, , secondaryCategory] = restaurant.categories;
-console.log(mainCategory, secondaryCategory);
+//sett default value
+const { menu = [] } = restaurant;
+console.log(menu);
 
-[mainCategory, secondaryCategory] = [secondaryCategory, mainCategory];
-console.log(mainCategory, secondaryCategory);
+//Destrukturisasi pada nested object
+const {
+  thu: { open: open1 },
+  fri: { open: open2 },
+} = restaurant.openingHours;
 
-//Mendapatkan nilai dari return function orderMenu
-const getAllMenu = restaurant.orderMenu(2, 0);
-console.log(getAllMenu);
+console.log(open1, open2);
 
-//Mendapatkan nilai dari return function orderMenu dan simpan ke variable yang berbeda
-const [orderedStarter, orderedMain] = restaurant.orderMenu(2, 0);
-console.log(orderedStarter, orderedMain);
+//orderDelivery : function dengan parameter berupa object & di destrukturisasi pada function
+restaurant.orderDelivery({
+  name: 'Delano Bariq Ramadhan',
+  address: 'Graha Raya Dahlia Loka Blok RC 4/7',
+  starterIndex: 2,
+  mainMenuIndex: 1,
+  deliveryTime: '21.00',
+});
 
-//Destrukturisasi pada Nested Array
-const umurKeluargaSaya = [[50, 45], [19, 17, 8], 76];
+//////////////////////////////////
+//ambil properti starterMenu dan mainMenu object restaurant lalu ubah namanya, dan simpan mereka ke sebuah array allMenu
+const { starterMenu: starter, mainMenu: main } = restaurant;
+console.log(starter, main);
 
-const [[...orangTua], [...anak], ompung] = umurKeluargaSaya;
-console.log(`Umur Orang Tua : ${orangTua}`);
-console.log(`Umur Anak - Anak : ${anak}`);
-console.log(`Umur Ompung : ${ompung}`);
-
-//Sett nilai default pada saat Destrukturisasi Array
-const arr2 = [1, 2, 3];
-const [w = 1, x = 1, y = 1, z = 1] = arr2;
-console.log(w, x, y, z);
+const allMenu = [...starter, ...main];
+console.log(allMenu);
