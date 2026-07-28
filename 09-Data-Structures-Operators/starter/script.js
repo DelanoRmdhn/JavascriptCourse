@@ -30,6 +30,11 @@ const restaurant = {
   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
 
+  orderMenu: function (starterIndex, mainIndex) {
+    //destrukturisasi pada sebuah function untuk return 2 nilai atau lebih
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+
   openingHours: {
     thu: {
       open: 12,
@@ -45,3 +50,41 @@ const restaurant = {
     },
   },
 };
+
+//DESTRUKTURISASI ARRAY : Sebuah cara dalam unpack/menguraikan sebuah nilai pada sebuah array atau object dengan membaginya menjadi variabel variabel yaang terpisah
+
+const arrayUmur = [50, 45, 19, 17, 8];
+const [papa, mama, lano, varra, elan] = arrayUmur;
+console.log(papa, mama, lano, varra, elan);
+
+//implementasi dengan REST OPERATOR
+const [umurPapa, ...umurAnggotaKeluargaLainnya] = arrayUmur;
+console.log(umurAnggotaKeluargaLainnya);
+
+//Menukar nilai dengan cara destrukturisasi
+let [mainCategory, , secondaryCategory] = restaurant.categories;
+console.log(mainCategory, secondaryCategory);
+
+[mainCategory, secondaryCategory] = [secondaryCategory, mainCategory];
+console.log(mainCategory, secondaryCategory);
+
+//Mendapatkan nilai dari return function orderMenu
+const getAllMenu = restaurant.orderMenu(2, 0);
+console.log(getAllMenu);
+
+//Mendapatkan nilai dari return function orderMenu dan simpan ke variable yang berbeda
+const [orderedStarter, orderedMain] = restaurant.orderMenu(2, 0);
+console.log(orderedStarter, orderedMain);
+
+//Destrukturisasi pada Nested Array
+const umurKeluargaSaya = [[50, 45], [19, 17, 8], 76];
+
+const [[...orangTua], [...anak], ompung] = umurKeluargaSaya;
+console.log(`Umur Orang Tua : ${orangTua}`);
+console.log(`Umur Anak - Anak : ${anak}`);
+console.log(`Umur Ompung : ${ompung}`);
+
+//Sett nilai default pada saat Destrukturisasi Array
+const arr2 = [1, 2, 3];
+const [w = 1, x = 1, y = 1, z = 1] = arr2;
+console.log(w, x, y, z);
