@@ -1,120 +1,80 @@
 'use strict';
 
-const game = {
-  team1: 'Bayern Munich',
-  team2: 'Borrussia Dortmund',
-  players: [
-    [
-      'Neuer',
-      'Pavard',
-      'Martinez',
-      'Alaba',
-      'Davies',
-      'Kimmich',
-      'Goretzka',
-      'Coman',
-      'Muller',
-      'Gnarby',
-      'Lewandowski',
-    ],
-    [
-      'Burki',
-      'Schulz',
-      'Hummels',
-      'Akanji',
-      'Hakimi',
-      'Weigl',
-      'Witsel',
-      'Hazard',
-      'Brandt',
-      'Sancho',
-      'Gotze',
-    ],
-  ],
-  score: '4:0',
-  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
-  date: 'Nov 9th, 2037',
-  odds: {
-    team1: 1.33,
-    x: 3.25,
-    team2: 6.5,
-  },
-};
-
-//LATIHAN CODING 1
-
 /* 
-Data Structures, Modern Operators and Strings
-Coding Challenge #1
-We're building a football betting app (soccer for my American friends 😅)!
-Suppose we get data from a web service about a certain game ('game' variable on
-next page). In this challenge we're gonna work with that data.
-Your tasks:
+SOAL PRAKTIKUM MANDIRI
+Topik: Nullish Coalescing Operator (??) vs Logical OR (||)
 
-1. Create one player array for each team (variables 'players1' and
-'players2')
+Studi Kasus: Sistem Estimasi Durasi Pengerjaan Proyek UMKM
 
-2. The first player in any player array is the goalkeeper and the others are field
-players. For Bayern Munich (team 1) create one variable ('gk') with the
-goalkeeper's name, and one array ('fieldPlayers') with all the remaining 10
-field players
+Skenario
+Agensi PT. CAHAYA REMBULAN SEJATI sedang mengevaluasi data estimasi hari pengerjaan untuk 3 proyek UMKM arsitektur yang baru masuk:
 
-3. Create an array 'allPlayers' containing all players of both teams (22
-players)
+Proyek A (proyekBiasa): Estimasi durasi bernilai undefined (belum diisi oleh klien).
 
-4. During the game, Bayern Munich (team 1) used 3 substitute players. So create a
-new array ('players1Final') containing all the original team1 players plus
-'Thiago', 'Coutinho' and 'Perisic'
+Proyek B (proyekExpress): Estimasi durasi bernilai 0 (klien memesan layanan instalasi express langsung jadi di hari yang sama).
 
-5. Based on the game.odds object, create one variable for each odd (called
-'team1', 'draw' and 'team2')
+Proyek C (proyekRevisi): Estimasi durasi bernilai null (data rusak/kosong dari database).
 
-6. Write a function ('printGoals') that receives an arbitrary number of player
-names (not an array) and prints each of them to the console, along with the
-number of goals that were scored in total (number of player names passed in)
+Anda diminta membuat sistem penentu estimasi durasi dengan Default Value = 14 Hari jika data bernilai nullish.
 
-7. The team with the lower odd is more likely to win. Print to the console which
-team is more likely to win, without using an if/else statement or the ternary
-operator.
+Instruksi Tugas
+Inisialisasi Variable:
 
-Test data for 6.: First, use players 'Davies', 'Muller', 'Lewandowski' and 'Kimmich'.
-Then, call the function again with players from game.scored
-GOOD LUCK 😀
+Deklarasikan 3 variabel berikut beserta nilainya:
+
+const durasiProyekA = undefined;
+
+const durasiProyekB = 0;
+
+const durasiProyekC = null;
+
+Evaluasi Durasi Menggunakan Operator ??:
+
+Buat 3 variabel baru (hasilProyekA, hasilProyekB, hasilProyekC).
+
+Gunakan operator ?? untuk mengevaluasi masing-masing durasi di atas dengan nilai default 14 (hari).
+
+Komparasi Menggunakan Operator || (Uji Pemahaman):
+
+Buat 1 variabel pembanding bernama ujiProyekB_OR yang mengevaluasi durasiProyekB menggunakan operator || dengan nilai default 14.
+
+Output Console:
+
+Cetak hasil evaluasi ketiga proyek ke console.
+
+Cetak juga hasil komparasi ujiProyekB_OR untuk memperlihatkan perbedaan nyata antara ?? dan || saat menangani angka 0.
+
+Target Tampilan Output Console:
+Plaintext
+=== ESTIMASI DURASI PENGERJAAN PROYEK ===
+Proyek A (Undefined) : 14 Hari
+Proyek B (Express 0) : 0 Hari
+Proyek C (Null)      : 14 Hari
+
+--- BUKTI PERBEDAAN OPERATOR ON PROYEK B ---
+Menggunakan '??' (Akurat): 0 Hari
+Menggunakan '||' (Bug   ): 14 Hari
 */
 
-//1
-const [player1, player2] = game.players;
-console.log(player1, player2);
+const durasiProyekA = undefined;
+const durasiProyekB = 0;
+const durasiProyekC = null;
 
-//2
-const [gk, ...fieldPlayers] = player1;
-console.log(gk, fieldPlayers);
+const hasilProyekA = durasiProyekA ?? `14 Hari`;
+const hasilProyekB = durasiProyekB ?? `14 Hari`;
+const hasilProyekC = durasiProyekC ?? `14 Hari`;
 
-//3
-const allPlayers = [...player1, ...player2];
-console.log(allPlayers);
+const ujiProyekB_OR = durasiProyekB || `14 Hari`;
 
-//4
-const players1Final = [...player1, 'Thiago', 'Coutinho', 'Perisic'];
-console.log(players1Final);
-
-//5
-const { team1, x: draw, team2 } = game.odds;
-console.log(team1, draw, team2);
-
-//6
-const printGoals = function (...playerScored) {
-  // console.log(playerScored);
-
-  for (let i = 0; i < playerScored.length; i++) {
-    console.log(`${playerScored[i]} Scored!`);
-  }
-
-  console.log(`Total Scored : ${playerScored.length}`);
-};
-
-printGoals('Davies', 'Muller', 'Lewandowski', 'Kimmich');
-printGoals(...game.scored);
-
-//7
-team1 < team2 && console.log(`${game.team1} is more likeley to Win the Match!`);
+console.log(
+  `
+  === ESTIMASI DURASI PENGERJAAN PROYEK ===
+  Proyek A (Undefined) : ${hasilProyekA}
+  Proyek B (0) : ${hasilProyekB}
+  Proyek C (null) : ${hasilProyekC}
+  
+  --- BUKTI PERBEDAAN OPERATOR ON PROYEK B ---
+  Menggunakan '??' (Akurat): ${hasilProyekB}
+  Menggunakan '||' (Bug   ): ${ujiProyekB_OR}
+  `,
+);
