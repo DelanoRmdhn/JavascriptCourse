@@ -1,71 +1,70 @@
 'use strict';
 
-const store = {
-  name: 'Delano Store',
+const league = {
+  teams: {
+    arsenal: 'Arsenal',
+    city: 'Manchester City',
+    liverpool: 'Liverpool',
+  },
 
-  products: [
+  matches: [
     {
-      name: 'Keyboard',
-      category: 'Electronics',
-      sold: 23,
+      home: 'arsenal',
+      away: 'city',
+      score: '2:1',
+      scorers: ['Saka', 'Haaland', 'Martinelli'],
     },
 
     {
-      name: 'Mouse',
-      category: 'Electronics',
-      sold: 15,
-    },
-
-    {
-      name: 'Notebook',
-      category: 'Stationery',
-      sold: 30,
-    },
-
-    {
-      name: 'Pen',
-      category: 'Stationery',
-      sold: 40,
+      home: 'city',
+      away: 'liverpool',
+      score: '3:2',
+      scorers: ['Haaland', 'Haaland', 'Salah', 'Foden', 'Nunez'],
     },
   ],
-
-  ratings: {
-    service: 4.8,
-    delivery: 4.5,
-    quality: 4.9,
-  },
 };
 
-for (const [i, { name }] of store.products.entries()) {
-  console.log(`Product ${i + 1} : ${name}`);
-}
-let totalProdukTerjual = 0;
-for (const { sold } of store.products) {
-  totalProdukTerjual += sold;
-}
-console.log(`Total Produk Terjual : ${totalProdukTerjual}`);
-
-let totalRating = 0;
-for (const rating of Object.values(store.ratings)) {
-  totalRating += rating;
-}
-const avgRating = totalRating / Object.values(store.ratings).length;
-console.log(`Average Rating : ${avgRating}`);
-
-for (const [i, values] of Object.entries(store.ratings)) {
-  console.log(`Rating for ${i} : ${values}`);
+for (const [i, { home, away }] of league.matches.entries()) {
+  console.log(`Match ${i + 1} : `);
+  console.log(`${league.teams[home]} VS ${league.teams[away]}`);
 }
 
-const saleBasedOnCategory = {};
-
-for (const { category, sold } of store.products) {
-  // console.log(category, sold);
-
-  if (saleBasedOnCategory[category]) {
-    saleBasedOnCategory[category] += sold;
-  } else {
-    saleBasedOnCategory[category] = sold;
+let goalNumber = 1;
+for (const [key, { scorers }] of league.matches.entries()) {
+  console.log(`Match ${key + 1} : `);
+  for (const name of scorers) {
+    console.log(`Goal ${goalNumber} : ${name}`);
+    goalNumber++;
   }
 }
 
-console.log(saleBasedOnCategory);
+const goalScorer = {};
+for (const { scorers } of league.matches) {
+  for (const player of scorers) {
+    if (goalScorer[player]) {
+      goalScorer[player] += 1;
+    } else {
+      goalScorer[player] = 1;
+    }
+  }
+}
+
+console.log(goalScorer);
+let totalGoals = 0;
+for (const { scorers } of league.matches) {
+  totalGoals += scorers.length;
+}
+console.log(totalGoals);
+
+let topScorer = '';
+let maxGoals = 0;
+
+for (const [name, score] of Object.entries(goalScorer)) {
+  console.log(name, score);
+  if (score > maxGoals) {
+    topScorer = name;
+    maxGoals = score;
+  }
+}
+
+console.log(`Top Scorer adalah ${topScorer} dengan ${maxGoals} Gol.`);
