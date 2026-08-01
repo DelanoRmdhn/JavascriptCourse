@@ -1,110 +1,67 @@
 'use strict';
 
-/*
-CHALLANGE #2
+'use strict';
 
-Your tasks:
-1. Loop over the game.scored array and print each player name to the console,
-along with the goal number (Example: "Goal 1: Lewandowski")
+const company = {
+  name: 'TechNova',
 
-2. Use a loop to calculate the average odd and log it to the console (We already
-studied how to calculate averages, you can go check if you don't remember)
-
-3. Print the 3 odds to the console, but in a nice formatted way, exactly like this:
-Odd of victory Bayern Munich: 1.33
-Odd of draw: 3.25
-Odd of victory Borrussia Dortmund: 6.5
-Get the team names directly from the game object, don't hardcode them
-(except for "draw"). Hint: Note how the odds and the game objects have the
-same property names 😉
-
-4. Bonus: Create an object called 'scorers' which contains the names of the
-players who scored as properties, and the number of goals as the value. In this
-game, it will look like this:
-{
-Gnarby: 1,
-Hummels: 1,
-Lewandowski: 2
-}
-GOOD LUCK 😀
-*/
-
-const game = {
-  team1: 'Bayern Munich',
-  team2: 'Borrussia Dortmund',
-  players: [
-    [
-      'Neuer',
-      'Pavard',
-      'Martinez',
-      'Alaba',
-      'Davies',
-      'Kimmich',
-      'Goretzka',
-      'Coman',
-      'Muller',
-      'Gnarby',
-      'Lewandowski',
-    ],
-    [
-      'Burki',
-      'Schulz',
-      'Hummels',
-      'Akanji',
-      'Hakimi',
-      'Weigl',
-      'Witsel',
-      'Hazard',
-      'Brandt',
-      'Sancho',
-      'Gotze',
-    ],
+  employees: [
+    {
+      name: 'Delano',
+      department: 'Engineering',
+      tasksCompleted: 18,
+    },
+    {
+      name: 'Rangga',
+      department: 'Design',
+      tasksCompleted: 12,
+    },
+    {
+      name: 'Fadhil',
+      department: 'Engineering',
+      tasksCompleted: 20,
+    },
+    {
+      name: 'Alya',
+      department: 'Marketing',
+      tasksCompleted: 15,
+    },
   ],
-  score: '4:0',
-  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
-  date: 'Nov 9th, 2037',
-  odds: {
-    team1: 1.33,
-    x: 3.25,
-    team2: 6.5,
+
+  performance: {
+    Engineering: 9.2,
+    Design: 8.4,
+    Marketing: 7.8,
   },
 };
 
-const getScored = function (obj) {
-  for (const [goal, playerScored] of Object.entries(obj)) {
-    console.log(`Goal ${Number(goal) + 1} : ${playerScored}`);
-  }
-};
-getScored(game.scored);
-
-const getAverageOdd = function (obj) {
-  let totalOdds = 0;
-  for (const odds of Object.values(obj)) {
-    totalOdds += odds;
-  }
-  const averageOdd = totalOdds / Object.values(obj).length;
-  console.log(`Average Odd : ${averageOdd}`);
-};
-getAverageOdd(game.odds);
-
-const oddInformation = function (obj) {
-  console.log(obj);
-  for (const [key, value] of Object.entries(game.odds)) {
-    const teamStr = key === 'x' ? 'draw' : `victory ${game[key]}`;
-
-    console.log(`Odd of ${teamStr}: ${value}`);
-  }
-};
-oddInformation(game);
-
-const scorers = {};
-
-for (const player of game.scored) {
-  if (scorers[player]) {
-    scorers[player]++;
-  } else {
-    scorers[player] = 1;
-  }
+for (const [i, { name }] of Object.entries(company.employees)) {
+  console.log(`Employee ${Number(i) + 1} : ${name}`);
 }
 
-console.log(scorers);
+let totalTaskCompleted = 0;
+for (const [i, { tasksCompleted }] of Object.entries(company.employees)) {
+  totalTaskCompleted += tasksCompleted;
+}
+console.log(totalTaskCompleted);
+
+let totalPerformace = 0;
+for (const performance of Object.values(company.performance)) {
+  totalPerformace += performance;
+}
+totalPerformace = totalPerformace / Object.keys(company.performance).length;
+console.log(totalPerformace);
+
+for (const [division, score] of Object.entries(company.performance))
+  console.log(`Performance of ${division} : ${score}`);
+
+const departmentCount = {};
+
+for (const { department } of company.employees) {
+  if (departmentCount[department]) {
+    departmentCount[department]++;
+  } else {
+    departmentCount[department] = 1;
+  }
+}
+console.log(departmentCount);
