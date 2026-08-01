@@ -1,137 +1,110 @@
 'use strict';
 
-//CHALLANGE 1 : FOR OF LOOP
 /*
-Challenge (Level Jonas Schmedtmann)
+CHALLANGE #2
 
-Diberikan data berikut.
+Your tasks:
+1. Loop over the game.scored array and print each player name to the console,
+along with the goal number (Example: "Goal 1: Lewandowski")
 
-const game = {
-  players: [
-    ["Neuer", "Pavard", "Davies"],
-    ["Burki", "Hummels", "Brandt"],
-  ],
-};
+2. Use a loop to calculate the average odd and log it to the console (We already
+studied how to calculate averages, you can go check if you don't remember)
 
-Tanpa menggunakan for biasa, tampilkan
+3. Print the 3 odds to the console, but in a nice formatted way, exactly like this:
+Odd of victory Bayern Munich: 1.33
+Odd of draw: 3.25
+Odd of victory Borrussia Dortmund: 6.5
+Get the team names directly from the game object, don't hardcode them
+(except for "draw"). Hint: Note how the odds and the game objects have the
+same property names 😉
 
-Team 1
-Neuer
-Pavard
-Davies
-
-Team 2
-Burki
-Hummels
-Brandt
+4. Bonus: Create an object called 'scorers' which contains the names of the
+players who scored as properties, and the number of goals as the value. In this
+game, it will look like this:
+{
+Gnarby: 1,
+Hummels: 1,
+Lewandowski: 2
+}
+GOOD LUCK 😀
 */
 
 const game = {
+  team1: 'Bayern Munich',
+  team2: 'Borrussia Dortmund',
   players: [
-    ['Neuer', 'Pavard', 'Davies'],
-    ['Burki', 'Hummels', 'Brandt'],
+    [
+      'Neuer',
+      'Pavard',
+      'Martinez',
+      'Alaba',
+      'Davies',
+      'Kimmich',
+      'Goretzka',
+      'Coman',
+      'Muller',
+      'Gnarby',
+      'Lewandowski',
+    ],
+    [
+      'Burki',
+      'Schulz',
+      'Hummels',
+      'Akanji',
+      'Hakimi',
+      'Weigl',
+      'Witsel',
+      'Hazard',
+      'Brandt',
+      'Sancho',
+      'Gotze',
+    ],
   ],
+  score: '4:0',
+  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+  date: 'Nov 9th, 2037',
+  odds: {
+    team1: 1.33,
+    x: 3.25,
+    team2: 6.5,
+  },
 };
 
-for (const [i, player] of game.players.entries()) {
-  console.log(`Team${i + 1}`);
-  for (const playerName of player) {
-    console.log(playerName);
+const getScored = function (obj) {
+  for (const [goal, playerScored] of Object.entries(obj)) {
+    console.log(`Goal ${Number(goal) + 1} : ${playerScored}`);
   }
-  console.log('\n');
+};
+getScored(game.scored);
+
+const getAverageOdd = function (obj) {
+  let totalOdds = 0;
+  for (const odds of Object.values(obj)) {
+    totalOdds += odds;
+  }
+  const averageOdd = totalOdds / Object.values(obj).length;
+  console.log(`Average Odd : ${averageOdd}`);
+};
+getAverageOdd(game.odds);
+
+const oddInformation = function (obj) {
+  console.log(obj);
+  for (const [key, value] of Object.entries(game.odds)) {
+    const teamStr = key === 'x' ? 'draw' : `victory ${game[key]}`;
+
+    console.log(`Odd of ${teamStr}: ${value}`);
+  }
+};
+oddInformation(game);
+
+const scorers = {};
+
+for (const player of game.scored) {
+  if (scorers[player]) {
+    scorers[player]++;
+  } else {
+    scorers[player] = 1;
+  }
 }
 
-/*
-Misalkan state cart-mu seperti ini:
-
-const cart = [
-  {
-    id: 1,
-    name: "Indomie",
-    price: 3500,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    name: "Aqua",
-    price: 4000,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    name: "Teh Botol",
-    price: 5000,
-    quantity: 4,
-  },
-];
-
-Gunakan hanya for...of (ditambah destructuring jika perlu) untuk menghitung:
-
-Total quantity seluruh barang.
-Subtotal belanja.
-Pajak 10%.
-Grand total.
-Cetak receipt seperti berikut:
-===== RECEIPT =====
-
-Indomie
-2 x Rp3500 = Rp7000
-
-Aqua
-1 x Rp4000 = Rp4000
-
-Teh Botol
-4 x Rp5000 = Rp20000
-
---------------------
-Subtotal : Rp31000
-Tax      : Rp3100
-Total    : Rp34100
-*/
-const cart = [
-  {
-    id: 1,
-    name: 'Indomie',
-    price: 3500,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    name: 'Aqua',
-    price: 4000,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    name: 'Teh Botol',
-    price: 5000,
-    quantity: 4,
-  },
-];
-
-const generateReceipt = function () {
-  console.log('===== RECEIPT =====');
-
-  let subtotal = 0;
-
-  for (const { name, price, quantity } of cart) {
-    const itemTotal = price * quantity;
-
-    console.log(`
-${name}
-${quantity} x Rp${price} = Rp${itemTotal}
-`);
-
-    subtotal += itemTotal;
-  }
-
-  const tax = subtotal * 0.1;
-  const total = subtotal + tax;
-
-  console.log(`
-Subtotal : Rp${subtotal}
-Tax      : Rp${tax}
-Total    : Rp${total}
-`);
-};
-generateReceipt();
+console.log(scorers);
