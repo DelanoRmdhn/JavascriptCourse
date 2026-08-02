@@ -41,68 +41,47 @@ FRI : Open at 11, Close at 23
 SAT : Open 24 Hours
 */
 
-const weeklyOpeningReport = function (obj) {
-  console.log('===== WEEKLY OPENING REPORT =====');
-  for (const [day, { open, close }] of Object.entries(obj)) {
-    console.log(`${day} : Open at ${open}, Close at ${close}`);
-  }
-};
+//SETS : Struktur data yang digunakan untuk menyimpan sebuah iterable (array) dengan nilai unik.
 
-weeklyOpeningReport(restaurant.openingHours);
+const orderFood = [
+  'Ayam',
+  'Ikan',
+  'Sapi',
+  'sapi',
+  'Ayam',
+  'Sapi',
+  'Jeruk Bali',
+];
+
+const getOrderFood = new Set(orderFood);
+console.log(getOrderFood);
+
+/* getOrderFood beriisikan dengan nilai nilai dari elemen orderFood dengan nilai unik. kita tidak bisa mengeluarkan nilai yang ada didalam sets dengan cara mengakses indexnya. tetapi kita bisa mengkonversinya menjadi sebuah array dengan spread operator dengan cara dibawah ini :
+ */
+
+// const getAllOrderFood = [...getOrderFood];
+// console.log(getAllOrderFood);
 
 /*
-Challenge 2 — Complete Restaurant Inspection (⭐⭐⭐⭐⭐)
+atau kita bisa langsung mengkonversi hasil sets tersebut ke array
 
-Tampilkan seluruh isi object restaurant dengan format berikut.
+const getOrderFood = [...new Set(orderFood)];
+console.log(getOrderFood);
 
-Output:
-
-name :
-Classico Italiano
-
-location :
-Via Angelo Tavanti 23, Firenze, Italy
-
-categories :
-Italian
-Pizzeria
-Vegetarian
-Organic
-
-starterMenu :
-Focaccia
-Bruschetta
-Garlic Bread
-Caprese Salad
-
-mainMenu :
-Pizza
-Pasta
-Risotto
-
-openingHours :
-thu -> 12 - 22
-fri -> 11 - 23
-sat -> 0 - 24
 */
 
-const restaurantInformation = function (obj) {
-  for (const [key, value] of Object.entries(obj)) {
-    console.log(`${key} :`);
+//Method Method pada sets
 
-    if (Array.isArray(value)) {
-      for (const item of value) {
-        console.log(item);
-      }
-    } else if (typeof value === 'object' && value !== null) {
-      for (const [day, hours] of Object.entries(value)) {
-        console.log(`${day} -> ${hours.open} - ${hours.close}`);
-      }
-    } else {
-      console.log(value);
-    }
+//1. add()
+getOrderFood.add('Babi');
+console.log(getOrderFood);
 
-    console.log();
-  }
-};
-restaurantInformation(restaurant);
+//2. delete()
+getOrderFood.delete('sapi');
+console.log(getOrderFood);
+
+//3. has()
+console.log(getOrderFood.has('Ikan'));
+
+//4. size
+console.log(getOrderFood.size);
