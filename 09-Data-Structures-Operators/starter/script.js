@@ -69,11 +69,15 @@ console.log(
 );
 
 //sama aja kayak
-if (
-  currentTime > restaurantMap.get('open') &&
-  currentTime < restaurantMap.get('close')
-)
-  console.log(restaurantMap.get(true));
+// if (
+//   currentTime > restaurantMap.get('open') &&
+//   currentTime < restaurantMap.get('close')
+// )
+//   console.log(restaurantMap.get(true));
+
+for (const [key, value] of restaurantMap) {
+  console.log(`${typeof key} ${key} : ${value}`);
+}
 
 const scriptElement = new Map();
 scriptElement.set(document.querySelector('h1'), 'heading1');
@@ -95,3 +99,33 @@ console.log(restaurantMap.size);
 
 //clear()
 // restaurantMap.clear()
+
+////////////////////////////////////////////
+//cara lain dalam membuat sebuah Map
+////////////////////////////////////////////
+const hoursMap = new Map(Object.entries(openingHours));
+console.log(hoursMap);
+
+//latihan soal
+const pertanyaan = new Map([
+  ['question', 'Bahasa Pemrograman apa yang Terbaik?'],
+  [1, 'C'],
+  [2, 'Java'],
+  [3, 'JavaScript'],
+  ['correct', 3],
+  [(true, 'Betul!')],
+  [false, 'Salah!'],
+]);
+
+console.log(pertanyaan.get('question'));
+for (const [key, value] of pertanyaan) {
+  if (typeof key === 'number') {
+    console.log(`${key} : ${value}`);
+  }
+}
+
+// const answer = Number(prompt('Jawaban Kamu'));
+// console.log(typeof answer, answer);
+const answer = 3;
+
+console.log(pertanyaan.get('correct') === answer);
