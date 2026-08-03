@@ -1,40 +1,97 @@
 'use strict';
 
-const italianFoods = new Set([
-  'pasta',
-  'gnocchi',
-  'tomatoes',
-  'olive oil',
-  'garlic',
-  'basil',
-]);
+const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+const openingHours = {
+  [weekdays[3]]: {
+    open: 12,
+    close: 22,
+  },
+  [weekdays[4]]: {
+    open: 11,
+    close: 23,
+  },
+  [weekdays[5]]: {
+    open: 0, // Open 24 hours
+    close: 24,
+  },
+};
 
-const mexicanFoods = new Set([
-  'tortillas',
-  'beans',
-  'rice',
-  'tomatoes',
-  'avocado',
-  'garlic',
-]);
+const restaurant = {
+  name: 'Classico Italiano',
+  location: 'Via Angelo Tavanti 23, Firenze, Italy',
+  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
+  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
 
-const commonFoods = italianFoods.intersection(mexicanFoods);
-console.log('Intersection:', commonFoods);
-console.log([...commonFoods]);
+  // ES6 enhanced object literals
+  openingHours,
 
-const italianMexicanFusion = italianFoods.union(mexicanFoods);
-console.log('Union:', italianMexicanFusion);
+  order(starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
 
-console.log([...new Set([...italianFoods, ...mexicanFoods])]);
+  orderDelivery({ starterIndex = 1, mainIndex = 0, time = '20:00', address }) {
+    console.log(
+      `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`,
+    );
+  },
 
-const uniqueItalianFoods = italianFoods.difference(mexicanFoods);
-console.log('Difference italian:', uniqueItalianFoods);
+  orderPasta(ing1, ing2, ing3) {
+    console.log(
+      `Here is your declicious pasta with ${ing1}, ${ing2} and ${ing3}`,
+    );
+  },
 
-const uniqueMexicanFoods = mexicanFoods.difference(italianFoods);
-console.log('Difference mexican:', uniqueMexicanFoods);
+  orderPizza(mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
+  },
+};
 
-const uniqueItalianAndMexicanFoods =
-  italianFoods.symmetricDifference(mexicanFoods);
-console.log(uniqueItalianAndMexicanFoods);
+/*MAP : Struktur data yang menyimpan sebuah adata dalam bentuk key-value (sama seperti object), tetapi keynya bisa bertipe data apa saja*/
 
-console.log(italianFoods.isDisjointFrom(mexicanFoods));
+const restaurantMap = new Map();
+restaurantMap
+  .set(1, restaurant.location)
+  .set(true, 'We Are Open :D')
+  .set(false, 'We Are Close :(')
+  .set('open', 10)
+  .set('close', 23)
+  .set('AllMenu', [...restaurant.starterMenu, ...restaurant.mainMenu]);
+
+const currentTime = 21;
+
+console.log(
+  restaurantMap.get(
+    currentTime > restaurantMap.get('open') &&
+      currentTime < restaurantMap.get('close'),
+  ),
+);
+
+//sama aja kayak
+if (
+  currentTime > restaurantMap.get('open') &&
+  currentTime < restaurantMap.get('close')
+)
+  console.log(restaurantMap.get(true));
+
+const scriptElement = new Map();
+scriptElement.set(document.querySelector('h1'), 'heading1');
+scriptElement.get(
+  document.querySelector('h1').addEventListener('click', function () {
+    console.log('click');
+  }),
+);
+
+//has
+console.log(restaurantMap.has('open'));
+
+//delete(key)
+restaurantMap.delete(1);
+console.log(restaurantMap);
+
+//size
+console.log(restaurantMap.size);
+
+//clear()
+// restaurantMap.clear()
