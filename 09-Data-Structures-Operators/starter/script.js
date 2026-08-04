@@ -23,31 +23,64 @@ console.log(airlineType.slice(0, 6));
 console.log(airline.slice(airline.indexOf('G'), airline.indexOf(' ')));
 console.log(airline.slice(airline.indexOf(' ') + 1, airline.lastIndexOf(' ')));
 
-//Function cek kursi tengah (b,e,f,i)
-const checkMiddleSeat = function (seat) {
-  const getAlphabet = seat.slice(-1);
+//5. toLowerCase()
+console.log(airline.toLowerCase());
+console.log(airline.toUpperCase());
 
-  if (
-    getAlphabet === 'B' ||
-    getAlphabet === 'E' ||
-    getAlphabet === 'F' ||
-    getAlphabet === 'I'
-  ) {
-    console.log(`Your Seat :${seat}`);
-    console.log(`You ARE Getting Middle Seat!`);
+//contoh real case
+let name = 'DeLanO';
+const lowerName = name.toLowerCase();
+const correctName = lowerName[0].toUpperCase() + lowerName.slice(1);
+console.log(correctName);
+
+//6. trim
+const namaKu = '            Delano Bariq Ramadhan              ';
+console.log(namaKu.trim());
+
+//contoh real case
+const email = 'del.191006@gmail.com';
+const inputEmail = '         DEl.191006@gmaIl.coM \n';
+
+const setEmail = inputEmail.toLowerCase().trim();
+console.log(setEmail);
+console.log(email === setEmail ? true : false);
+
+//7. replace()
+const announcement =
+  'Semua Penumpang penerbangan garuda Indonesia diharapkan ke pintu 3.';
+
+console.log(announcement);
+console.log(announcement.replace('pintu', 'Gate'));
+
+//real case
+const flightPriceDollar = '$100';
+const flightPriceIdr = flightPriceDollar
+  .replace('$', 'Rp.')
+  .replace('100', '1.800.000');
+
+console.log(flightPriceDollar, flightPriceIdr);
+
+//8. includes()
+const plane = 'Airbus A320neo';
+console.log(plane.includes('neo'));
+
+//9.startsWith()
+console.log(plane.startsWith('Airbus'));
+
+//10. endsWith()
+console.log(plane.endsWith('neo'));
+
+//contoh case
+const generateBoardingPass = function (items) {
+  const inputItem = items.toLowerCase();
+
+  if (inputItem.includes('sajam') || inputItem.includes('bazzoka')) {
+    console.log(`❌ Kamu dilarang Terbang!`);
   } else {
-    console.log(`Your Seat :${seat}`);
-    console.log('You are NOT getting Middle Seat!');
+    console.log(`✅ Kamu diizinkan Terbang`);
   }
 };
 
-// checkMiddleSeat('11A');
-// checkMiddleSeat('11B');
-// checkMiddleSeat('11C');
-// checkMiddleSeat('11D');
-// checkMiddleSeat('11E');
-// checkMiddleSeat('11F');
-// checkMiddleSeat('11G');
-// checkMiddleSeat('11H');
-// checkMiddleSeat('11I');
-// checkMiddleSeat('11J');
+generateBoardingPass('Saya bawa makanan,Minuman,dan sajam');
+generateBoardingPass('Saya bawa baju,celana,dan makanan');
+generateBoardingPass('Saya bawa bazzoka,sempak,dan makanan');
