@@ -1,255 +1,352 @@
 'use strict';
 
-//LATIHAN SOAL 1 : SETS
-
-/*
-🟢 Level 1 — Dasar
-Soal 1: Hilangkan Duplikasi
-
-Diberikan array berikut:
-
-const scores = [100, 80, 100, 70, 90, 80, 100];
-
-Tugas:
-
-Buat sebuah Set dari array tersebut.
-Cetak hasilnya.
-Cetak jumlah nilai uniknya
-*/
-const scores = [100, 80, 100, 70, 90, 80, 100];
-const getScore = new Set(scores);
-console.log(getScore, getScore.size);
-
-/*
-Soal 2: Tambah dan Hapus
-
-Buat Set yang berisi:
-
-HTML
-CSS
-JavaScript
-
-Lalu:
-
-Tambahkan "React"
-Tambahkan "Node.js"
-Hapus "CSS"
-Cetak hasil akhirnya.
-*/
-
-const mySkill = new Set(['HTML', 'CSS', 'JavaScript']);
-mySkill.add('React');
-mySkill.add('Node.js');
-mySkill.delete('CSS');
-console.log(mySkill);
-
-/*
-Soal 3: Mengecek Data
-const fruits = new Set([
-  "Apple",
-  "Banana",
-  "Orange",
-  "Mango"
+//LATIHAN SOAL 1 : MAP
+const orders = new Map([
+  [101, { customer: 'Delano', menu: 'Pizza', qty: 2 }],
+  [102, { customer: 'Rangga', menu: 'Burger', qty: 1 }],
+  [103, { customer: 'Fadhil', menu: 'Pizza', qty: 3 }],
+  [104, { customer: 'Delano', menu: 'Pasta', qty: 1 }],
+  [105, { customer: 'Rangga', menu: 'Pizza', qty: 2 }],
 ]);
 
-Tugas:
+/* 
+Soal 1 — Tampilkan semua order
 
-Cek apakah "Banana" ada.
-Cek apakah "Durian" ada.
+Output
+
+Order 101
+Customer : Delano
+Menu     : Pizza
+Qty      : 2
+
+Order 102
+Customer : Rangga
+Menu     : Burger
+Qty      : 1
+
+...
 */
 
-const fruits = new Set(['Apple', 'Banana', 'Orange', 'Mango']);
+const getAllOrder = function () {
+  for (const [key, { customer, menu, qty }] of orders) {
+    console.log(`Order ${key}`);
+    console.log(`Customer : ${customer}`);
+    console.log(`Menu : ${menu}`);
+    console.log(`Qty : ${qty}`);
+    console.log(`----------------------`);
+  }
+};
 
-console.log(fruits.has('Banana'));
-console.log(fruits.has('Durian'));
+getAllOrder();
 
 /*
-🟡 Level 2 — Looping
-Soal 4: Cetak Semua Elemen
-const cities = new Set([
-  "Bandung",
-  "Jakarta",
-  "Surabaya",
-  "Medan"
-]);
+Soal 2 — Cari Order
+
+Buat fungsi
+
+findOrder(103);
+
+Output
+
+Fadhil membeli Pizza sebanyak 3
+
+Kalau ID tidak ada
+
+Order tidak ditemukan
 */
 
-const cities = new Set(['Bandung', 'Jakarta', 'Surabaya', 'Medan']);
-for (const city of cities) {
-  console.log(`City : ${city}`);
-}
+const findOrder = function (id) {
+  if (orders.has(id)) {
+    const { customer, menu, qty } = orders.get(id);
+    console.log(`${customer} membeli ${menu} sebanyak ${qty}`);
+  } else {
+    console.log(`Gaada `);
+  }
+};
+findOrder(103);
 
 /*
-Soal 5: Mengubah Semua Huruf Menjadi Kapital
-const animals = new Set([
-  "cat",
-  "dog",
-  "bird",
-  "lion"
-]);
+Soal 3 — Hitung Total Qty
 
-Output yang diinginkan:
+Hitung seluruh qty yang ada.
 
-CAT
-DOG
-BIRD
-LION
+Output
+
+Total makanan terjual : 9
 */
 
-const animals = new Set(['cat', 'dog', 'bird', 'lion']);
-for (const animal of animals) console.log(animal.toUpperCase());
+const getTotalQty = function () {
+  let totalQty = 0;
+  for (const [, { qty }] of orders) {
+    totalQty += qty;
+  }
+  console.log(`Total Makanan Terjual : ${totalQty}`);
+};
 
-/*
-🟠 Level 3 — Operasi Set
-Soal 6: Union
-const frontend = new Set([
-  "HTML",
-  "CSS",
-  "JavaScript"
-]);
+getTotalQty();
 
-const backend = new Set([
-  "JavaScript",
-  "Node.js",
-  "Express"
-]);
+/**
+ Soal 4 — Customer Unik
 
-Buat Set baru yang berisi gabungan keduanya tanpa duplikasi.
-*/
-const frontend = new Set(['HTML', 'CSS', 'JavaScript']);
+Ambil semua nama customer TANPA DUPLIKAT.
 
-const backend = new Set(['JavaScript', 'Node.js', 'Express']);
-
-const myTechStack = frontend.union(backend);
-console.log(myTechStack);
-
-/*
-Soal 7: Intersection
-
-Gunakan data yang sama.
-
-Buat Set baru yang hanya berisi skill yang dimiliki kedua Set.
-
-Output:
-
-Set { "JavaScript" }
-*/
-console.log(frontend.intersection(backend));
-
-/*
-Soal 8: Difference
-
-Gunakan data yang sama.
-
-Cari skill yang hanya dimiliki frontend.
-
-Output:
-
-Set {
-  "HTML",
-  "CSS"
-}
-*/
-
-console.log(frontend.difference(backend));
-
-/*
-🔴 Level 4 — Studi Kasus
-Soal 9: Sistem Login
-
-Buat Set kosong.
-
-Tambahkan user berikut:
+Output
 
 Delano
 Rangga
 Fadhil
 
-Lalu lakukan pengecekan:
+(Hint: boleh menggunakan Set.)
+ */
 
-Apakah "Delano" sudah login?
-Apakah "Adit" sudah login?
-*/
+const getUniqueCustomer = function () {
+  const uniqueCustomer = new Set();
+  for (const [, { customer }] of orders) {
+    uniqueCustomer.add(customer);
+  }
+  console.log(uniqueCustomer);
+};
 
-const user = new Set([]);
-user.add('Delano');
-user.add('Rangga');
-user.add('Fadhil');
-// console.log(user);
-console.log(user.has('Delano'));
-console.log(user.has('Adit'));
-
-/*
-Soal 10: Event Peserta
-const participants = [
-  "Delano",
-  "Rangga",
-  "Delano",
-  "Fadhil",
-  "Rangga",
-  "Andi",
-  "Delano"
-];
-
-Tugas:
-
-Hilangkan peserta yang duplikat.
-Cetak jumlah peserta unik.
-Cetak seluruh peserta unik menggunakan for...of.
-*/
-
-const participants = [
-  'Delano',
-  'Rangga',
-  'Delano',
-  'Fadhil',
-  'Rangga',
-  'Andi',
-  'Delano',
-];
-
-const participantsNoDuplicate = new Set(participants);
-// console.log(participantsNoDuplicate);
-for (const participant of participantsNoDuplicate) console.log(participant);
+getUniqueCustomer();
 
 /*
-Misalkan terdapat dua restoran.
+Soal 5 — Menu Terlaris
 
-const restaurantA = new Set([
-  "Pizza",
-  "Pasta",
-  "Burger",
-  "Salad"
-]);
+Hitung jumlah pembelian setiap menu.
 
-const restaurantB = new Set([
-  "Burger",
-  "Steak",
-  "Pizza",
-  "Soup"
-]);
+Output
 
-Buatlah:
+Pizza : 7
+Burger : 1
+Pasta : 1
 
-Menu gabungan kedua restoran.
-Menu yang sama-sama dimiliki kedua restoran.
-Menu yang hanya dimiliki Restaurant A.
-Menu yang hanya dimiliki Restaurant B.
-Cetak semua menu secara alfabet menggunakan sort() (ingat, Set harus diubah menjadi array terlebih dahulu).
+Gunakan Map baru untuk menyimpan hasilnya.
 */
 
-const restaurantA = new Set(['Pizza', 'Pasta', 'Burger', 'Salad']);
+const topSellingMenu = function () {
+  const topMenu = new Map();
+  for (const [, { menu, qty }] of orders) {
+    // console.log(menu, qty);
+    if (!topMenu.has(menu)) {
+      topMenu.set(menu, qty);
+    } else {
+      topMenu.set(menu, topMenu.get(menu) + qty);
+    }
+  }
+  for (const [menu, qty] of topMenu) {
+    console.log(`${menu} : ${qty}`);
+  }
+};
+topSellingMenu();
 
-const restaurantB = new Set(['Burger', 'Steak', 'Pizza', 'Soup']);
+/*
+Soal 6 — Customer Paling Banyak Order
 
-const allMenu = restaurantA.union(restaurantB);
-console.log(allMenu);
+Output
 
-const sameMenu = restaurantA.intersection(restaurantB);
-console.log(sameMenu);
+Delano : 3 makanan
+Rangga : 3 makanan
+Fadhil : 3 makanan
 
-const uniqueRestaurantA = restaurantA.difference(restaurantB);
-console.log(uniqueRestaurantA);
+Bukan jumlah transaksi, tetapi total qty.
+*/
 
-const uniqueRestaurantB = restaurantB.difference(restaurantA);
-console.log(uniqueRestaurantB);
+const getFavoriteCustomer = function () {
+  const favCustomer = new Map();
+  for (const [, { customer, qty }] of orders) {
+    if (!favCustomer.has(customer)) {
+      favCustomer.set(customer, qty);
+    } else {
+      favCustomer.set(customer, favCustomer.get(customer) + qty);
+    }
+  }
+
+  for (const [customer, totalOrder] of favCustomer) {
+    console.log(`${customer} : ${totalOrder} Makanan`);
+  }
+};
+getFavoriteCustomer();
+
+/*
+Soal 7 — Hapus Semua Order Pizza
+
+Buat Map baru yang tidak memiliki menu Pizza.
+
+Output
+
+102
+104
+
+Map asli tidak boleh berubah.
+*/
+
+const deletePizza = function () {
+  const filteredOrders = new Map();
+
+  for (const [key, value] of orders) {
+    if (value.menu !== 'Pizza') {
+      filteredOrders.set(key, value);
+    }
+  }
+  console.log(filteredOrders);
+};
+deletePizza();
+
+/*
+Soal 8 — Update Qty
+
+Ubah qty order
+
+ID 102
+
+menjadi
+
+5
+
+Gunakan method Map yang benar.
+
+Output
+
+Burger -> 5
+*/
+
+const changeQty = function (id) {
+  const order = orders.get(id);
+  order.qty = 5;
+  console.log(orders.get(id));
+};
+changeQty(102);
+
+/*
+Soal 9 — Konversi
+
+Ubah Map menjadi
+
+Array
+
+lalu ubah kembali menjadi
+
+Map
+
+Pastikan isinya tetap sama.
+*/
+
+const conversion = function () {
+  const ordersArr = [...orders];
+  console.log(ordersArr);
+
+  const ordersMap = new Map(ordersArr);
+  console.log(ordersMap);
+};
+
+conversion();
+
+/*
+Soal 10 — Reverse Lookup
+
+Cari semua order milik
+
+Delano
+
+Output
+
+101
+104
+*/
+
+const searchOrder = function (customerName) {
+  for (const [key, { customer }] of orders) {
+    if (customer === customerName) {
+      console.log(key);
+    }
+  }
+};
+
+searchOrder('Delano');
+
+//BONUS 1
+const log = [
+  'Pizza',
+  'Burger',
+  'Pizza',
+  'Pizza',
+  'Pasta',
+  'Burger',
+  'Pizza',
+  'Steak',
+  'Burger',
+];
+
+/*
+Gunakan Map untuk menghasilkan
+
+Pizza  -> 4
+Burger -> 3
+Pasta  -> 1
+Steak  -> 1
+
+Tanpa menggunakan object.
+*/
+
+const generateMap = function (array) {
+  const orderMap = new Map();
+
+  for (const value of array) {
+    if (!orderMap.has(value)) {
+      orderMap.set(value, 1);
+    } else {
+      orderMap.set(value, orderMap.get(value) + 1);
+    }
+  }
+
+  console.log(orderMap);
+  for (const [key, value] of orderMap) {
+    console.log(`${key} -> ${value}`);
+  }
+};
+generateMap(log);
+
+//BONUS 2
+const voting = [
+  ['Delano', 'Pizza'],
+  ['Rangga', 'Burger'],
+  ['Fadhil', 'Pizza'],
+  ['Delano', 'Burger'],
+  ['Delano', 'Pizza'],
+  ['Fadhil', 'Pizza'],
+];
+
+/*
+Buat hasil seperti berikut menggunakan Map of Map.
+
+Delano
+   Pizza : 2
+   Burger : 1
+
+Rangga
+   Burger : 1
+
+Fadhil
+   Pizza : 2
+
+Di sini setiap key customer memiliki Map lain sebagai value.
+*/
+
+const mapOfMap = function (array) {
+  const maps = new Map();
+
+  for (const [customerName, menu] of array) {
+    if (!maps.has(customerName)) {
+      maps.set(customerName, new Map());
+    }
+
+    const customerVotes = maps.get(customerName);
+    if (!customerVotes.has(menu)) {
+      customerVotes.set(menu, 1);
+    } else {
+      customerVotes.set(menu, customerVotes.get(menu) + 1);
+    }
+  }
+  console.log(maps);
+};
+mapOfMap(voting);
