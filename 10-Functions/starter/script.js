@@ -1,327 +1,98 @@
 'use strict';
 
-//LATIHAN SOAL : CALL APPLY
-
 /*
-🟢 LEVEL 1 — Memahami this
+Let's build a simple poll app!
+A poll has a question, an array of options from which people can choose, and an
+array with the number of replies for each option. This data is stored in the starter
+'poll' object below.
 
-Diberikan:
-const garuda = {
-  airlineName: 'Garuda Indonesia',
-  iataCode: 'GA',
-  bookings: [],
-};
+Your tasks:
+1. Create a method called 'registerNewAnswer' on the 'poll' object. The
+method does 2 things:
 
-const citilink = {
-  airlineName: 'Citilink',
-  iataCode: 'QG',
-  bookings: [],
-};
+1.1. Display a prompt window for the user to input the number of the
+selected option. The prompt should look like this:
+What is your favourite programming language?
+0: JavaScript
+1: Python
+2: Rust
+3: C++
 
-const bookFlight = function (flightNum, name) {
-  console.log(
-    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`
-  );
-};
-Tugas:
+(Write option number)
 
-Gunakan call() untuk membuat:
+1.2. Based on the input number, update the 'answers' array property. For
+example, if the option is 3, increase the value at position 3 of the array by
 
-Delano booked a seat on Garuda Indonesia flight GA10
+1. Make sure to check if the input is a number and if the number makes
+sense (e.g. answer 52 wouldn't make sense, right?)
 
-Kemudian gunakan call() lagi untuk membuat:
+2. Call this method whenever the user clicks the "Answer poll" button.
 
-Budi booked a seat on Citilink flight QG20
-Syarat:
-Jangan ubah function bookFlight.
-Jangan membuat function baru.
-Harus menggunakan call().
+3. Create a method 'displayResults' which displays the poll results. The
+method takes a string as an input (called 'type'), which can be either 'string'
+or 'array'. If type is 'array', simply display the results array as it is, using
+console.log(). This should be the default option. If type is 'string', display a
+string like "Poll results are 13, 2, 4, 1".
+
+4. Run the 'displayResults' method at the end of each
+'registerNewAnswer' method call.
+
+5. Bonus: Use the 'displayResults' method to display the 2 arrays in the test
+data. Use both the 'array' and the 'string' option. Do not put the arrays in the poll
+object! So what should the this keyword look like in this situation?
+
+Test data for bonus:
+§ Data 1: [5, 2, 3]
+§ Data 2: [1, 5, 3, 9, 6, 1]
+
+Hints: Use many of the tools you learned about in this and the last section 😉
+GOOD LUCK 😀
 */
 
-const garuda = {
-  airlineName: 'Garuda Indonesia',
-  iataCode: 'GA',
-  bookings: [],
+const poll = {
+  question: 'What is your favourite programming language?',
+  options: ['0: JavaScript', '1: Python', '2: Rust', '3:C++'],
+
+  // This generates [0, 0, 0, 0]. More in the next section!
+  answers: new Array(4).fill(0),
+
+  displayResult: function (type = 'array') {
+    if (type === 'string') {
+      console.log(`Poll Result Are ${this.answers.join(', ')}`);
+    } else {
+      console.log(this.answers);
+    }
+  },
+  registerNewAnswer: function () {
+    console.log(this.options);
+    console.log(this.question);
+
+    const input = Number(
+      prompt(`${this.question} \n ${this.options.join('\n')}`),
+    );
+
+    if (
+      typeof input === 'number' &&
+      input >= 0 &&
+      input < this.answers.length
+    ) {
+      this.answers[input]++;
+      this.displayResult();
+    } else {
+      console.log(`Invalid Input`);
+    }
+    console.log(this.answers);
+  },
 };
 
-const citilink = {
-  airlineName: 'Citilink',
-  iataCode: 'QG',
-  bookings: [],
-};
+const getAnswer = poll.registerNewAnswer.bind(poll);
 
-const bookFlight = function (flightNum, name) {
-  console.log(
-    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`,
-  );
-};
+const pollBtn = document.querySelector('.poll');
+pollBtn.addEventListener('click', getAnswer);
 
-bookFlight.call(garuda, 10, 'Delano');
-bookFlight.call(citilink, 20, 'Budi');
+//BONUS
+const data1 = [5, 2, 3];
+const data2 = [1, 5, 3, 9, 6, 1];
 
-/*
-🟢 LEVEL 2 — call() + Manipulasi Object
-
-Sekarang function-nya:
-
-const bookFlight = function (flightNum, name) {
-  this.bookings.push({
-    flight: `${this.iataCode}${flightNum}`,
-    name,
-  });
-
-  console.log(
-    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`
-  );
-};
-
-Dengan object:
-
-const garuda = {
-  airlineName: 'Garuda Indonesia',
-  iataCode: 'GA',
-  bookings: [],
-};
-
-const citilink = {
-  airlineName: 'Citilink',
-  iataCode: 'QG',
-  bookings: [],
-};
-Tugas:
-
-Gunakan satu function bookFlight untuk melakukan:
-
-Garuda:
-- Delano → GA10
-- Andi → GA20
-
-Citilink:
-- Budi → QG30
-- John → QG40
-
-Setelah itu, ketika:
-
-console.log(garuda.bookings);
-console.log(citilink.bookings);
-
-hasilnya harus sesuai dengan object masing-masing.
-*/
-
-const bookFlight2 = function (flightNum, name) {
-  this.bookings.push({
-    flight: `${this.iataCode}${flightNum}`,
-    name,
-  });
-
-  console.log(
-    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`,
-  );
-};
-
-bookFlight2.call(garuda, 10, 'Delano');
-bookFlight2.call(garuda, 20, 'Andi');
-
-bookFlight2.call(citilink, 30, 'Budi');
-bookFlight2.call(citilink, 40, 'John');
-
-console.log(garuda.bookings);
-console.log(citilink.bookings);
-
-/*
-Sekarang perusahaan memiliki data booking dalam bentuk array:
-
-const garudaBooking = [35, 'Rangga'];
-
-const citilinkBooking = [72, 'Fadhil'];
-
-Gunakan function yang sama:
-
-const bookFlight = function (flightNum, name) {
-  this.bookings.push({
-    flight: `${this.iataCode}${flightNum}`,
-    name,
-  });
-
-  console.log(
-    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`
-  );
-};
-Tugas:
-
-Gunakan apply() untuk memasukkan:
-
-Rangga → Garuda flight GA35
-Fadhil → Citilink flight QG72
-*/
-
-const garudaBooking = [35, 'Rangga'];
-const citilinkBooking = [72, 'Fadhil'];
-
-bookFlight2.apply(garuda, garudaBooking);
-bookFlight2.apply(citilink, citilinkBooking);
-
-/*
-Sekarang terdapat kode:
-
-'use strict';
-
-const garuda = {
-  airlineName: 'Garuda Indonesia',
-  iataCode: 'GA',
-  bookings: [],
-};
-
-const bookFlight = function (flightNum, name) {
-  this.bookings.push({
-    flight: `${this.iataCode}${flightNum}`,
-    name,
-  });
-
-  console.log(
-    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`
-  );
-};
-
-const bookingData = ['Ilham Ramadhan', 88];
-
-bookFlight.apply(garuda, bookingData);
-
-Program berjalan, tetapi hasilnya:
-
-Ilham Ramadhan booked a seat on Garuda Indonesia flight GAIlham Ramadhan
-
-dan booking-nya juga salah.
-
-Tugas:
-
-Perbaiki program tersebut hanya dengan mengubah bagian pemanggilan apply().
-
-Function bookFlight tidak boleh diubah.
-*/
-
-const bookingData = [88, 'Ilham Ramadhan'];
-
-bookFlight2.apply(garuda, bookingData);
-
-//debugging berupa switch / tukar urutan index array bookingData dan sesuaikan dengan parameter yang ada di function bookFlight2
-
-/*
-Sekarang kita naik ke kasus yang lebih realistis.
-
-Bayangkan kamu membuat sistem penerbangan sederhana.
-
-const garuda = {
-  airlineName: 'Garuda Indonesia',
-  iataCode: 'GA',
-  bookings: [],
-};
-
-const citilink = {
-  airlineName: 'Citilink',
-  iataCode: 'QG',
-  bookings: [],
-};
-
-const lionAir = {
-  airlineName: 'Lion Air',
-  iataCode: 'JT',
-  bookings: [],
-};
-
-Kamu memiliki satu function umum:
-
-const createBooking = function (flightNum, passenger, seatClass) {
-  const booking = {
-    flight: `${this.iataCode}${flightNum}`,
-    passenger,
-    seatClass,
-  };
-
-  this.bookings.push(booking);
-
-  console.log(
-    `${passenger} berhasil booking ${this.airlineName} ${this.iataCode}${flightNum} (${seatClass})`
-  );
-};
-
-Kemudian sistem menerima data dari berbagai sumber:
-
-const booking1 = [10, 'Delano Ramadhan', 'Business'];
-
-const booking2 = [25, 'Ilham Ramadhan', 'Economy'];
-
-const booking3 = [40, 'Gofar Hilman', 'Premium Economy'];
-Tugas:
-
-Gunakan apply() untuk:
-
-booking1 → Garuda
-booking2 → Citilink
-booking3 → Lion Air
-
-Sehingga:
-
-console.log(garuda.bookings);
-console.log(citilink.bookings);
-console.log(lionAir.bookings);
-
-masing-masing hanya memiliki booking miliknya sendiri.
-
-Batasan:
-
-Kamu hanya boleh menggunakan:
-
-apply()
-function
-object
-array
-this
-push()
-template literal
-
-Tidak boleh membuat function tambahan.
-*/
-
-const garuda2 = {
-  airlineName: 'Garuda Indonesia',
-  iataCode: 'GA',
-  bookings: [],
-};
-
-const citilink2 = {
-  airlineName: 'Citilink',
-  iataCode: 'QG',
-  bookings: [],
-};
-
-const lionAir = {
-  airlineName: 'Lion Air',
-  iataCode: 'JT',
-  bookings: [],
-};
-
-const createBooking = function (flightNum, passenger, seatClass) {
-  const booking = {
-    flight: `${this.iataCode}${flightNum}`,
-    passenger,
-    seatClass,
-  };
-
-  this.bookings.push(booking);
-
-  console.log(
-    `${passenger} berhasil booking ${this.airlineName} ${this.iataCode}${flightNum} (${seatClass})`,
-  );
-};
-const booking1 = [10, 'Delano Ramadhan', 'Business'];
-const booking2 = [25, 'Ilham Ramadhan', 'Economy'];
-const booking3 = [40, 'Gofar Hilman', 'Premium Economy'];
-
-createBooking.apply(garuda2, booking1);
-createBooking.apply(citilink2, booking2);
-createBooking.apply(lionAir, booking3);
-
-console.log(garuda.bookings);
-console.log(citilink.bookings);
-console.log(lionAir.bookings);
+poll.displayResult.call({ answers: data1 }, 'string');
+poll.displayResult.call({ answers: data2 }, 'string');
