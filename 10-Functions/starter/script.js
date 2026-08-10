@@ -1,413 +1,327 @@
 'use strict';
 
-//LATIHAN SOAL 1 : HIGHER ORDER FUNCTION
+//LATIHAN SOAL : CALL APPLY
 
 /*
-Challenge 1 — Restaurant Workflow ⭐
+🟢 LEVEL 1 — Memahami this
 
-Buat Higher Order Function bernama processOrder.
+Diberikan:
+const garuda = {
+  airlineName: 'Garuda Indonesia',
+  iataCode: 'GA',
+  bookings: [],
+};
 
-Contoh penggunaan:
+const citilink = {
+  airlineName: 'Citilink',
+  iataCode: 'QG',
+  bookings: [],
+};
 
-const orders = [
-  'Nasi Goreng',
-  'Mie Ayam',
-  'Sate Ayam',
-];
+const bookFlight = function (flightNum, name) {
+  console.log(
+    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`
+  );
+};
+Tugas:
 
-processOrder(orders, masak);
+Gunakan call() untuk membuat:
 
-Output
+Delano booked a seat on Garuda Indonesia flight GA10
 
-Menyiapkan dapur...
-Memasak Nasi Goreng
-Memasak Mie Ayam
-Memasak Sate Ayam
-Semua pesanan selesai!
+Kemudian gunakan call() lagi untuk membuat:
+
+Budi booked a seat on Citilink flight QG20
+Syarat:
+Jangan ubah function bookFlight.
+Jangan membuat function baru.
+Harus menggunakan call().
 */
 
-const orders = ['Nasi Goreng', 'Mie Ayam', 'Sate Ayam'];
-
-const jenisMasakan = function (order) {
-  console.log(`Memasak ${order}`);
-};
-const processOrder = function (orders, masak) {
-  console.log('Menyiapkan dapur...');
-  for (const order of orders) {
-    masak(order);
-  }
-  console.log('Semua Pesanan Selesai');
+const garuda = {
+  airlineName: 'Garuda Indonesia',
+  iataCode: 'GA',
+  bookings: [],
 };
 
-processOrder(orders, jenisMasakan);
+const citilink = {
+  airlineName: 'Citilink',
+  iataCode: 'QG',
+  bookings: [],
+};
+
+const bookFlight = function (flightNum, name) {
+  console.log(
+    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`,
+  );
+};
+
+bookFlight.call(garuda, 10, 'Delano');
+bookFlight.call(citilink, 20, 'Budi');
 
 /*
-Challenge 2 — Dynamic Notification ⭐⭐
+🟢 LEVEL 2 — call() + Manipulasi Object
 
-Data
+Sekarang function-nya:
 
-const users = [
-  'Delano',
-  'Rangga',
-  'Fadhil',
-];
+const bookFlight = function (flightNum, name) {
+  this.bookings.push({
+    flight: `${this.iataCode}${flightNum}`,
+    name,
+  });
 
-Buat HOF
+  console.log(
+    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`
+  );
+};
 
-sendNotification(users, callback);
+Dengan object:
 
-Buat 3 callback
+const garuda = {
+  airlineName: 'Garuda Indonesia',
+  iataCode: 'GA',
+  bookings: [],
+};
 
-sendEmail
-sendSMS
-sendWhatsApp
+const citilink = {
+  airlineName: 'Citilink',
+  iataCode: 'QG',
+  bookings: [],
+};
+Tugas:
 
-Output jika
+Gunakan satu function bookFlight untuk melakukan:
 
-sendNotification(users, sendEmail);
-Email berhasil dikirim ke Delano
-Email berhasil dikirim ke Rangga
-Email berhasil dikirim ke Fadhil
+Garuda:
+- Delano → GA10
+- Andi → GA20
+
+Citilink:
+- Budi → QG30
+- John → QG40
+
+Setelah itu, ketika:
+
+console.log(garuda.bookings);
+console.log(citilink.bookings);
+
+hasilnya harus sesuai dengan object masing-masing.
 */
-const users = ['Delano', 'Rangga', 'Fadhil'];
 
-const sendEmail = function (user) {
-  console.log(`Email berhasil dikirim ke ${user}`);
+const bookFlight2 = function (flightNum, name) {
+  this.bookings.push({
+    flight: `${this.iataCode}${flightNum}`,
+    name,
+  });
+
+  console.log(
+    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`,
+  );
 };
 
-const sendSMS = function (user) {
-  console.log(`SMS berhasil dikirim ke ${user}`);
-};
+bookFlight2.call(garuda, 10, 'Delano');
+bookFlight2.call(garuda, 20, 'Andi');
 
-const sendWhatsApp = function (user) {
-  console.log(`WhatsApp berhasil dikirim ke ${user}`);
-};
+bookFlight2.call(citilink, 30, 'Budi');
+bookFlight2.call(citilink, 40, 'John');
 
-const sendNotification = function (users, callback) {
-  for (const user of users) {
-    callback(user);
-  }
-};
-
-sendNotification(users, sendEmail);
+console.log(garuda.bookings);
+console.log(citilink.bookings);
 
 /*
-Challenge 3 — POS System ⭐⭐
+Sekarang perusahaan memiliki data booking dalam bentuk array:
 
-Data
+const garudaBooking = [35, 'Rangga'];
 
-const cart = [
-  {
-    name: 'Burger',
-    qty: 2,
-    price: 25000,
-  },
-  {
-    name: 'Cola',
-    qty: 3,
-    price: 8000,
-  },
-];
+const citilinkBooking = [72, 'Fadhil'];
 
-Buat HOF
+Gunakan function yang sama:
 
-checkout(cart, callback);
+const bookFlight = function (flightNum, name) {
+  this.bookings.push({
+    flight: `${this.iataCode}${flightNum}`,
+    name,
+  });
 
-Buat callback
+  console.log(
+    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`
+  );
+};
+Tugas:
 
-printReceipt
-calculateTotal
-showThankYou
+Gunakan apply() untuk memasukkan:
 
-Output
-
-========== STRUK ==========
-Burger x2
-Cola x3
-===========================
-Total : Rp74000
-Terima kasih sudah membeli.
+Rangga → Garuda flight GA35
+Fadhil → Citilink flight QG72
 */
 
-const cart = [
-  {
-    name: 'Burger',
-    qty: 2,
-    price: 25000,
-  },
-  {
-    name: 'Cola',
-    qty: 3,
-    price: 8000,
-  },
-];
-const printReceipt = function (cart) {
-  console.log('========== STRUK ==========');
+const garudaBooking = [35, 'Rangga'];
+const citilinkBooking = [72, 'Fadhil'];
 
-  for (const { name, qty } of cart) {
-    console.log(`${name} x${qty}`);
-  }
-
-  console.log('===========================');
-};
-
-const calculateTotal = function (cart) {
-  let total = 0;
-
-  for (const { price, qty } of cart) {
-    total += price * qty;
-  }
-
-  console.log(`Total : Rp${total}`);
-};
-
-const showThankYou = function () {
-  console.log('Terima kasih sudah membeli.');
-};
-
-const checkout = function (cart, ...callbacks) {
-  for (const callback of callbacks) {
-    callback(cart);
-  }
-};
-
-checkout(cart, printReceipt, calculateTotal, showThankYou);
+bookFlight2.apply(garuda, garudaBooking);
+bookFlight2.apply(citilink, citilinkBooking);
 
 /*
-Challenge 4 — Kitchen Simulator ⭐⭐⭐
+Sekarang terdapat kode:
 
-Data
+'use strict';
 
-const ingredients = [
-  'Tomat',
-  'Bawang',
-  'Cabai',
-  'Daging',
-];
+const garuda = {
+  airlineName: 'Garuda Indonesia',
+  iataCode: 'GA',
+  bookings: [],
+};
 
-Buat callback
+const bookFlight = function (flightNum, name) {
+  this.bookings.push({
+    flight: `${this.iataCode}${flightNum}`,
+    name,
+  });
 
-wash
-cut
-cook
-serve
+  console.log(
+    `${name} booked a seat on ${this.airlineName} flight ${this.iataCode}${flightNum}`
+  );
+};
 
-Lalu buat HOF
+const bookingData = ['Ilham Ramadhan', 88];
 
-kitchen(ingredients, callback);
+bookFlight.apply(garuda, bookingData);
 
-Misalnya
+Program berjalan, tetapi hasilnya:
 
-kitchen(ingredients, wash);
+Ilham Ramadhan booked a seat on Garuda Indonesia flight GAIlham Ramadhan
 
-Output
+dan booking-nya juga salah.
 
-Tomat dicuci
-Bawang dicuci
-Cabai dicuci
-Daging dicuci
+Tugas:
+
+Perbaiki program tersebut hanya dengan mengubah bagian pemanggilan apply().
+
+Function bookFlight tidak boleh diubah.
 */
 
-const ingredients = ['Tomat', 'Bawang', 'Cabai', 'Daging'];
+const bookingData = [88, 'Ilham Ramadhan'];
 
-const wash = function (ingredient) {
-  console.log(`${ingredient} dicuci`);
-};
+bookFlight2.apply(garuda, bookingData);
 
-const cut = function (ingredient) {
-  console.log(`${ingredient} dipotong`);
-};
-
-const cook = function (ingredient) {
-  console.log(`${ingredient} dimasak`);
-};
-
-const serve = function (ingredient) {
-  console.log(`${ingredient} dihidangkan`);
-};
-const kitchen = function (ingredients, ...callbacks) {
-  for (const callback of callbacks) {
-    for (const ingredient of ingredients) {
-      callback(ingredient);
-    }
-    console.log('\n');
-  }
-};
-kitchen(ingredients, wash, cut, cook, serve);
+//debugging berupa switch / tukar urutan index array bookingData dan sesuaikan dengan parameter yang ada di function bookFlight2
 
 /*
-Challenge 6 — Smart Processor ⭐⭐⭐⭐
+Sekarang kita naik ke kasus yang lebih realistis.
 
-Data
+Bayangkan kamu membuat sistem penerbangan sederhana.
 
-const students = [
-  {
-    name: 'Delano',
-    score: 95,
-  },
-  {
-    name: 'Rangga',
-    score: 82,
-  },
-  {
-    name: 'Fadhil',
-    score: 70,
-  },
-];
+const garuda = {
+  airlineName: 'Garuda Indonesia',
+  iataCode: 'GA',
+  bookings: [],
+};
 
-Buat callback
+const citilink = {
+  airlineName: 'Citilink',
+  iataCode: 'QG',
+  bookings: [],
+};
 
-showName
-showPassed
-showScore
+const lionAir = {
+  airlineName: 'Lion Air',
+  iataCode: 'JT',
+  bookings: [],
+};
 
-Lalu
+Kamu memiliki satu function umum:
 
-processStudents(students, showName);
-processStudents(students, showPassed);
-processStudents(students, showScore);
+const createBooking = function (flightNum, passenger, seatClass) {
+  const booking = {
+    flight: `${this.iataCode}${flightNum}`,
+    passenger,
+    seatClass,
+  };
 
-Output berbeda sesuai callback.
+  this.bookings.push(booking);
+
+  console.log(
+    `${passenger} berhasil booking ${this.airlineName} ${this.iataCode}${flightNum} (${seatClass})`
+  );
+};
+
+Kemudian sistem menerima data dari berbagai sumber:
+
+const booking1 = [10, 'Delano Ramadhan', 'Business'];
+
+const booking2 = [25, 'Ilham Ramadhan', 'Economy'];
+
+const booking3 = [40, 'Gofar Hilman', 'Premium Economy'];
+Tugas:
+
+Gunakan apply() untuk:
+
+booking1 → Garuda
+booking2 → Citilink
+booking3 → Lion Air
+
+Sehingga:
+
+console.log(garuda.bookings);
+console.log(citilink.bookings);
+console.log(lionAir.bookings);
+
+masing-masing hanya memiliki booking miliknya sendiri.
+
+Batasan:
+
+Kamu hanya boleh menggunakan:
+
+apply()
+function
+object
+array
+this
+push()
+template literal
+
+Tidak boleh membuat function tambahan.
 */
 
-const students = [
-  {
-    name: 'Delano',
-    score: 95,
-  },
-  {
-    name: 'Rangga',
-    score: 82,
-  },
-  {
-    name: 'Fadhil',
-    score: 70,
-  },
-];
-
-const showName = function ({ name }) {
-  console.log(`Nama : ${name}`);
+const garuda2 = {
+  airlineName: 'Garuda Indonesia',
+  iataCode: 'GA',
+  bookings: [],
 };
 
-const showPassed = function ({ name, score }) {
-  if (score >= 75 && score <= 100) {
-    console.log(`${name} Lulus dengan Skor : ${score}`);
-  } else {
-    console.log(
-      `${name} Belum Lulus, Kamu harus remedial dengan selisih skor ${75 - score} poin!`,
-    );
-  }
+const citilink2 = {
+  airlineName: 'Citilink',
+  iataCode: 'QG',
+  bookings: [],
 };
 
-const showScore = function ({ score }) {
-  console.log(`Score Kamu : ${score}`);
+const lionAir = {
+  airlineName: 'Lion Air',
+  iataCode: 'JT',
+  bookings: [],
 };
 
-const processStudents = function (students, callback) {
-  for (const student of students) {
-    callback(student);
-  }
+const createBooking = function (flightNum, passenger, seatClass) {
+  const booking = {
+    flight: `${this.iataCode}${flightNum}`,
+    passenger,
+    seatClass,
+  };
+
+  this.bookings.push(booking);
+
+  console.log(
+    `${passenger} berhasil booking ${this.airlineName} ${this.iataCode}${flightNum} (${seatClass})`,
+  );
 };
+const booking1 = [10, 'Delano Ramadhan', 'Business'];
+const booking2 = [25, 'Ilham Ramadhan', 'Economy'];
+const booking3 = [40, 'Gofar Hilman', 'Premium Economy'];
 
-processStudents(students, showName);
-processStudents(students, showPassed);
-processStudents(students, showScore);
+createBooking.apply(garuda2, booking1);
+createBooking.apply(citilink2, booking2);
+createBooking.apply(lionAir, booking3);
 
-/*
-🔥 Final Boss (Level Jonas Schmedtmann)
-
-Buat sebuah mini framework memasak.
-
-Alur yang diinginkan:
-
-const foods = [
-  {
-    name: 'Burger',
-    ingredients: ['Bun', 'Patty', 'Cheese'],
-  },
-  {
-    name: 'Pizza',
-    ingredients: ['Dough', 'Cheese'],
-  },
-];
-
-Callback
-
-prepare()
-cook()
-serve()
-cleanKitchen()
-
-Lalu HOF
-
-restaurant(
-foods,
-prepare,
-cook,
-serve,
-cleanKitchen
-);
-
-Output
-
-======== Burger ========
-
-Menyiapkan Bun
-Menyiapkan Patty
-Menyiapkan Cheese
-
-Burger sedang dimasak...
-
-Burger siap disajikan.
-
-Membersihkan dapur...
-
-======== Pizza ========
-
-Menyiapkan Dough
-Menyiapkan Cheese
-
-Pizza sedang dimasak...
-
-Pizza siap disajikan.
-
-Membersihkan dapur...
-*/
-
-const foods = [
-  {
-    name: 'Burger',
-    ingredients: ['Bun', 'Patty', 'Cheese'],
-  },
-  {
-    name: 'Pizza',
-    ingredients: ['Dough', 'Cheese'],
-  },
-];
-
-const prepareMeal = function ({ name, ingredients }) {
-  console.log(`======== ${name} ========`);
-  for (const ingredient of ingredients) {
-    console.log(`Menyiapkan ${ingredient}`);
-  }
-};
-const cookMeal = function ({ name }) {
-  console.log(`${name} sedang dimasak`);
-};
-const serveMeal = function ({ name }) {
-  console.log(`${name} siap disajikan.`);
-};
-const cleanKitchen = function () {
-  console.log(`Membersihkan dapur...`);
-};
-
-const restaurant = function (foods, ...callbacks) {
-  for (const food of foods) {
-    for (const callback of callbacks) {
-      callback(food);
-    }
-    console.log(`\n`);
-  }
-};
-
-restaurant(foods, prepareMeal, cookMeal, serveMeal, cleanKitchen);
+console.log(garuda.bookings);
+console.log(citilink.bookings);
+console.log(lionAir.bookings);
