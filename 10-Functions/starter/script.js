@@ -1,21 +1,50 @@
 'use strict';
 
-//IIFE (IMMEDIATELY INVOKED FUNCTION EXPRESSION) : Adalah sebuah function yang langsung dipanggil / dijalankan tanpa perlu disimpan kedalam sebuah variable. yang dimana function ini akan langsung dipanggil ketika expressionnya dibuat, sehingga kita tidak menyimpan referensi function tersebut untuk dipanggil lagi.
+//6. CLOSURE :
 
-//function biasa
-const sayHello = function (sapaan) {
-  console.log(`${sapaan}, Delano!`);
+const secureBooking = function () {
+  let passengerCount = 0;
+
+  return function () {
+    passengerCount++;
+    console.log(`Total Passenger on Board : ${[passengerCount]}`);
+  };
 };
 
-sayHello('Halo');
+const booked = secureBooking();
+booked();
+booked();
+booked();
 
-//IIFE
-(function (sapaan) {
-  console.log(`${sapaan}, Delano!`);
-})('Haii');
+const tambah = function (a, b) {
+  const hasilTambah = a + b;
+  console.log(`Hasil Tambah : ${hasilTambah}`);
+};
 
-(sapaan => console.log(`${sapaan}, Delano!`))('Hei Bro');
+const kalkulator = function (angka1, angka2, callback) {
+  return function () {
+    callback(angka1, angka2);
+  };
+};
 
-/*
-Function diatas langsung dijalankan dan hanya 1x. mereka tidak bisa dipanggil lagi, berbeda dengan deklrasi function biasa yang bisa dipanggil lagi karena function tersebut referensi nya disimpan pada sebuah variable.
-*/
+const kalkulatorTambah = kalkulator(10, 20, tambah);
+kalkulatorTambah();
+
+const boardPassengers = function (PassengerTotal, waitTime) {
+  const divideIntoGroup = PassengerTotal / 3;
+
+  //setTimeout : HOF dan parameter ke 1 adalah callback function.
+  setTimeout(function () {
+    console.log(
+      `Boarding the total passengers : ${PassengerTotal} passengers.`,
+    );
+
+    console.log(
+      `There are 3 grops, each of them ${divideIntoGroup} passengers per group.`,
+    );
+  }, waitTime * 1000);
+
+  console.log(`We Will Start Boarding within ${waitTime} seconds.`);
+};
+
+boardPassengers(120, 3);
