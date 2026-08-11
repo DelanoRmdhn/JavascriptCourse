@@ -1,43 +1,21 @@
 'use strict';
 
-//4. BIND : Berbeda dengan method function apply dan call yang LANGSUNG dijalankan, bind tidak langsung dijalankan.
+//IIFE (IMMEDIATELY INVOKED FUNCTION EXPRESSION) : Adalah sebuah function yang langsung dipanggil / dijalankan tanpa perlu disimpan kedalam sebuah variable. yang dimana function ini akan langsung dipanggil ketika expressionnya dibuat, sehingga kita tidak menyimpan referensi function tersebut untuk dipanggil lagi.
 
-const garuda = {
-  airlineName: 'Garuda Indonesia',
-  iataCode: 'GWK',
-  bookings: [],
-  planesTotal: 300,
-  book: function (flightNum, passangers) {
-    this.bookings.push({ flight: `${this.iataCode}${flightNum}`, passangers });
-    console.log(
-      `${passangers} booked a seat on ${this.airlineName} flight ${this.iataCode} ${flightNum}`,
-    );
-  },
+//function biasa
+const sayHello = function (sapaan) {
+  console.log(`${sapaan}, Delano!`);
 };
 
-const citilink = {
-  airlineName: 'Citilink',
-  iataCode: 'CGK',
-  bookings: [],
-  planesTotal: 100,
-};
+sayHello('Halo');
 
-//CONTOH PENGAPLIKASIAN DENGAN OBJECT
-const bookFlightCitilink = garuda.book.bind(citilink);
-bookFlightCitilink(115, 'Delano');
-console.log(citilink);
+//IIFE
+(function (sapaan) {
+  console.log(`${sapaan}, Delano!`);
+})('Haii');
 
-//CONTOH PENGAPLIKASIAN DENGAN DOM
-const buyPlane = function () {
-  console.log(this);
+(sapaan => console.log(`${sapaan}, Delano!`))('Hei Bro');
 
-  this.planesTotal++;
-  console.log(this.planesTotal);
-};
-
-const citilinkBuyPlane = buyPlane.bind(citilink);
-
-const buyBtn = document.querySelector('.buy');
-buyBtn.addEventListener('click', citilinkBuyPlane);
-
-buyBtn.addEventListener('click', buyPlane.bind(garuda));
+/*
+Function diatas langsung dijalankan dan hanya 1x. mereka tidak bisa dipanggil lagi, berbeda dengan deklrasi function biasa yang bisa dipanggil lagi karena function tersebut referensi nya disimpan pada sebuah variable.
+*/
