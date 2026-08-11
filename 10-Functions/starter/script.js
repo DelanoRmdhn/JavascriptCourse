@@ -1,103 +1,388 @@
 'use strict';
 
+//LATIHAN SOAL CLOSURE
+
 /*
+Soal 1 — setTimeout
 
-Nama Task: Implementation of Higher-Order Function modifierHarga
+Buat function:
 
-Topik: Functional Programming, Higher-Order Functions (HOF), Array .map(), & Callback Functions
+const hitungMundur = function (nama, waktu) {
+  // ...
+};
 
-Studi Kasus: Modifikasi Massal Harga Kontrak Proyek Agensi
+hitungMundur('Delano', 3);
 
-1. Skenario Bisnis
-Tim Finansial dan Tim Sales dari PT. CAHAYA REMBULAN SEJATI sering kali perlu menyesuaikan nilai kontrak beberapa proyek sekaligus berdasarkan kondisi tertentu (misalnya penerapan promo diskon musiman, perhitungan PPN internal, atau sekadar memformat tampilan angka murni ke format mata uang Rupiah).
+Function tersebut harus menghasilkan:
 
-Untuk menghindari duplikasi kode (Don't Repeat Yourself / DRY), kamu diminta membuat sebuah Higher-Order Function (HOF) serbaguna bernama modifierHarga. Fungsi ini akan bertindak sebagai mesin pemproses utama yang menerima kumpulan harga proyek dan menerapkan aturan transformasi harga sesuai dengan fungsi callback yang dikirimkan.
+Persiapan untuk Delano...
 
-2. Fitur & Instruksi Tugas
-Buat Higher-Order Function (modifierHarga):
+kemudian 3 detik kemudian:
 
-Buat fungsi modifierHarga yang menerima 2 parameter:
+Delano, waktunya habis!
+Syarat
 
-daftarHarga (Array berisi daftar angka harga murni).
+Gunakan setTimeout.
 
-callback (Fungsi yang bertindak sebagai transformer nilai tiap item).
+Dan jangan menggunakan global variable.
 
-Di dalam modifierHarga, manfaatkan array method bawaan JavaScript (seperti .map()) untuk memproses setiap harga murni dengan callback tersebut, lalu return array hasil operasinya.
+Pertanyaan penting:
 
-Buat 3 Fungsi Callback Khusus:
-Buat 3 fungsi callback terpisah yang akan dilempar ke dalam modifierHarga:
+Setelah kamu membuatnya, jelaskan:
 
-diskonKlienSetia: Mengalikan harga dengan 0.80 (potongan diskon 20%).
-
-tambahPajakPPN: Mengalikan harga dengan 1.11 (penambahan PPN 11%).
-
-formatKeRupiah: Mengubah angka murni menjadi string berformat Rupiah menggunakan .toLocaleString('id-ID') (contoh: 5000000 menjadi "Rp 5.000.000").
-
-Inisialisasi Data & Eksekusi:
-
-Deklarasikan array hargaAwal berisi nilai: [3000000, 5000000, 8000000].
-
-Jalankan modifierHarga sebanyak 3x menggunakan masing-masing callback di atas secara bergantian dan simpan hasilnya di variabel terpisah.
-
-Output Console:
-
-Cetak seluruh log proses transformasi harga tersebut ke console browser dengan Template Literals yang rapi.
-
-3. Target Tampilan Output Console:
-Plaintext
-=== FINANCIAL PRICE MODIFIER: PT. CAHAYA REMBULAN SEJATI ===
-
-[Data Awal]
-Harga Kontrak Murni : 3000000, 5000000, 8000000
-
-[Hasil Modifikasi Callback]
-1. Promo Diskon 20%  : 2400000, 4000000, 6400000
-2. Setelah PPN 11%   : 3330000, 5550000, 8880000
-3. Format Tampilan   : Rp 3.000.000, Rp 5.000.000, Rp 8.000.000
-
-============================================================
-Status HOF Engine   : Execution Success (Zero Duplication)
+Di mana closure terjadi dan variabel apa yang "diingat" oleh callback?
 */
-const hargaAwal = [3000000, 5000000, 8000000];
 
-const diskonKlienSetia = function (harga) {
-  return harga * 0.8;
+const hitungMundur = function (nama, waktu) {
+  setTimeout(function () {
+    console.log(`${nama} Waktunya Habis!`);
+  }, waktu * 1000);
+  console.log(`Persiapan untuk ${nama}...`);
 };
 
-const tambahPajakPPN = function (harga) {
-  return harga + harga * 0.11;
+// hitungMundur('Delano', 3);
+
+/*
+Penjelasan :
+closure terjadi pada function callback milik setTimeout, dimana nama yang merupakan variable yang diingat oleh callback karena dipanggil setelah function hitungMundur sudah keluar dari execution context.
+*/
+
+/*
+🟢 Level 2 — Closure Tanpa return function
+Soal 2 — Sistem Boarding
+
+Buat:
+
+const boarding = function (passengers, wait) {
+  // ...
 };
 
-const formatKeRupiah = function (harga) {
-  return `Rp ${harga.toLocaleString('id-ID')}`;
+Contoh:
+
+boarding(180, 3);
+
+Output:
+
+We will start boarding in 3 seconds.
+
+Lalu setelah 3 detik:
+
+We are now boarding 180 passengers.
+Tambahan
+
+Di dalam function buat:
+
+const groups = passengers / 3;
+
+Kemudian callback harus mencetak:
+
+Each group contains 60 passengers.
+Pertanyaan:
+Apakah terjadi closure?
+Function mana yang menjadi closure?
+Variabel apa saja yang diakses dari outer scope?
+Kenapa variabel tersebut masih bisa digunakan setelah boarding() selesai?
+*/
+
+const boarding = function (passengers, wait) {
+  console.log(`We Will Start Boarding in ${wait} Seconds.`);
+  setTimeout(function () {
+    const groups = passengers / 3;
+
+    console.log(`We Are Boarding ${passengers} passengers.`);
+    console.log(`Each Group Contains ${groups} passengers.`);
+  }, wait * 1000);
 };
 
-const modifierHarga = function (hargaDasar, callback) {
-  const hasilModifikasi = [];
+// boarding(180, 3);
 
-  for (const harga of hargaDasar) {
-    const hargaBaru = callback(harga);
-    hasilModifikasi.push(hargaBaru);
+/*
+JAWAB : 
+1. iya closure terjadi
+2. function callback milik function setTimeout
+3. variable passenger merupakan function yang diakses dari outer scope
+4. karena closure memungkinkan hal ini untuk terjadi
+*/
+
+/*
+🟡 Level 3 — Closure + Loop
+
+Nah, ini mulai menarik.
+
+Soal 3
+
+Perhatikan kode:
+
+const buatPengumuman = function () {
+  for (let i = 1; i <= 3; i++) {
+    setTimeout(function () {
+      console.log(`Pengumuman ke-${i}`);
+    }, i * 1000);
   }
-
-  return hasilModifikasi;
 };
 
-const hargaDiskon = modifierHarga(hargaAwal, diskonKlienSetia);
-const hargaPPN = modifierHarga(hargaAwal, tambahPajakPPN);
-const hargaRupiah = modifierHarga(hargaAwal, formatKeRupiah);
-console.log(hargaDiskon);
+buatPengumuman();
 
-const execute = function () {
-  console.log(`=== FINANCIAL PRICE MODIFIER: PT. CAHAYA REMBULAN SEJATI ===\n`);
+Tugasmu:
 
-  console.log(`[Data Awal]\nHarga Kontrak Murni : ${hargaAwal.join(', ')}\n`);
+A. Prediksi output
 
-  console.log(
-    `[Hasil Modifikasi Callback]\n1. Promo Diskon 20 % : ${hargaDiskon.join(', ')}\n2. Setelah PPN 11% : ${hargaPPN.join(', ')}\n3. Format Tampilan : ${hargaRupiah}`,
-  );
+Sebelum menjalankan kode, tulis:
 
-  console.log(`============================================================`);
+...
+...
+...
+
+dan kapan masing-masing output muncul.
+
+B. Jelaskan closure
+
+Jawab:
+
+Kenapa callback setTimeout bisa mengetahui nilai i?
+
+C. Tantangan tambahan
+
+Ubah let i menjadi:
+
+var i
+
+Kemudian prediksi lagi outputnya.
+*/
+
+const buatPengumuman = function () {
+  for (let i = 1; i <= 3; i++) {
+    setTimeout(function () {
+      console.log(`Pengumuman ke-${i}`);
+    }, i * 1000);
+  }
 };
 
-execute();
+// buatPengumuman();
+/*
+Penjelasan Closure : 
+jadi terdapat sebuah perulangan for sebanyak 3x. dan didalam perulangan tersebut terdapat sebuah function setTimeout yang akan menampilkan output berupa `Pengumuman ke-${i}` dan variable i disini merupakan variable yang dapat diakses oleh callback. ini bisa terjadi karena closure. yang memungkinkan callback dalam menggunakan variable i.
+*/
+
+/*
+jawaban kalo diubah menjadi var i. jujur saya gatau hehe
+
+*/
+
+/*
+🟡 Level 4 — Closure + Data Pribadi
+
+Sekarang kita masuk ke penggunaan closure yang lebih realistis.
+
+Soal 4 — Saldo Rekening
+
+Buat:
+
+const buatRekening = function (saldoAwal) {
+  // ...
+};
+
+Kemudian:
+
+const rekeningSaya = buatRekening(1_000_000);
+
+Function tersebut harus memiliki kemampuan:
+
+rekeningSaya.cekSaldo();
+rekeningSaya.deposit(500_000);
+rekeningSaya.tarik(200_000);
+
+Sehingga:
+
+rekeningSaya.cekSaldo(); // 1.000.000
+
+rekeningSaya.deposit(500_000);
+
+rekeningSaya.cekSaldo(); // 1.500.000
+
+rekeningSaya.tarik(200_000);
+
+rekeningSaya.cekSaldo(); // 1.300.000
+Syarat penting:
+
+saldo tidak boleh bisa diakses langsung dari luar.
+
+Jadi ini harus gagal:
+
+rekeningSaya.saldo;
+
+Kenapa?
+
+Karena saldo harus menjadi private variable melalui closure.
+*/
+
+const buatRekening = function (saldoAwal) {
+  let saldo = saldoAwal;
+
+  return {
+    cekSaldo() {
+      console.log(`Saldo Anda : Rp.${saldo}`);
+    },
+
+    deposit(jumlahDeposit) {
+      saldo += jumlahDeposit;
+      this.cekSaldo();
+    },
+
+    tarik(jumlahPenarikan) {
+      saldo -= jumlahPenarikan;
+      this.cekSaldo();
+    },
+  };
+};
+
+const rekeningSaya = buatRekening(1_000_000);
+rekeningSaya.cekSaldo();
+rekeningSaya.deposit(500_000);
+rekeningSaya.tarik(200_000);
+console.log(rekeningSaya.saldo); //undefined
+
+/*
+🔴 Level 5 — Bedakan Closure dan Bukan Closure
+
+Untuk setiap kode berikut, jawab:
+
+Closure atau bukan? Jelaskan alasannya.
+
+A
+const nama = 'Delano';
+
+function sapa() {
+  console.log(nama);
+}
+
+sapa();
+B
+function buatSapa() {
+  const nama = 'Delano';
+
+  return function () {
+    console.log(nama);
+  };
+}
+
+const sapa = buatSapa();
+
+sapa();
+C
+function sapa(nama) {
+  console.log(nama);
+}
+
+sapa('Delano');
+D
+function mulai() {
+  const nama = 'Delano';
+
+  setTimeout(function () {
+    console.log(nama);
+  }, 1000);
+}
+
+mulai();
+E
+const nama = 'Delano';
+
+setTimeout(function () {
+  console.log(nama);
+}, 1000);
+*/
+
+/*
+A : BUKAN CLOSURE.
+B : CLOSURE
+C : BUKAN CLOSURE.
+D : CLOSURE
+E : BUKAN CLOSURE
+*/
+
+/*
+🔥 Boss Fight — Gabungan Semuanya
+
+Kalau Level 1–5 sudah kamu kuasai, kerjakan ini:
+
+const buatCounter = function (nama) {
+  let jumlah = 0;
+
+  return function () {
+    jumlah++;
+    console.log(`${nama} sudah menjalankan counter ${jumlah} kali`);
+  };
+};
+
+Gunakan:
+
+const counterDelano = buatCounter('Delano');
+const counterBudi = buatCounter('Budi');
+
+counterDelano();
+counterDelano();
+counterDelano();
+
+counterBudi();
+counterBudi();
+
+Prediksi outputnya.
+
+Lalu jawab tanpa menjalankan kode:
+
+Kenapa counterDelano dan counterBudi punya jumlah yang berbeda?
+Berapa nilai jumlah milik Delano?
+Berapa nilai jumlah milik Budi?
+Apakah buatCounter() masih berjalan ketika counterDelano() dipanggil?
+Kalau tidak, bagaimana counterDelano masih bisa mengakses jumlah?
+*/
+
+const buatCounter = function (nama) {
+  let jumlah = 0;
+
+  return function () {
+    jumlah++;
+    console.log(`${nama} sudah menjalankan counter ${jumlah} kali`);
+  };
+};
+
+const counterDelano = buatCounter('Delano');
+const counterBudi = buatCounter('Budi');
+
+counterDelano();
+counterDelano();
+counterDelano();
+
+counterBudi();
+counterBudi();
+
+/* 
+prediksi output : 
+1
+Delano sudah menjalankan counter 1 kali
+2
+Delano sudah menjalankan counter 2 kali
+3
+Delano sudah menjalankan counter 3 kali
+1
+Budi sudah menjalankan counter 1 kali
+2
+Budi sudah menjalankan counter 2 kali
+
+Lalu jawab tanpa menjalankan kode:
+
+Kenapa counterDelano dan counterBudi punya jumlah yang berbeda?
+karena counterDelano dijalankan 3x sedangkan counterBudi dijalankan 2x
+
+Berapa nilai jumlah milik Delano?
+3
+
+Berapa nilai jumlah milik Budi?
+2
+Apakah buatCounter() masih berjalan ketika counterDelano() dipanggil?
+tidak, dia sudah berhenti tetapi variable jumlah dan nama masih bisa diakses oleh counterDelano akibat closure.
+
+Kalau tidak, bagaimana counterDelano masih bisa mengakses jumlah?
+dengan closure.
+*/
