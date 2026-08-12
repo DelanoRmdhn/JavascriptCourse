@@ -1,104 +1,138 @@
 'use strict';
 
-//MINI TASK :  Functions, Closure, Private Lexical Scope, Incremental Counter, & String Formatting
+//MINI CHALLANGE WEEK 4
 
 /*
-SPECIFICATION: MINI TASK
-Nama Task: Generator Otomatis Token ID Unik Menggunakan Closure Privat
-
-Topik: Functions, Closure, Private Lexical Scope, Incremental Counter, & String Formatting
-
-Studi Kasus: Sistem Auto-Generate ID Klien & Proyek Agensi
-
-1. Skenario Bisnis
-Setiap kali ada klien atau proyek baru yang masuk ke PT. CAHAYA REMBULAN SEJATI, tim operasional memerlukan ID/Token unik berformat khusus (seperti CRS-CLIENT-001, CRS-CLIENT-002, dst.).
-
-Untuk mencegah nomor urut (counter) tereset secara tidak sengaja atau diubah secara liar dari luar oleh script lain, nilai urutan ID harus disimpan dalam Private Lexical Scope menggunakan konsep Closure.
-
-2. Fitur & Instruksi Tugas
-Buat Fungsi Generator (buatGeneratorToken):
-
-Buat sebuah fungsi utama bernama buatGeneratorToken yang menerima 1 parameter:
-
-prefix (String awalan kode, contoh: "CRS-CLIENT" atau "CRS-PROJ").
-
-Di dalam fungsi ini, buat satu variabel privat:
-
-nomorUrut (Number dengan nilai awal 0).
-
-Fungsi buatGeneratorToken harus mengembalikan (return) sebuah Inner Function (Arrow Function / Anonymous Function).
-
-Logika di Dalam Inner Function:
-
-Setiap kali Inner Function dipanggil, nilai nomorUrut akan bertambah 1 (+1).
-
-Gunakan method string .padStart(3, '0') agar nomor urut selalu tampil dalam format 3 digit angka (contoh: 1 menjadi "001", 12 menjadi "012").
-
-Inner Function mengembalikan string token gabungan dengan format:
-
-{prefix}-{nomorUrutPadded} (Contoh: "CRS-CLIENT-001").
-
-Inisialisasi & Eksekusi Dua Generator Terpisah:
-
-Buat instance generator pertama khusus Klien:
-
-const generateIDKlien = buatGeneratorToken("CRS-CLIENT");
-
-Buat instance generator kedua khusus Proyek:
-
-const generateIDProyek = buatGeneratorToken("CRS-PROJ");
-
-Panggil generateIDKlien() sebanyak 3 kali.
-
-Panggil generateIDProyek() sebanyak 2 kali.
-
-Output Console:
-
-Cetak seluruh hasil pembuatan token ID tersebut ke console browser dengan Template Literals yang rapi.
-
-3. Target Tampilan Output Console:
+4. Target Tampilan Output Console:
 Plaintext
-=== UNIQUE TOKEN GENERATOR: PT. CAHAYA REMBULAN SEJATI ===
+=== BULK DATA PARSER & FINANCIAL PIPELINE ===
+Agensi         : PT. CAHAYA REMBULAN SEJATI
+Status Pipeline: 4/7 Entri Data Valid Diproses
 
-[Registrasi ID Klien Baru]
-Klien 1 : CRS-CLIENT-001
-Klien 2 : CRS-CLIENT-002
-Klien 3 : CRS-CLIENT-003
+[DAFTAR KLIEN QUALIFIED & TERSTRUKTUR]
+1. [CRS-LEAD-001] Studio Arsitek Garis Lurus
+   - Layanan : Web Development
+   - Budget  : Rp 15.000.000
 
-[Registrasi ID Proyek Baru]
-Proyek 1 : CRS-PROJ-001
-Proyek 2 : CRS-PROJ-002
+2. [CRS-LEAD-002] Cv. Berkah Abadi
+   - Layanan : Branding
+   - Budget  : Rp 8.500.000
+
+3. [CRS-LEAD-003] Pt. Inovasi Digital Nusantara
+   - Layanan : Fullstack App
+   - Budget  : Rp 25.000.000
+
+4. [CRS-LEAD-004] Pt. Sinar Mas Arsitektur
+   - Layanan : Web Development
+   - Budget  : Rp 12.000.000
+
+------------------------------------------------------------
+[RINGKASAN EKSEKUSI PIPELINE]
+Total Omzet Prospektif : Rp 60.500.000
+Rata-rata Budget Klien  : Rp 15.125.000
+Klien Budget Terbesar   : Pt. Inovasi Digital Nusantara (Rp 25.000.000)
 
 ============================================================
-Status Generator    : Private Scope Secured (Zero Leakage)
+Pipeline Status: Manual Processing Success (Zero Mutation)
 */
 
-const buatGeneratorToken = function (prefix) {
-  let nomorUrut = 0;
-  // console.log(prefix);
-  return function () {
-    nomorUrut++;
-    const formatted = `${prefix}-${nomorUrut.toString().padStart(3, '0')}`;
+//raw data
+const rawClientData = [
+  '  studio ARSITEK garis Lurus | 15000000 | Web Development  ',
+  'KONTRAKTOR BAJA MANDIRI|0|UI/UX Design',
+  '  cv. berkah abadi   | 8500000 | Branding ',
+  'INVALID DATA ROW',
+  '  PT.  inovasi digital  nusantara | 25000000 | Fullstack App  ',
+  'Toko Bangunan Jaya | -5000000 | SEO',
+  '   pt. SINAR MAS Arsitektur | 12000000 | Web Development  ',
+];
 
-    return formatted;
+const createTokenGenerator = function (token) {
+  let countNumber = 0;
+  return function () {
+    countNumber++;
+    const generatedToken = `${token.toUpperCase()}-${countNumber.toString().padStart(3, '0')}`;
+    return `${generatedToken}`;
   };
 };
 
-const generateIDKlien = buatGeneratorToken('CRS-CLIENT');
-const generateIDProyek = buatGeneratorToken('CRS-PROJ');
+// const clientToken = createTokenGenerator('CRS-CLIENT');
+// const projectToken = createTokenGenerator('CRS-PROJ');
+const leadToken = createTokenGenerator('CRS-LEAD');
 
-const showProject = function () {
-  console.log(`=== UNIQUE TOKEN GENERATOR: PT. CAHAYA REMBULAN SEJATI ===`);
+const parseRawData = function (rawData) {
+  const dataResult = [];
 
-  console.log(`[Registrasi ID Klien Baru]`);
-  for (let i = 1; i <= 3; i++) console.log(`Klien ${i} : ${generateIDKlien()}`);
+  for (const [i, data] of rawData.entries()) {
+    const seperatedData = data.split('|');
+    if (seperatedData.length != 3) continue;
 
-  console.log(`\n[Registrasi ID Proyek Baru]`);
-  for (let i = 1; i <= 2; i++)
-    console.log(`Klien ${i} : ${generateIDProyek()}`);
+    const cleanData = [];
+    for (const data of seperatedData) {
+      cleanData.push(data.trim());
+    }
+    const formattedName = cleanData[0].toUpperCase();
+    const formattedBudget = Number(cleanData[1]);
 
-  console.log(`\n============================================================`);
-  console.log(`Status Generator    : Private Scope Secured (Zero Leakage)`);
+    if (isNaN(formattedBudget) || formattedBudget <= 0) continue;
+    dataResult.push({
+      id: leadToken(),
+      clientName: formattedName,
+      budget: formattedBudget,
+      service: cleanData[2],
+    });
+  }
+  return dataResult;
 };
 
-showProject();
+const countFinancialStatistic = function (cleanData) {
+  let totalRevenue = 0;
+  let maxClient = cleanData[0];
+
+  for (let i = 0; i < cleanData.length; i++) {
+    totalRevenue += cleanData[i].budget;
+
+    if (cleanData[i].budget > maxClient.budget) {
+      maxClient = cleanData[i];
+    }
+  }
+  const avgRevenue = cleanData.length > 0 ? totalRevenue / cleanData.length : 0;
+
+  return {
+    totalRevenue,
+    avgRevenue,
+    maxClient,
+  };
+};
+
+const getFinalReport = function (cleanData, stats) {
+  console.log(`=== BULK DATA PARSER & FINANCIAL PIPELINE ===`);
+  console.log(`Agensi         : PT. CAHAYA REMBULAN SEJATI`);
+  console.log(
+    `Status Pipeline: ${cleanData.length}/${rawClientData.length} Entri Data Valid Diproses`,
+  );
+
+  console.log(`\n[DAFTAR KLIEN QUALIFIED & TERSTRUKTUR]`);
+  for (const [i, { id, clientName, budget, service }] of cleanData.entries()) {
+    console.log(
+      `${i + 1}. [${id}] ${clientName}\n- Layanan : ${service}\n- Budget : Rp.${budget.toLocaleString('id-ID')}`,
+    );
+    console.log(`\n`);
+  }
+
+  console.log(`[RINGKASAN EKSEKUSI PIPELINE]`);
+  console.log(`------------------------------------------------------------`);
+  console.log(
+    `Total Omzet Prospektif : Rp.${stats.totalRevenue.toLocaleString('id-ID')}}\n`,
+    `Rata-rata Budget Klien : Rp.${stats.avgRevenue.toLocaleString('id-ID')}\n`,
+    `Klien Budget Terbesar  : ${stats.maxClient.clientName} (Rp ${stats.maxClient.budget.toLocaleString('id-ID')})`,
+  );
+  console.log(
+    `============================================================\n`,
+    `Pipeline Status: Manual Processing Success (Zero Mutation)`,
+  );
+};
+
+const cleanData = parseRawData(rawClientData);
+const stats = countFinancialStatistic(cleanData);
+getFinalReport(cleanData, stats);
