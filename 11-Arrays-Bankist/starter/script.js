@@ -61,15 +61,28 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
+//Tampilkan History Transaksi
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const displayTransactionHistory = function (movements) {
+  //Kosongin Semua elemen yang membungkus class movements
+  containerMovements.innerHTML = '';
 
-/////////////////////////////////////////////////
+  //tampilkan transaksi ke halaman
+  movements.forEach(function (move, i) {
+    //1. pisahkan tipe transaksi
+    const transactionType = move >= 0 ? 'deposit' : 'withdrawal';
+
+    //2. tag HTML yang mau dimanipulasi & menampilkan value sesuai tipe transaksi
+    const displayMovement = `
+    <div class="movements__row">
+      <div class="movements__type movements__type--${transactionType}">${i + 1} ${transactionType.toUpperCase()}</div>
+      <div class="movements__value">${move}</div>
+    </div>
+    `;
+
+    //3. Masukin hasil manipulasi ke containerMovements agar tampil pada halaman
+    containerMovements.insertAdjacentHTML('afterbegin', displayMovement);
+  });
+};
+
+displayTransactionHistory(accounts[0].movements);
