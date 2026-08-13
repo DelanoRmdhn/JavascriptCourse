@@ -11,39 +11,38 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
-//SLICE : Mengekstraksi sebuah bagian dari array (tergantung dari isi argumen) tetapi tidak merubah array aslinya.
-const numArr = [19, 10, 4, 5, 7];
-const get3Num = numArr.slice(0, 3);
+//2. FOR EACH : Merupakan method milik array yang digunakan untuk menjalankan suatu function SATU KALI untuk setiap elemen di dalam array.
 
-console.log(get3Num);
-console.log(numArr); //array numArr tidak berubah
+const createTransactionSummary = function () {
+  //Wadah Penampung Akhir dari transaksi
+  const transactionHistory = [];
 
-//SPLICE : Mengekstraksi sebuah bagian dari array (tergantung dari isi argumen) dan MERUBAH bentuk array aslinya
+  //Wadah penampung klasifikasi jenis transaksi
+  const depositHistory = [];
+  const withdrawHistory = [];
 
-// const get2Num = numArr.splice(0, 2);
+  //Pengklasifikasian Jenis transaksi : Deposit / Withdraw
+  movements.forEach(function (movement, i) {
+    if (movement >= 0) {
+      depositHistory.push({
+        depositId: i + 1,
+        amount: movement,
+      });
+    } else {
+      withdrawHistory.push({
+        withdrawId: i + 1,
+        amount: movement,
+      });
+    }
+  });
 
-// console.log(get2Num); // 2 index awal dikeluarkan dari array numArr dan disimpan ke get2Num
-// console.log(numArr); // 2 index diawal hilang, menyisakan [4,5,7]
+  //Masukan hasil pengklasifikasian kedalam wadah penampung akhir
+  transactionHistory.push(depositHistory);
+  transactionHistory.push(withdrawHistory);
 
-const getAllNum = numArr.splice(0); //ambil semua isi dari array numArr dan simpan di variable getAllNum
-console.log(getAllNum);
-console.log(numArr); //isinya kosong karena nilainya udah diambil semua sama getAllNum
+  //kembalikan wadah penampung akhir agar bisa diakses diluar function
+  return transactionHistory;
+};
 
-//REVERSE : membalik urutan nilai pada array. dan MERUBAH bentuk array aslinya
-const alphabet = ['a', 'b', 'c', 'd', 'e', 'f'];
-console.log(alphabet.reverse());
-console.log(alphabet);
-
-//concat : Menggabungkan arrays menjadi 1 array. dia sifatnya ga merubah bentuk asli array
-const x = [1, 2, 3, 4, 5];
-const y = [6, 7, 8, 9, 10];
-
-const xy = x.concat(y);
-const xyAlphabet = x.concat(y).concat(alphabet);
-
-console.log(xy);
-console.log(xyAlphabet);
-
-//join : Menggabungkan isi array menjadi 1 nilai dan dipisahkan berdasarkan argumennya
-const allXy = xy.join(',');
-console.log(allXy);
+const transactionHistory = createTransactionSummary();
+console.log(transactionHistory);
