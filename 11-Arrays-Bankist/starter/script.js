@@ -1,76 +1,85 @@
 'use strict';
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// BANKIST APP
+//MINI TASK DAY 16 :DOM Selection, Array .forEach(), Template Literals, & Dynamic HTML Rendering
 
-// Data
-const account1 = {
-  owner: 'Jonas Schmedtmann',
-  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
-  interestRate: 1.2, // %
-  pin: 1111,
+/*
+Inisialisasi Data Agen:
+
+Buat array bernama daftarKomisi berisi daftar objek agen:
+
+JavaScript
+const daftarKomisi = [
+  { nama: "Rangga Pratama", proyek: "Desain Arsitek Villa Pekalongan", komisi: 4500000 },
+  { nama: "Fadhil Nugraha", proyek: "Redesign Interior Kantor Tangerang", komisi: 3200000 },
+  { nama: "Yohana Sitorus", proyek: "Pengembangan App CRM Bandung", komisi: 6000000 },
+];
+DOM Selection:
+
+Tangkap elemen container #commission-list dari DOM menggunakan document.querySelector('#commission-list') atau document.getElementById('commission-list').
+
+Iterasi & Rendering Menggunakan .forEach():
+
+Jalankan perulangan .forEach() pada array daftarKomisi.
+
+Di dalam .forEach(), susun elemen HTML kartu (card) menggunakan Template Literals.
+
+Sisipkan/Tambahkan elemen kartu tersebut ke dalam container #commission-list.
+
+Pastikan angka komisi di-format ke dalam mata uang Rupiah menggunakan .toLocaleString('id-ID').
+
+4. Target Tampilan HTML di Browser:
+Elemen #commission-list harus terisi elemen-elemen HTML dengan struktur seperti ini:
+
+HTML
+<div class="card">
+  <div class="agent-name">Rangga Pratama</div>
+  <div>Proyek: Desain Arsitek Villa Pekalongan</div>
+  <div class="commission">Komisi: Rp 4.500.000</div>
+</div>
+
+<div class="card">
+  <div class="agent-name">Fadhil Nugraha</div>
+  <div>Proyek: Redesign Interior Kantor Tangerang</div>
+  <div class="commission">Komisi: Rp 3.200.000</div>
+</div>
+
+<div class="card">
+  <div class="agent-name">Yohana Sitorus</div>
+  <div>Proyek: Pengembangan App CRM Bandung</div>
+  <div class="commission">Komisi: Rp 6.000.000</div>
+</div>
+*/
+
+const daftarKomisi = [
+  {
+    nama: 'Rangga Pratama',
+    proyek: 'Desain Arsitek Villa Pekalongan',
+    komisi: 4500000,
+  },
+  {
+    nama: 'Fadhil Nugraha',
+    proyek: 'Redesign Interior Kantor Tangerang',
+    komisi: 3200000,
+  },
+  {
+    nama: 'Yohana Sitorus',
+    proyek: 'Pengembangan App CRM Bandung',
+    komisi: 6000000,
+  },
+];
+
+const showCommisionList = function (commissions) {
+  const comListEl = document.getElementById('commission-list');
+
+  commissions.forEach(function ({ nama, proyek, komisi }, i) {
+    const generateCard = `
+      <div class="card">
+        <div class="agent-name">${nama}</div>
+        <div>Proyek: ${proyek}</div>
+        <div class="commission">Komisi: Rp ${komisi.toLocaleString('id-ID')}</div>
+      </div>`;
+
+    comListEl.insertAdjacentHTML('beforeend', generateCard);
+  });
 };
-
-const account2 = {
-  owner: 'Jessica Davis',
-  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
-  interestRate: 1.5,
-  pin: 2222,
-};
-
-const account3 = {
-  owner: 'Steven Thomas Williams',
-  movements: [200, -200, 340, -300, -20, 50, 400, -460],
-  interestRate: 0.7,
-  pin: 3333,
-};
-
-const account4 = {
-  owner: 'Sarah Smith',
-  movements: [430, 1000, 700, 50, 90],
-  interestRate: 1,
-  pin: 4444,
-};
-
-const accounts = [account1, account2, account3, account4];
-
-// Elements
-const labelWelcome = document.querySelector('.welcome');
-const labelDate = document.querySelector('.date');
-const labelBalance = document.querySelector('.balance__value');
-const labelSumIn = document.querySelector('.summary__value--in');
-const labelSumOut = document.querySelector('.summary__value--out');
-const labelSumInterest = document.querySelector('.summary__value--interest');
-const labelTimer = document.querySelector('.timer');
-
-const containerApp = document.querySelector('.app');
-const containerMovements = document.querySelector('.movements');
-
-const btnLogin = document.querySelector('.login__btn');
-const btnTransfer = document.querySelector('.form__btn--transfer');
-const btnLoan = document.querySelector('.form__btn--loan');
-const btnClose = document.querySelector('.form__btn--close');
-const btnSort = document.querySelector('.btn--sort');
-
-const inputLoginUsername = document.querySelector('.login__input--user');
-const inputLoginPin = document.querySelector('.login__input--pin');
-const inputTransferTo = document.querySelector('.form__input--to');
-const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputLoanAmount = document.querySelector('.form__input--loan-amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
-const inputClosePin = document.querySelector('.form__input--pin');
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
-
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-/////////////////////////////////////////////////
+showCommisionList(daftarKomisi);
