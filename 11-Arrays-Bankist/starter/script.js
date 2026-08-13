@@ -1,48 +1,88 @@
 'use strict';
 
-// LECTURES #1 Array Method
-
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
 /////////////////////////////////////////////////
 
-//2. FOR EACH : Merupakan method milik array yang digunakan untuk menjalankan suatu function SATU KALI untuk setiap elemen di dalam array.
+/////////////////////////////////////////////////
+// BANKIST APP
 
-const createTransactionSummary = function () {
-  //Wadah Penampung Akhir dari transaksi
-  const transactionHistory = [];
-
-  //Wadah penampung klasifikasi jenis transaksi
-  const depositHistory = [];
-  const withdrawHistory = [];
-
-  //Pengklasifikasian Jenis transaksi : Deposit / Withdraw
-  movements.forEach(function (movement, i) {
-    if (movement >= 0) {
-      depositHistory.push({
-        depositId: i + 1,
-        amount: movement,
-      });
-    } else {
-      withdrawHistory.push({
-        withdrawId: i + 1,
-        amount: movement,
-      });
-    }
-  });
-
-  //Masukan hasil pengklasifikasian kedalam wadah penampung akhir
-  transactionHistory.push(depositHistory);
-  transactionHistory.push(withdrawHistory);
-
-  //kembalikan wadah penampung akhir agar bisa diakses diluar function
-  return transactionHistory;
+// Data
+const account1 = {
+  owner: 'Jonas Schmedtmann',
+  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  interestRate: 1.2, // %
+  pin: 1111,
 };
 
-const transactionHistory = createTransactionSummary();
-console.log(transactionHistory);
+const account2 = {
+  owner: 'Jessica Davis',
+  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  interestRate: 1.5,
+  pin: 2222,
+};
+
+const account3 = {
+  owner: 'Steven Thomas Williams',
+  movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  interestRate: 0.7,
+  pin: 3333,
+};
+
+const account4 = {
+  owner: 'Sarah Smith',
+  movements: [430, 1000, 700, 50, 90],
+  interestRate: 1,
+  pin: 4444,
+};
+
+const accounts = [account1, account2, account3, account4];
+
+// Elements
+const labelWelcome = document.querySelector('.welcome');
+const labelDate = document.querySelector('.date');
+const labelBalance = document.querySelector('.balance__value');
+const labelSumIn = document.querySelector('.summary__value--in');
+const labelSumOut = document.querySelector('.summary__value--out');
+const labelSumInterest = document.querySelector('.summary__value--interest');
+const labelTimer = document.querySelector('.timer');
+
+const containerApp = document.querySelector('.app');
+const containerMovements = document.querySelector('.movements');
+
+const btnLogin = document.querySelector('.login__btn');
+const btnTransfer = document.querySelector('.form__btn--transfer');
+const btnLoan = document.querySelector('.form__btn--loan');
+const btnClose = document.querySelector('.form__btn--close');
+const btnSort = document.querySelector('.btn--sort');
+
+const inputLoginUsername = document.querySelector('.login__input--user');
+const inputLoginPin = document.querySelector('.login__input--pin');
+const inputTransferTo = document.querySelector('.form__input--to');
+const inputTransferAmount = document.querySelector('.form__input--amount');
+const inputLoanAmount = document.querySelector('.form__input--loan-amount');
+const inputCloseUsername = document.querySelector('.form__input--user');
+const inputClosePin = document.querySelector('.form__input--pin');
+
+//Tampilkan History Transaksi
+
+const displayTransactionHistory = function (movements) {
+  //Kosongin Semua elemen yang membungkus class movements
+  containerMovements.innerHTML = '';
+
+  //tampilkan transaksi ke halaman
+  movements.forEach(function (move, i) {
+    //1. pisahkan tipe transaksi
+    const transactionType = move >= 0 ? 'deposit' : 'withdrawal';
+    //2. tag HTML yang mau dimanipulasi & menampilkan value sesuai tipe transaksi
+    const displayMovement = `
+    <div class="movements__row">
+    <div class="movements__type movements__type--${transactionType}">${i + 1} ${transactionType.toUpperCase()}</div>
+    <div class="movements__value">${move}</div>
+    </div>
+    `;
+
+    //3. Masukin hasil manipulasi ke containerMovements agar tampil pada halaman
+    containerMovements.insertAdjacentHTML('afterbegin', displayMovement);
+  });
+};
+
+displayTransactionHistory(accounts[0].movements);
