@@ -1,85 +1,62 @@
 'use strict';
 
-//MINI TASK DAY 16 :DOM Selection, Array .forEach(), Template Literals, & Dynamic HTML Rendering
-
+//CHALLANGE # 1 :
 /*
-Inisialisasi Data Agen:
 
-Buat array bernama daftarKomisi berisi daftar objek agen:
+Julia and Kate are doing a study on dogs. So each of them asked 5 dog owners
+about their dog's age, and stored the data into an array (one array for each). For
+now, they are just interested in knowing whether a dog is an adult or a puppy.
+A dog is an adult if it is at least 3 years old, and it's a puppy if it's less than 3 years
+old.
 
-JavaScript
-const daftarKomisi = [
-  { nama: "Rangga Pratama", proyek: "Desain Arsitek Villa Pekalongan", komisi: 4500000 },
-  { nama: "Fadhil Nugraha", proyek: "Redesign Interior Kantor Tangerang", komisi: 3200000 },
-  { nama: "Yohana Sitorus", proyek: "Pengembangan App CRM Bandung", komisi: 6000000 },
-];
-DOM Selection:
+Your tasks:
 
-Tangkap elemen container #commission-list dari DOM menggunakan document.querySelector('#commission-list') atau document.getElementById('commission-list').
+Create a function 'checkDogs', which accepts 2 arrays of dog's ages
+('dogsJulia' and 'dogsKate'), and does the following things:
 
-Iterasi & Rendering Menggunakan .forEach():
+1. Julia found out that the owners of the first and the last two dogs actually have
+cats, not dogs! So create a shallow copy of Julia's array, and remove the cat
+ages from that copied array (because it's a bad practice to mutate function
+parameters)
 
-Jalankan perulangan .forEach() pada array daftarKomisi.
+2. Create an array with both Julia's (corrected) and Kate's data
 
-Di dalam .forEach(), susun elemen HTML kartu (card) menggunakan Template Literals.
+3. For each remaining dog, log to the console whether it's an adult ("Dog number 1
+is an adult, and is 5 years old") or a puppy ("Dog number 2 is still a puppy
+🐶
+")
 
-Sisipkan/Tambahkan elemen kartu tersebut ke dalam container #commission-list.
+4. Run the function for both test datasets
 
-Pastikan angka komisi di-format ke dalam mata uang Rupiah menggunakan .toLocaleString('id-ID').
-
-4. Target Tampilan HTML di Browser:
-Elemen #commission-list harus terisi elemen-elemen HTML dengan struktur seperti ini:
-
-HTML
-<div class="card">
-  <div class="agent-name">Rangga Pratama</div>
-  <div>Proyek: Desain Arsitek Villa Pekalongan</div>
-  <div class="commission">Komisi: Rp 4.500.000</div>
-</div>
-
-<div class="card">
-  <div class="agent-name">Fadhil Nugraha</div>
-  <div>Proyek: Redesign Interior Kantor Tangerang</div>
-  <div class="commission">Komisi: Rp 3.200.000</div>
-</div>
-
-<div class="card">
-  <div class="agent-name">Yohana Sitorus</div>
-  <div>Proyek: Pengembangan App CRM Bandung</div>
-  <div class="commission">Komisi: Rp 6.000.000</div>
-</div>
+Test data:
+§ Data 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3]
+§ Data 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
+Hints: Use tools from all lectures in this section so far 😉
 */
 
-const daftarKomisi = [
-  {
-    nama: 'Rangga Pratama',
-    proyek: 'Desain Arsitek Villa Pekalongan',
-    komisi: 4500000,
-  },
-  {
-    nama: 'Fadhil Nugraha',
-    proyek: 'Redesign Interior Kantor Tangerang',
-    komisi: 3200000,
-  },
-  {
-    nama: 'Yohana Sitorus',
-    proyek: 'Pengembangan App CRM Bandung',
-    komisi: 6000000,
-  },
+const [juliaData1, kateData1] = [
+  [3, 5, 2, 12, 7],
+  [4, 1, 15, 8, 3],
 ];
 
-const showCommisionList = function (commissions) {
-  const comListEl = document.getElementById('commission-list');
+const [juliaData2, kateData2] = [
+  [9, 16, 6, 8, 3],
+  [10, 5, 6, 1, 4],
+];
 
-  commissions.forEach(function ({ nama, proyek, komisi }, i) {
-    const generateCard = `
-      <div class="card">
-        <div class="agent-name">${nama}</div>
-        <div>Proyek: ${proyek}</div>
-        <div class="commission">Komisi: Rp ${komisi.toLocaleString('id-ID')}</div>
-      </div>`;
+const checkDogs = function (dogsJulia, dogsKate) {
+  console.log(dogsJulia);
+  const juliaDogs = dogsJulia.slice(1, -2);
 
-    comListEl.insertAdjacentHTML('beforeend', generateCard);
+  const dogs = [...juliaDogs, ...dogsKate];
+  dogs.forEach(function (el, i) {
+    if (el >= 3) {
+      console.log(`Dog Number ${i + 1} is an adult, and is ${el} years old.`);
+    } else {
+      console.log(`Dog number ${i + 1} is still a puppy 🐶`);
+    }
   });
 };
-showCommisionList(daftarKomisi);
+
+checkDogs(juliaData1, kateData1);
+checkDogs(juliaData2, kateData2);
