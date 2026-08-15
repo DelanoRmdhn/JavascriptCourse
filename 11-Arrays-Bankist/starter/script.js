@@ -1,86 +1,97 @@
 'use strict';
 
-/*
-CHALLANGE #2 : 
+//MINI TASK Day 17 : manipulasi data finansial menggunakan kombinasi metode array modern .map() dan .filter().
 
-  Let's go back to Julia and Kate's study about dogs. This time, they want to convert
-  dog ages to human ages and calculate the average age of the dogs in their study.
-  Your tasks:
+/**
+ Berikut adalah Spesifikasi Soal Praktikum Mandiri untuk Mini Task manipulasi data finansial menggunakan kombinasi metode array modern .map() dan .filter().
 
-  Create a function 'calcAverageHumanAge', which accepts an arrays of dog's
-  ages ('ages'), and does the following things in order:
+SPECIFICATION: MINI TASK
+Nama Task: Pipeline Pemrosesan Pendapatan Bersih Proyek
 
-  1. Calculate the dog age in human years using the following formula: if the dog is
-  <= 2 years old, humanAge = 2 * dogAge. If the dog is > 2 years old,
-  humanAge = 16 + dogAge * 4
+Topik: Functional Array Methods, Chaining/Transformasi Data via .map(), & Penyaringan via .filter()
 
-  2. Exclude all dogs that are less than 18 human years old (which is the same as
-  keeping dogs that are at least 18 years old)
+Studi Kasus: Evaluasi Pendapatan Bersih Agensi PT. CAHAYA REMBULAN SEJATI
 
-  3. Calculate the average human age of all adult dogs (you should already know
-  from other challenges how we calculate averages 😉)
+1. Skenario Bisnis
+Tim Finansial PT. CAHAYA REMBULAN SEJATI memiliki daftar nominal pendapatan kotor (gross revenue) dari berbagai proyek yang masuk. Setiap pendapatan kotor tersebut harus dipotong pajak penghasilan operasional sebesar 10% untuk mendapatkan pendapatan bersih (net revenue).
 
-4. Run the function for both test datasets
+Setelah seluruh nilai dihitung menjadi pendapatan bersih, manajemen ingin memfilter dan hanya mengambil proyek-proyek dengan pendapatan bersih di atas Rp 5.000.000 (> 5000000) untuk dimasukkan ke dalam laporan proyek berkinerja tinggi (high-margin projects).
 
-Test data:
+2. Fitur & Instruksi Tugas
+Inisialisasi Data Pendapatan Kotor:
 
-§ Data 1: [5, 2, 4, 1, 15, 8, 3]
-§ Data 2: [16, 6, 10, 5, 6, 1, 4]
-GOOD LUCK 😀
-*/
+Deklarasikan array pendapatan kotor berikut:
 
-const [juliaData, kateData] = [
-  [5, 2, 4, 1, 15, 8, 3],
-  [16, 6, 10, 5, 6, 1, 4],
-];
+JavaScript
+const pendapatanKotor = [4000000, 7500000, 5000000, 12000000, 3500000, 8000000];
+Kalkulasi Pendapatan Bersih Menggunakan .map():
 
-const calcAverageHumanAge = function (ages) {
-  const humanAge = ages.map(function (dogAge) {
-    if (dogAge <= 2) {
-      return dogAge * 2;
-    } else {
-      return 16 + dogAge * 4;
-    }
-  });
+Gunakan array method .map() untuk menghitung nominal pendapatan bersih setelah dipotong pajak 10% (rumus: nilai * 0.9).
 
-  const adultDogs = humanAge.filter(age => age >= 18);
-  const totalDogsAge = adultDogs.reduce((acc, age) => acc + age, 0);
-  const avgDogsAge = totalDogsAge / adultDogs.length;
+Simpan hasilnya ke dalam variabel bernama pendapatanBersih.
 
-  console.log(humanAge);
-  console.log(adultDogs);
-  console.log(avgDogsAge);
+Penyaringan Proyek Bernilai Tinggi Menggunakan .filter():
+
+Gunakan array method .filter() pada array pendapatanBersih untuk menyaring nilai yang lebih besar dari 5.000.000 (nilai > 5000000).
+
+Simpan hasilnya ke dalam variabel bernama proyekPrioritas.
+
+Output Console:
+
+Cetak data awal, hasil transformasi .map(), dan hasil penyaringan .filter() ke console browser menggunakan Template Literals dengan format Rupiah toLocaleString('id-ID').
+
+3. Target Tampilan Output Console:
+Plaintext
+=== PIPELINE PENDAPATAN & PAJAK PROYEK ===
+Agensi : PT. CAHAYA REMBULAN SEJATI
+
+[1] Pendapatan Kotor Awal:
+Rp 4.000.000, Rp 7.500.000, Rp 5.000.000, Rp 12.000.000, Rp 3.500.000, Rp 8.000.000
+
+[2] Pendapatan Bersih (Setelah Potong Pajak 10%):
+Rp 3.600.000, Rp 6.750.000, Rp 4.500.000, Rp 10.800.000, Rp 3.150.000, Rp 7.200.000
+
+[3] Proyek Prioritas Bersih (> Rp 5.000.000):
+Rp 6.750.000, Rp 10.800.000, Rp 7.200.000
+==========================================
+ */
+const pendapatanKotor = [4000000, 7500000, 5000000, 12000000, 3500000, 8000000];
+
+const pendapatanBersih = pendapatanKotor.map(
+  pendapatan => pendapatan - pendapatan * 0.1,
+);
+console.log(pendapatanBersih);
+
+const proyekPrioritas = pendapatanBersih.filter(
+  pendapatan => pendapatan > 5000000,
+);
+
+console.log(proyekPrioritas);
+
+const formatArrayRupiah = arr =>
+  arr.map(el => `Rp ${el.toLocaleString('id-ID')}`).join(', ');
+
+const tampilkanDaftarProyek = function (
+  pendapatanKotor,
+  pendapatanBersih,
+  proyekPrioritas,
+  format,
+) {
+  console.log(
+    `=== PIPELINE PENDAPATAN & PAJAK PROYEK ===\n`,
+    `Agensi : PT. CAHAYA REMBULAN SEJATI\n\n`,
+    `[1] Pendapatan Kotor Awal :\n`,
+    `${format(pendapatanKotor)}\n\n`,
+    `[2] Pendapatan Bersih (Setelah Potong Pajak 10%) :\n`,
+    `${format(pendapatanBersih)}\n\n`,
+    `[3] Proyek Prioritas Bersih (> Rp 5.000.000) :\n`,
+    `${format(proyekPrioritas)}\n`,
+    `==========================================`,
+  );
 };
-
-calcAverageHumanAge(juliaData);
-calcAverageHumanAge(kateData);
-
-//CHALLANGE #3
-
-/*
-Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time
-as an arrow function, and using chaining!
-Test data:
-§ Data 1: [5, 2, 4, 1, 15, 8, 3]
-§ Data 2: [16, 6, 10, 5, 6, 1, 4]
-*/
-
-const [testData1, testData2] = [
-  [5, 2, 4, 1, 15, 8, 3],
-  [16, 6, 10, 5, 6, 1, 4],
-];
-
-const calcAverageHumanAge2 = function (ages) {
-  const humanAge = ages
-    .map(dogAge => (dogAge <= 2 ? dogAge * 2 : 16 + dogAge * 4))
-    .filter(dogAge => dogAge >= 18);
-
-  const average =
-    humanAge.reduce((acc, dogAge) => acc + dogAge, 0) / humanAge.length;
-
-  console.log(humanAge);
-  console.log(average);
-};
-
-calcAverageHumanAge2(testData1);
-calcAverageHumanAge2(testData2);
+tampilkanDaftarProyek(
+  pendapatanKotor,
+  pendapatanBersih,
+  proyekPrioritas,
+  formatArrayRupiah,
+);
