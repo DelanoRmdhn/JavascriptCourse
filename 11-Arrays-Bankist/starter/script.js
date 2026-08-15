@@ -54,3 +54,33 @@ const calcAverageHumanAge = function (ages) {
 
 calcAverageHumanAge(juliaData);
 calcAverageHumanAge(kateData);
+
+//CHALLANGE #3
+
+/*
+Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time
+as an arrow function, and using chaining!
+Test data:
+§ Data 1: [5, 2, 4, 1, 15, 8, 3]
+§ Data 2: [16, 6, 10, 5, 6, 1, 4]
+*/
+
+const [testData1, testData2] = [
+  [5, 2, 4, 1, 15, 8, 3],
+  [16, 6, 10, 5, 6, 1, 4],
+];
+
+const calcAverageHumanAge2 = function (ages) {
+  const humanAge = ages
+    .map(dogAge => (dogAge <= 2 ? dogAge * 2 : 16 + dogAge * 4))
+    .filter(dogAge => dogAge >= 18);
+
+  const average =
+    humanAge.reduce((acc, dogAge) => acc + dogAge, 0) / humanAge.length;
+
+  console.log(humanAge);
+  console.log(average);
+};
+
+calcAverageHumanAge2(testData1);
+calcAverageHumanAge2(testData2);
