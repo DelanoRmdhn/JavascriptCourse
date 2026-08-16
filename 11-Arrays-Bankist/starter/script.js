@@ -47,3 +47,69 @@ console.log(firstDeposit);
 
 const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 console.log(account);
+
+const soal1 = function () {
+  const movements = [200, -450, 3000, -650, -1300, 500];
+
+  const getFirstWithdrawal = movements.find(balance => balance < 0);
+  console.log(`Penarikan Pertama : ${getFirstWithdrawal}`);
+};
+
+soal1();
+
+const soal2 = function () {
+  const accounts = [
+    {
+      owner: 'Jonas Schmedtmann',
+      balance: 2500,
+      active: true,
+    },
+    {
+      owner: 'Jessica Davis',
+      balance: 12000,
+      active: false,
+    },
+    {
+      owner: 'Steven Williams',
+      balance: 8000,
+      active: true,
+    },
+    {
+      owner: 'Sarah Smith',
+      balance: 15000,
+      active: true,
+    },
+  ];
+
+  const account = accounts.find(
+    acc => acc.active === true && acc.balance >= 8000,
+  );
+
+  console.log(account.owner);
+  console.log(account.balance);
+};
+
+soal2();
+
+const soal3 = function () {
+  const accounts = [
+    {
+      owner: 'Jonas Schmedtmann',
+      movements: [200, 450, -400, 3000, -650],
+    },
+    {
+      owner: 'Jessica Davis',
+      movements: [5000, -2000, 3000, -1000],
+    },
+    {
+      owner: 'Steven Williams',
+      movements: [200, -100, 50, -20, 100],
+    },
+  ];
+
+  const get2000Withdrawal = accounts.find(acc =>
+    acc.movements.find(balance => balance === -2000),
+  );
+  console.log(get2000Withdrawal);
+};
+soal3();
