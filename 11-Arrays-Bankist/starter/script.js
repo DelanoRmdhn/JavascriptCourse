@@ -30,25 +30,109 @@ const account4 = {
   type: 'basic',
 };
 
-// const accounts = [account1, account2, account3, account4];
+const accounts = [account1, account2, account3, account4];
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-//3.findLast() & findLastIndex()
+//4. some() & every()
 
 /*
-  1. findLast() : sama seperti find() hanya saja dia mencari sebuah elemen array dari belakang.
-  2. findLastIndex() : sama seperti findIndex() hanya saja dia mulai dari belakang.
+  1. some() : difunakan untuk melakukan pengecekan apakah ada MINIMAL SATU elemen dalam array yang memenuhi kondisi. dia mengembalikan nilai true / false 
+  2. every() : digunakan untuk melakukan pengecekan apakah SEMUA elemen dalam array memenuhi kondisi. dia mengembalikan true / false
 */
 
-console.log(movements);
-const lastWithdrawal = movements.findLast(move => move < 0);
-console.log(lastWithdrawal);
+//CONTOH PENGGUNAAN SOME
+const anyDeposit = movements.some(move => move > 0);
+console.log(anyDeposit);
 
-const lastLargestMovementIndex = movements.findLastIndex(
-  move => Math.abs(move) > 1000,
-);
+//CONTOH PENGGUNAAN EVERY
+const depositOnly = account4.movements.every(move => move > 0);
+const withdrawalsOnly = account4.movements.every(move => move < 0);
 
-console.log(lastLargestMovementIndex);
-console.log(
-  `Your Lastest large Movements was ${movements.length - lastLargestMovementIndex} movements ago.`,
-);
+console.log(depositOnly);
+console.log(withdrawalsOnly);
+
+//LATIHAN SOAL
+
+const soal1Some = function () {
+  const movements2 = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+  const hasLargeWithdrawal = function (movements) {
+    return movements.some(move => move <= -500);
+  };
+  const answer = hasLargeWithdrawal(movements2);
+  console.log(`Apakah ada penarikan lebih dari 500 :`, answer);
+};
+soal1Some();
+
+const soal2Some = function () {
+  const accounts2 = [
+    {
+      owner: 'Jonas',
+      movements: [200, 450, -400],
+    },
+    {
+      owner: 'Jessica',
+      movements: [5000, -150],
+    },
+    {
+      owner: 'Steven',
+      movements: [200, -200, 340],
+    },
+    {
+      owner: 'Sarah',
+      movements: [430, 1000, 700],
+    },
+  ];
+
+  const hasRichAccount = function (accounts) {
+    return accounts.some(acc => {
+      const totalBalance = acc.movements.reduce((acc, move) => acc + move, 0);
+
+      return totalBalance > 4000;
+    });
+  };
+
+  console.log(hasRichAccount(accounts2));
+};
+
+soal2Some();
+
+const soal3Every = function () {
+  const movements = [200, 450, 3000, 1300];
+
+  const allDeposits = function (movements) {
+    return movements.every(move => move > 0);
+  };
+
+  console.log(allDeposits(movements));
+};
+
+soal3Every();
+
+const soal4Every = function () {
+  const accounts = [
+    {
+      owner: 'Jonas',
+      pin: 1111,
+      movements: [200, 450, -400],
+    },
+    {
+      owner: 'Jessica',
+      pin: 2222,
+      movements: [5000, -150],
+    },
+    {
+      owner: 'Steven',
+      pin: 3333,
+      movements: [200, -200, 340],
+    },
+  ];
+
+  const allAccountsHavePin = function (accounts) {
+    return accounts.every(acc => typeof acc.pin === 'number');
+  };
+
+  console.log(allAccountsHavePin(accounts));
+};
+
+soal4Every();
