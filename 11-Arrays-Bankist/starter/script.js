@@ -91,7 +91,66 @@ const login = function (e) {
     showAccountInformation(currentAccount);
   } else return;
 };
+btnLogin.addEventListener('click', login);
 
+//Fitur Transfer
+
+const transfer = function (e) {
+  e.preventDefault();
+
+  const inputDestinationAccount = inputTransferTo.value;
+  const transferAmount = Number(inputTransferAmount.value);
+
+  const destinationAccount = verifyUsername(inputDestinationAccount);
+  console.log(destinationAccount);
+
+  if (!destinationAccount) return;
+
+  //validate Transfer
+  const isValid = validateTransfer(
+    currentAccount,
+    destinationAccount,
+    transferAmount,
+  );
+
+  if (!isValid) return;
+  //lakukan transfer dan update UI
+  transferBalance(currentAccount, destinationAccount, transferAmount);
+  showAccountInformation(currentAccount);
+};
+
+btnTransfer.addEventListener('click', transfer);
+
+const validateTransfer = function (
+  account,
+  destinationAccount,
+  transferAmount,
+) {
+  //Dapatkan Jumlah Saldo currentAccoun
+  const currentBalance = calcCurrentBalance(account.movements);
+  console.log(currentBalance);
+
+  //Validasi berupa : transferAmount harus > 0, currentBalance > transferAmount & gaboleh transfer ke diri sendiri
+  return (
+    transferAmount > 0 &&
+    currentBalance >= transferAmount &&
+    destinationAccount.username !== account.username
+  );
+};
+
+const transferBalance = function (
+  currentAccount,
+  destinationAccount,
+  transferAmount,
+) {
+  currentAccount.movements.push(-transferAmount);
+
+  destinationAccount.movements.push(transferAmount);
+};
+
+const verifyUsername = function (inputUsername) {
+  return accounts.find(({ username }) => inputUsername === username);
+};
 const verifyUser = function (inputUsername, inputPin) {
   return accounts.find(
     acc => acc.username === inputUsername && acc.pin === Number(inputPin),
@@ -101,17 +160,24 @@ const verifyUser = function (inputUsername, inputPin) {
 const showAccountInformation = function (account) {
   //styling
   containerApp.style.opacity = 1;
+  inputLoginUsername.value = '';
+  inputLoginPin.value = '';
+  inputTransferTo.value = '';
+  inputTransferAmount.value = '';
   labelWelcome.textContent = `Good Afternoon, ${account.owner.split(' ')[0]}!`;
+
+  //displaying account Information
   displayTransactionHistory(account.movements);
-  calcCurrentBalance(account.movements);
+  const balance = calcCurrentBalance(account.movements);
+  labelBalance.textContent = `${balance}€`;
+
+  accountSummary(account);
 };
 
 //Tampilkan History Transaksi
 const displayTransactionHistory = function (movements) {
   //Kosongin Semua elemen yang membungkus class movements
   containerMovements.innerHTML = '';
-
-  console.log(movements);
 
   // tampilkan transaksi ke halaman
   movements.forEach(function (move, i) {
@@ -130,11 +196,24 @@ const displayTransactionHistory = function (movements) {
   });
 };
 
-//Tampilkan Saldo
+//Hitung & Tampilkan Saldo
 const calcCurrentBalance = function (movements) {
-  const balance = movements.reduce((acc, move) => acc + move, 0);
-
-  labelBalance.textContent = `${balance}€`;
+  return movements.reduce((acc, move) => acc + move, 0);
 };
 
-btnLogin.addEventListener('click', login);
+// Hitung & Tampilkan accountSummary
+const accountSummary = function (account) {
+  //incomes
+  const income = account.movements
+    .filter(balance => balance > 0)
+    .reduce((acc, balance) => acc + balance, 0);
+  labelSumIn.textContent = `${income}€`;
+
+  const outcome = account.movements
+    .filter(balance => balance < 0)
+    .reduce((acc, balance) => acc + balance);
+  labelSumOut.textContent = `${Math.abs(outcome)}€`;
+
+  const interest = income * (account.interestRate / 100);
+  labelSumInterest.textContent = `${interest}€`;
+};
