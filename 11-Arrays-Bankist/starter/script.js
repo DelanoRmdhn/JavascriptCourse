@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 'use strict';
 
 /////////////////////////////////////////////////
@@ -64,13 +62,58 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-//Tampilkan History Transaksi
+//GLOBAL VARIABLE
+let currentAccount;
+//Buat Username untuk tiap akun
+const generateUsernames = function (accounts) {
+  accounts.forEach(function (account) {
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map(char => char[0])
+      .join('');
+  });
+};
 
+generateUsernames(accounts);
+//Fitur Login
+const login = function (e) {
+  e.preventDefault();
+  //get value
+  const username = inputLoginUsername.value;
+  const pin = inputLoginPin.value;
+
+  //verifikasi username dan pin
+  currentAccount = verifyUser(username, pin);
+
+  //Tampilkan Informasi Informasi Akun
+  if (currentAccount) {
+    showAccountInformation(currentAccount);
+  } else return;
+};
+
+const verifyUser = function (inputUsername, inputPin) {
+  return accounts.find(
+    acc => acc.username === inputUsername && acc.pin === Number(inputPin),
+  );
+};
+
+const showAccountInformation = function (account) {
+  //styling
+  containerApp.style.opacity = 1;
+  labelWelcome.textContent = `Good Afternoon, ${account.owner.split(' ')[0]}!`;
+  displayTransactionHistory(account.movements);
+  calcCurrentBalance(account.movements);
+};
+
+//Tampilkan History Transaksi
 const displayTransactionHistory = function (movements) {
   //Kosongin Semua elemen yang membungkus class movements
   containerMovements.innerHTML = '';
 
-  //tampilkan transaksi ke halaman
+  console.log(movements);
+
+  // tampilkan transaksi ke halaman
   movements.forEach(function (move, i) {
     //1. pisahkan tipe transaksi
     const transactionType = move >= 0 ? 'deposit' : 'withdrawal';
@@ -87,33 +130,11 @@ const displayTransactionHistory = function (movements) {
   });
 };
 
-const generateUsernames = function (accounts) {
-  accounts.forEach(function (account) {
-    account.username = account.owner
-      .toLowerCase()
-      .split(' ')
-      .map(char => char[0])
-      .join('');
-  });
-};
-
-const showBalance = function (account) {
-  const balance = account
-    .filter(balance => balance >= 0)
-    .reduce((acc, balance) => acc + balance, 0);
+//Tampilkan Saldo
+const calcCurrentBalance = function (movements) {
+  const balance = movements.reduce((acc, move) => acc + move, 0);
 
   labelBalance.textContent = `${balance}€`;
-  console.log(balance);
 };
 
-displayTransactionHistory(accounts[0].movements);
-generateUsernames(accounts);
-showBalance(account1.movements);
-
-const getMaxValue = account1.movements.reduce(function (acc, balance) {
-  if (acc > balance) return acc;
-  else return balance;
-}, account1.movements[0]);
-
-console.log(getMaxValue);
->>>>>>> Day17
+btnLogin.addEventListener('click', login);
