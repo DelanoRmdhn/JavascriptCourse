@@ -1,105 +1,68 @@
 'use strict';
 
 /*
+SPECIFICATION: MINI TASK
+Nama Task: One-Liner Method Chaining Financial Pipeline
 
-This time, Julia and Kate are studying the activity levels of different dog breeds.
+Topik: Functional Programming, Method Chaining (.map(), .filter(), .reduce()), & Clean Pipeline
 
-YOUR TASKS:
-1. Store the the average weight of a "Husky" in a variable "huskyWeight"
+Studi Kasus: Agregasi Total Pendapatan Bersih Proyek Prioritas PT. CAHAYA REMBULAN SEJATI
 
-2. Find the name of the only breed that likes both "running" and "fetch" ("dogBothActivities" variable)
+1. Skenario Bisnis
+Manajemen PT. CAHAYA REMBULAN SEJATI ingin menyederhanakan kode pelaporan keuangan agar lebih deklaratif dan ringkas tanpa variabel perantara yang berulang.
 
-3. Create an array "allActivities" of all the activities of all the dog breeds
+Kamu diminta memproses array pendapatan kotor dari beberapa proyek sekaligus menjadi satu angka total pendapatan bersih akhir (Single Accumulated Value) menggunakan teknik Method Chaining dalam satu baris ekspresi pipa data (data pipeline).
 
-4. Create an array "uniqueActivities" that contains only the unique activities (no activity repetitions). HINT: Use a technique with a special data structure that we studied a few sections ago.
+2. Data Input
+Gunakan array data pendapatan kotor berikut:
 
-5. Many dog breeds like to swim. What other activities do these dogs like? Store all the OTHER activities these breeds like to do, in a unique array called "swimmingAdjacent".
+JavaScript
+const pendapatanKotor = [4000000, 7500000, 5000000, 12000000, 3500000, 8000000];
+3. Fitur & Instruksi Tugas
+Pipeline Chaining:
 
-6. Do all the breeds have an average weight of 10kg or more? Log to the console whether "true" or "false".
+Buat satu variabel bernama totalNetRevenuePrioritas.
 
-7. Are there any breeds that are "active"? "Active" means that the dog has 3 or more activities. Log to the console whether "true" or "false".
+Sambungkan ketiga array methods secara berurutan (chaining):
 
-BONUS: What's the average weight of the heaviest breed that likes to fetch? HINT: Use the "Math.max" method along with the ... operator
+.map(): Potong pajak operasional sebesar 10% dari setiap pendapatan kotor (nilai * 0.9).
+
+.filter(): Saring hanya pendapatan bersih yang lebih besar dari Rp 5.000.000 (nilai > 5000000).
+
+.reduce(): Jumlahkan seluruh nilai yang lolos filter dengan nilai awal akumulator 0.
+
+Fungsi Pelaporan:
+
+Buat fungsi tampilkanLaporanRingkas() untuk mencetak hasil kalkulasi ke konsol.
+
+Format angka akhir menggunakan format mata uang Rupiah (toLocaleString('id-ID')).
+
+4. Target Tampilan Output Console:
+Plaintext
+=== FINANCIAL ONE-LINER PIPELINE ===
+Agensi : PT. CAHAYA REMBULAN SEJATI
+
+Total Net Revenue Prioritas : Rp 24.750.000
+====================================
+Status Pipeline: Chaining Execution Success
 */
-const breeds = [
-  {
-    breed: 'German Shepherd',
-    averageWeight: 32,
-    activities: ['fetch', 'swimming'],
-  },
-  {
-    breed: 'Dalmatian',
-    averageWeight: 24,
-    activities: ['running', 'fetch', 'agility'],
-  },
-  {
-    breed: 'Labrador',
-    averageWeight: 28,
-    activities: ['swimming', 'fetch'],
-  },
-  {
-    breed: 'Beagle',
-    averageWeight: 12,
-    activities: ['digging', 'fetch'],
-  },
-  {
-    breed: 'Husky',
-    averageWeight: 26,
-    activities: ['running', 'agility', 'swimming'],
-  },
-  {
-    breed: 'Bulldog',
-    averageWeight: 36,
-    activities: ['sleeping'],
-  },
-  {
-    breed: 'Poodle',
-    averageWeight: 18,
-    activities: ['agility', 'fetch'],
-  },
-];
+const pendapatanKotor = [4000000, 7500000, 5000000, 12000000, 3500000, 8000000];
 
-//1.
-const huskyWeight = breeds.find(({ breed }) => breed === 'Husky').averageWeight;
-console.log(huskyWeight);
+const totalNetRevenuePrioritas = pendapatanKotor
+  .map(pendapatan => pendapatan * 0.9)
+  .filter(pendapatan => pendapatan > 5000000)
+  .reduce((acc, pendapatan) => acc + pendapatan, 0);
 
-//2.
-const dogBothActivities = breeds.find(
-  breed =>
-    breed.activities.includes('fetch') && breed.activities.includes('running'),
-).breed;
-console.log(dogBothActivities);
+console.log(totalNetRevenuePrioritas);
 
-//3.
-const allActivities = breeds.flatMap(({ activities }) => activities);
-console.log(allActivities);
+const tampilkanLaporanRingkas = function () {
+  console.log(
+    `=== FINANCIAL ONE-LINER PIPELINE ===\n` +
+      `Agensi : PT. CAHAYA REMBULAN SEJATI\n\n` +
+      `Total Net Revenue Prioritas : Rp ${totalNetRevenuePrioritas.toLocaleString('id-ID')}\n` +
+      `====================================\n` +
+      `Status Pipeline: Chaining Execution Success`,
+  );
+};
 
-//4.
-const uniqueActivities = [...new Set(allActivities)];
-console.log(uniqueActivities);
-
-//5.
-const swimmingAdjacent = [
-  ...new Set(
-    breeds
-      .filter(breed => breed.activities.includes('swimming'))
-      .flatMap(breed => breed.activities)
-      .filter(activity => activity !== 'swimming'),
-  ),
-];
-console.log(swimmingAdjacent);
-
-//6.
-console.log(breeds.every(({ averageWeight }) => averageWeight > 10));
-
-//7.
-console.log(breeds.some(({ activities }) => activities.length >= 3));
-
-//BONUS
-const fetchWeights = breeds
-  .filter(breed => breed.activities.includes('fetch'))
-  .map(breed => breed.averageWeight);
-const heaviestFetchBreed = Math.max(...fetchWeights);
-
-console.log(fetchWeights);
-console.log(heaviestFetchBreed);
+tampilkanLaporanRingkas();
