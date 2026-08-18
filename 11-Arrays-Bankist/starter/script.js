@@ -35,25 +35,35 @@ const account4 = {
 };
 
 const accounts = [account1, account2, account3, account4];
-//5. Flat() & FlatMap();
 
-/*
-  Flat() : digunakan untuk meratakan sebuah Nested array.
-  FlatMap() : gabungan antara method flat dan map. hanya saja kedalaman yang biisa dicapai cuma satu tingkatan saja.
-  */
+//SORT :
 
-const numbers = [[1, 2, 3, 4], [5, 6, 7, 8], 9, 10, [11]];
-console.log(numbers.flat(1));
+//Perilaku jika elemen sebuah array adalah string :
+const friends = [
+  'Fairuz',
+  'Farrel',
+  'Ezra',
+  'Tiansen',
+  'Airlangga',
+  'Bimo',
+  'Bahlil',
+];
+console.log(friends);
+//bentuk sort default A-Z
+console.log(friends.sort());
 
-//FLATMAP
-const getAllBalance = accounts
-  .map(({ movements }) => movements)
-  .flat(1)
-  .reduce((acc, balance) => acc + balance, 0);
-console.log(`All Balance Combine :`, getAllBalance);
+//bentuk sort format Z-A
+console.log(friends.sort((a, b) => b.localeCompare(a)));
 
-//FLATMAP
-const getTotalWithdrawal = accounts
-  .flatMap(({ movements }) => movements.filter(mov => mov < 0))
-  .reduce((acc, balance) => acc + Math.abs(balance), 0);
-console.log(`All Withdrawals : `, getTotalWithdrawal);
+//Perilaku jika elemen sebuah array adalah number :
+const movements = [200, 450, -400, 3000, -650, -130, 1300, 70, 1300];
+
+console.log(movements);
+
+//Sort dari paling kecil ke paling besar (ascending)
+console.log(movements.sort((a, b) => a - b));
+
+//Sort dari paling besaar ke paling kecil (descending)
+console.log(movements.sort((a, b) => b - a));
+
+//JIKA RETURN VALUE NYA 0, POSISI DIA GA BERUBAH
