@@ -1,97 +1,105 @@
 'use strict';
 
-//MINI TASK Day 17 : manipulasi data finansial menggunakan kombinasi metode array modern .map() dan .filter().
+/*
 
-/**
- Berikut adalah Spesifikasi Soal Praktikum Mandiri untuk Mini Task manipulasi data finansial menggunakan kombinasi metode array modern .map() dan .filter().
+This time, Julia and Kate are studying the activity levels of different dog breeds.
 
-SPECIFICATION: MINI TASK
-Nama Task: Pipeline Pemrosesan Pendapatan Bersih Proyek
+YOUR TASKS:
+1. Store the the average weight of a "Husky" in a variable "huskyWeight"
 
-Topik: Functional Array Methods, Chaining/Transformasi Data via .map(), & Penyaringan via .filter()
+2. Find the name of the only breed that likes both "running" and "fetch" ("dogBothActivities" variable)
 
-Studi Kasus: Evaluasi Pendapatan Bersih Agensi PT. CAHAYA REMBULAN SEJATI
+3. Create an array "allActivities" of all the activities of all the dog breeds
 
-1. Skenario Bisnis
-Tim Finansial PT. CAHAYA REMBULAN SEJATI memiliki daftar nominal pendapatan kotor (gross revenue) dari berbagai proyek yang masuk. Setiap pendapatan kotor tersebut harus dipotong pajak penghasilan operasional sebesar 10% untuk mendapatkan pendapatan bersih (net revenue).
+4. Create an array "uniqueActivities" that contains only the unique activities (no activity repetitions). HINT: Use a technique with a special data structure that we studied a few sections ago.
 
-Setelah seluruh nilai dihitung menjadi pendapatan bersih, manajemen ingin memfilter dan hanya mengambil proyek-proyek dengan pendapatan bersih di atas Rp 5.000.000 (> 5000000) untuk dimasukkan ke dalam laporan proyek berkinerja tinggi (high-margin projects).
+5. Many dog breeds like to swim. What other activities do these dogs like? Store all the OTHER activities these breeds like to do, in a unique array called "swimmingAdjacent".
 
-2. Fitur & Instruksi Tugas
-Inisialisasi Data Pendapatan Kotor:
+6. Do all the breeds have an average weight of 10kg or more? Log to the console whether "true" or "false".
 
-Deklarasikan array pendapatan kotor berikut:
+7. Are there any breeds that are "active"? "Active" means that the dog has 3 or more activities. Log to the console whether "true" or "false".
 
-JavaScript
-const pendapatanKotor = [4000000, 7500000, 5000000, 12000000, 3500000, 8000000];
-Kalkulasi Pendapatan Bersih Menggunakan .map():
+BONUS: What's the average weight of the heaviest breed that likes to fetch? HINT: Use the "Math.max" method along with the ... operator
+*/
+const breeds = [
+  {
+    breed: 'German Shepherd',
+    averageWeight: 32,
+    activities: ['fetch', 'swimming'],
+  },
+  {
+    breed: 'Dalmatian',
+    averageWeight: 24,
+    activities: ['running', 'fetch', 'agility'],
+  },
+  {
+    breed: 'Labrador',
+    averageWeight: 28,
+    activities: ['swimming', 'fetch'],
+  },
+  {
+    breed: 'Beagle',
+    averageWeight: 12,
+    activities: ['digging', 'fetch'],
+  },
+  {
+    breed: 'Husky',
+    averageWeight: 26,
+    activities: ['running', 'agility', 'swimming'],
+  },
+  {
+    breed: 'Bulldog',
+    averageWeight: 36,
+    activities: ['sleeping'],
+  },
+  {
+    breed: 'Poodle',
+    averageWeight: 18,
+    activities: ['agility', 'fetch'],
+  },
+];
 
-Gunakan array method .map() untuk menghitung nominal pendapatan bersih setelah dipotong pajak 10% (rumus: nilai * 0.9).
+//1.
+const huskyWeight = breeds.find(({ breed }) => breed === 'Husky').averageWeight;
+console.log(huskyWeight);
 
-Simpan hasilnya ke dalam variabel bernama pendapatanBersih.
+//2.
+const dogBothActivities = breeds.find(
+  breed =>
+    breed.activities.includes('fetch') && breed.activities.includes('running'),
+).breed;
+console.log(dogBothActivities);
 
-Penyaringan Proyek Bernilai Tinggi Menggunakan .filter():
+//3.
+const allActivities = breeds.flatMap(({ activities }) => activities);
+console.log(allActivities);
 
-Gunakan array method .filter() pada array pendapatanBersih untuk menyaring nilai yang lebih besar dari 5.000.000 (nilai > 5000000).
+//4.
+const uniqueActivities = [...new Set(allActivities)];
+console.log(uniqueActivities);
 
-Simpan hasilnya ke dalam variabel bernama proyekPrioritas.
+//5.
+const swimmingAdjacent = [
+  ...new Set(
+    breeds
+      .filter(breed => breed.activities.includes('swimming'))
+      .flatMap(breed => breed.activities)
+      .filter(activity => activity !== 'swimming'),
+  ),
+];
+console.log(swimmingAdjacent);
 
-Output Console:
+//6.
+console.log(breeds.every(({ averageWeight }) => averageWeight > 10));
 
-Cetak data awal, hasil transformasi .map(), dan hasil penyaringan .filter() ke console browser menggunakan Template Literals dengan format Rupiah toLocaleString('id-ID').
+//7.
+console.log(breeds.some(({ activities }) => activities.length >= 3));
 
-3. Target Tampilan Output Console:
-Plaintext
-=== PIPELINE PENDAPATAN & PAJAK PROYEK ===
-Agensi : PT. CAHAYA REMBULAN SEJATI
+//BONUS
+const fetchWeights = breeds
+  .filter(breed => breed.activities.includes('fetch'))
+  .map(breed => breed.averageWeight);
+const heaviestFetchBreed = Math.max(...fetchWeights);
 
-[1] Pendapatan Kotor Awal:
-Rp 4.000.000, Rp 7.500.000, Rp 5.000.000, Rp 12.000.000, Rp 3.500.000, Rp 8.000.000
-
-[2] Pendapatan Bersih (Setelah Potong Pajak 10%):
-Rp 3.600.000, Rp 6.750.000, Rp 4.500.000, Rp 10.800.000, Rp 3.150.000, Rp 7.200.000
-
-[3] Proyek Prioritas Bersih (> Rp 5.000.000):
-Rp 6.750.000, Rp 10.800.000, Rp 7.200.000
-==========================================
- */
-const pendapatanKotor = [4000000, 7500000, 5000000, 12000000, 3500000, 8000000];
-
-const pendapatanBersih = pendapatanKotor.map(
-  pendapatan => pendapatan - pendapatan * 0.1,
-);
-console.log(pendapatanBersih);
-
-const proyekPrioritas = pendapatanBersih.filter(
-  pendapatan => pendapatan > 5000000,
-);
-
-console.log(proyekPrioritas);
-
-const formatArrayRupiah = arr =>
-  arr.map(el => `Rp ${el.toLocaleString('id-ID')}`).join(', ');
-
-const tampilkanDaftarProyek = function (
-  pendapatanKotor,
-  pendapatanBersih,
-  proyekPrioritas,
-  format,
-) {
-  console.log(
-    `=== PIPELINE PENDAPATAN & PAJAK PROYEK ===\n`,
-    `Agensi : PT. CAHAYA REMBULAN SEJATI\n\n`,
-    `[1] Pendapatan Kotor Awal :\n`,
-    `${format(pendapatanKotor)}\n\n`,
-    `[2] Pendapatan Bersih (Setelah Potong Pajak 10%) :\n`,
-    `${format(pendapatanBersih)}\n\n`,
-    `[3] Proyek Prioritas Bersih (> Rp 5.000.000) :\n`,
-    `${format(proyekPrioritas)}\n`,
-    `==========================================`,
-  );
-};
-tampilkanDaftarProyek(
-  pendapatanKotor,
-  pendapatanBersih,
-  proyekPrioritas,
-  formatArrayRupiah,
-);
+console.log(fetchWeights);
+console.log(heaviestFetchBreed);
