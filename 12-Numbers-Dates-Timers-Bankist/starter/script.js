@@ -51,7 +51,6 @@ const account2 = {
 
 const accounts = [account1, account2];
 
-/////////////////////////////////////////////////
 // Elements
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
@@ -78,176 +77,219 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-/////////////////////////////////////////////////
-// Functions
+//GLOBAL VARIABLE
+let currentAccount;
+let sorted = false;
 
-const displayMovements = function (movements, sort = false) {
-  containerMovements.innerHTML = '';
-
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
-
-  movs.forEach(function (mov, i) {
-    const type = mov > 0 ? 'deposit' : 'withdrawal';
-
-    const html = `
-      <div class="movements__row">
-        <div class="movements__type movements__type--${type}">${
-      i + 1
-    } ${type}</div>
-        <div class="movements__value">${mov}€</div>
-      </div>
-    `;
-
-    containerMovements.insertAdjacentHTML('afterbegin', html);
-  });
-};
-
-const calcDisplayBalance = function (acc) {
-  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance}€`;
-};
-
-const calcDisplaySummary = function (acc) {
-  const incomes = acc.movements
-    .filter(mov => mov > 0)
-    .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes}€`;
-
-  const out = acc.movements
-    .filter(mov => mov < 0)
-    .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
-
-  const interest = acc.movements
-    .filter(mov => mov > 0)
-    .map(deposit => (deposit * acc.interestRate) / 100)
-    .filter((int, i, arr) => {
-      // console.log(arr);
-      return int >= 1;
-    })
-    .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
-};
-
-const createUsernames = function (accs) {
-  accs.forEach(function (acc) {
-    acc.username = acc.owner
+//Buat Username untuk tiap akun
+const generateUsernames = function (accounts) {
+  accounts.forEach(function (account) {
+    account.username = account.owner
       .toLowerCase()
       .split(' ')
-      .map(name => name[0])
+      .map(char => char[0])
       .join('');
   });
 };
-createUsernames(accounts);
 
-const updateUI = function (acc) {
-  // Display movements
-  displayMovements(acc.movements);
+generateUsernames(accounts);
 
-  // Display balance
-  calcDisplayBalance(acc);
+//Fitur Login
+const login = function (e) {
+  e.preventDefault();
+  //get value
+  const username = inputLoginUsername.value;
+  const pin = inputLoginPin.value;
 
-  // Display summary
-  calcDisplaySummary(acc);
+  //verifikasi username dan pin
+  currentAccount = verifyUser(username, pin);
+
+  //Tampilkan Informasi Informasi Akun
+  if (currentAccount) {
+    showAccountInformation(currentAccount);
+  } else return;
+};
+btnLogin.addEventListener('click', login);
+
+//Fitur Transfer
+const transfer = function (e) {
+  e.preventDefault();
+
+  const inputDestinationAccount = inputTransferTo.value;
+  const transferAmount = Number(inputTransferAmount.value);
+
+  const destinationAccount = verifyUsername(inputDestinationAccount);
+  console.log(destinationAccount);
+
+  if (!destinationAccount) return;
+
+  //validate Transfer
+  const isValid = validateTransfer(
+    currentAccount,
+    destinationAccount,
+    transferAmount,
+  );
+
+  if (!isValid) return;
+  //lakukan transfer dan update UI
+  transferBalance(currentAccount, destinationAccount, transferAmount);
+  showAccountInformation(currentAccount);
 };
 
-///////////////////////////////////////
-// Event handlers
-let currentAccount;
+btnTransfer.addEventListener('click', transfer);
 
-btnLogin.addEventListener('click', function (e) {
-  // Prevent form from submitting
+//Fitur Loan
+const loan = function (e) {
   e.preventDefault();
 
-  currentAccount = accounts.find(
-    acc => acc.username === inputLoginUsername.value
+  const loanAmount = Number(inputLoanAmount.value);
+
+  const loanApproved = currentAccount.movements.some(
+    movement => movement >= loanAmount * 0.1,
   );
-  console.log(currentAccount);
 
-  if (currentAccount?.pin === Number(inputLoginPin.value)) {
-    // Display UI and message
-    labelWelcome.textContent = `Welcome back, ${
-      currentAccount.owner.split(' ')[0]
-    }`;
-    containerApp.style.opacity = 100;
-
-    // Clear input fields
-    inputLoginUsername.value = inputLoginPin.value = '';
-    inputLoginPin.blur();
-
-    // Update UI
-    updateUI(currentAccount);
+  if (loanAmount > 0 && loanApproved) {
+    currentAccount.movements.push(loanAmount);
+    showAccountInformation(currentAccount);
   }
-});
+};
 
-btnTransfer.addEventListener('click', function (e) {
+btnLoan.addEventListener('click', loan);
+
+//Fitur Tutup Account
+const closeAccount = function (e) {
   e.preventDefault();
-  const amount = Number(inputTransferAmount.value);
-  const receiverAcc = accounts.find(
-    acc => acc.username === inputTransferTo.value
-  );
-  inputTransferAmount.value = inputTransferTo.value = '';
+
+  const inputUsername = inputCloseUsername.value;
+  const inputPin = inputClosePin.value;
 
   if (
-    amount > 0 &&
-    receiverAcc &&
-    currentAccount.balance >= amount &&
-    receiverAcc?.username !== currentAccount.username
+    verifyUser(inputUsername, inputPin) &&
+    currentAccount.username === inputUsername
   ) {
-    // Doing the transfer
-    currentAccount.movements.push(-amount);
-    receiverAcc.movements.push(amount);
+    const getIndex = accounts.findIndex(acc => acc.username === inputUsername);
 
-    // Update UI
-    updateUI(currentAccount);
-  }
-});
+    accounts.splice(getIndex, 1);
+    currentAccount = null;
 
-btnLoan.addEventListener('click', function (e) {
-  e.preventDefault();
-
-  const amount = Number(inputLoanAmount.value);
-
-  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add movement
-    currentAccount.movements.push(amount);
-
-    // Update UI
-    updateUI(currentAccount);
-  }
-  inputLoanAmount.value = '';
-});
-
-btnClose.addEventListener('click', function (e) {
-  e.preventDefault();
-
-  if (
-    inputCloseUsername.value === currentAccount.username &&
-    Number(inputClosePin.value) === currentAccount.pin
-  ) {
-    const index = accounts.findIndex(
-      acc => acc.username === currentAccount.username
-    );
-    console.log(index);
-    // .indexOf(23)
-
-    // Delete account
-    accounts.splice(index, 1);
-
-    // Hide UI
     containerApp.style.opacity = 0;
+    inputClosePin.value = '';
+    inputCloseUsername.value = '';
+    labelWelcome.textContent = `Log in to get started`;
   }
+};
 
-  inputCloseUsername.value = inputClosePin.value = '';
-});
+btnClose.addEventListener('click', closeAccount);
 
-let sorted = false;
-btnSort.addEventListener('click', function (e) {
-  e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
-  sorted = !sorted;
-});
+//FITUR SORT
+const sort = function (e) {
+  if (!sorted) {
+    displayTransactionHistory(
+      [...currentAccount.movements].sort((a, b) => a - b),
+    );
+    sorted = true;
+  } else {
+    displayTransactionHistory(currentAccount.movements);
+    sorted = false;
+  }
+};
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
+btnSort.addEventListener('click', sort);
+
+//HELPER FUNCTION
+const validateTransfer = function (
+  account,
+  destinationAccount,
+  transferAmount,
+) {
+  //Dapatkan Jumlah Saldo currentAccoun
+  const currentBalance = calcCurrentBalance(account.movements);
+  console.log(currentBalance);
+
+  //Validasi berupa : transferAmount harus > 0, currentBalance > transferAmount & gaboleh transfer ke diri sendiri
+  return (
+    transferAmount > 0 &&
+    currentBalance >= transferAmount &&
+    destinationAccount.username !== account.username
+  );
+};
+
+const transferBalance = function (
+  currentAccount,
+  destinationAccount,
+  transferAmount,
+) {
+  currentAccount.movements.push(-transferAmount);
+
+  destinationAccount.movements.push(transferAmount);
+};
+
+const verifyUsername = function (inputUsername) {
+  return accounts.find(({ username }) => inputUsername === username);
+};
+const verifyUser = function (inputUsername, inputPin) {
+  return accounts.find(
+    acc => acc.username === inputUsername && acc.pin === Number(inputPin),
+  );
+};
+
+const showAccountInformation = function (account) {
+  //styling
+  containerApp.style.opacity = 1;
+  inputLoginUsername.value = '';
+  inputLoginPin.value = '';
+  inputTransferTo.value = '';
+  inputTransferAmount.value = '';
+  labelWelcome.textContent = `Good Afternoon, ${account.owner.split(' ')[0]}!`;
+
+  //displaying account Information
+  displayTransactionHistory(account.movements);
+  const balance = calcCurrentBalance(account.movements);
+  labelBalance.textContent = `${balance}€`;
+
+  accountSummary(account);
+};
+
+//Tampilkan History Transaksi
+const displayTransactionHistory = function (movements) {
+  //Kosongin Semua elemen yang membungkus class movements
+  containerMovements.innerHTML = '';
+
+  // tampilkan transaksi ke halaman
+  movements.forEach(function (move, i) {
+    //1. pisahkan tipe transaksi
+    const transactionType = move >= 0 ? 'deposit' : 'withdrawal';
+    //2. tag HTML yang mau dimanipulasi & menampilkan value sesuai tipe transaksi
+    const displayMovement = `
+    <div class="movements__row">
+    <div class="movements__type movements__type--${transactionType}">${i + 1} ${transactionType.toUpperCase()}</div>
+    <div class="movements__value">${move}</div>
+    </div>
+    `;
+
+    //3. Masukin hasil manipulasi ke containerMovements agar tampil pada halaman
+    containerMovements.insertAdjacentHTML('afterbegin', displayMovement);
+  });
+};
+
+//Hitung & Tampilkan Saldo
+const calcCurrentBalance = function (movements) {
+  return movements.reduce((acc, move) => acc + move, 0);
+};
+
+// Hitung & Tampilkan accountSummary
+const accountSummary = function (account) {
+  //incomes
+  const income = account.movements
+    .filter(balance => balance > 0)
+    .reduce((acc, balance) => acc + balance, 0);
+  labelSumIn.textContent = `${income}€`;
+
+  const outcome = account.movements
+    .filter(balance => balance < 0)
+    .reduce((acc, balance) => acc + balance);
+  labelSumOut.textContent = `${Math.abs(outcome)}€`;
+
+  const interest = income * (account.interestRate / 100);
+  labelSumInterest.textContent = `${interest}€`;
+};
