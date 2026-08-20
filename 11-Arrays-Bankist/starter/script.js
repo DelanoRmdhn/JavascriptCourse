@@ -1,113 +1,66 @@
 'use strict';
 
-/* 
-Julia and Kate are still studying dogs. This time they are want to figure out if the dogs in their are eating too much or too little food.
+/*
+1. Skenario Bisnis
+Tim Sales & Estimator dari PT. CAHAYA REMBULAN SEJATI memiliki daftar nominal penawaran harga proyek yang masuk secara acak. Tim membutuhkan daftar penawaran tersebut terurut mulai dari harga termurah hingga termahal (Ascending Order).
 
-- Formula for calculating recommended food portion: recommendedFood = weight ** 0.75 * 28. (The result is in grams of food, and the weight needs to be in kg)
-- Eating too much means the dog's current food portion is larger than the recommended portion, and eating too little is the opposite.
-- Eating an okay amount means the dog's current food portion is within a range 10% above and below the recommended portion (see hint).
+Untuk menjaga integritas data riwayat transaksi, proses pengurutan ini dilarang mengubah (mutate) urutan pada array data asli. Oleh karena itu, kamu diwajibkan menggunakan method modern JavaScript .toSorted() (ES2023).
 
-YOUR TASKS:
-1. Loop over the array containing dog objects, and for each dog, calculate the recommended food portion (recFood) and add it to the object as a new property. Do NOT create a new array, simply loop over the array (We never did this before, so think about how you can do this without creating a new array).
+2. Data Input
+Gunakan array data penawaran harga proyek berikut:
 
-2. Find Sarah's dog and log to the console whether it's eating too much or too little. HINT: Some dogs have multiple users, so you first need to find Sarah in the owners array, and so this one is a bit tricky (on purpose) 🤓
+JavaScript
+const daftarHargaProyek = [15000000, 4500000, 28000000, 8500000, 12000000, 6000000];
+3. Fitur & Instruksi Tugas
+Pengurutan Non-Destructive (.toSorted()):
 
-3. Create an array containing all owners of dogs who eat too much (ownersTooMuch) and an array with all owners of dogs who eat too little (ownersTooLittle).
+Buat variabel baru bernama hargaTerurutTermurah.
 
-4. Log a string to the console for each array created in 3., like this: "Matilda and Alice and Bob's dogs eat too much!" and "Sarah and John and Michael's dogs eat too little!"
+Gunakan method .toSorted() dengan compare function numerik (a, b) => a - b agar nilai terurut dari yang terkecil ke terbesar.
 
-5. Log to the console whether there is ANY dog eating EXACTLY the amount of food that is recommended (just true or false)
+Verifikasi Immutability:
 
-6. Log to the console whether ALL of the dogs are eating an OKAY amount of food (just true or false)
+Buktikan bahwa array awal daftarHargaProyek tidak berubah urutannya setelah operasi selesai dilakukan.
 
-7. Create an array containing the dogs that are eating an OKAY amount of food (try to reuse the condition used in 6.)
+Fungsi Helper Formatter:
 
-8. Group the dogs into the following 3 groups: 'exact', 'too-much' and 'too-little', based on whether they are eating too much, too little or the exact amount of food, based on the recommended food portion.
+Buat fungsi helper (misal: formatRupiahList) untuk mengubah elemen array angka menjadi format string Rupiah (Rp X.XXX.XXX) yang digabungkan dengan koma menggunakan .map() dan .join(', ').
 
-9. Group the dogs by the number of owners they have
+Output Console:
 
-10. Sort the dogs array by recommended food portion in an ascending order. Make sure to NOT mutate the original array!
+Cetak data awal yang belum terurut dan data hasil pengurutan termurah ke console browser sesuai format yang ditentukan.
 
-HINT 1: Use many different tools to solve these challenges, you can use the summary lecture to choose between them 😉
-HINT 2: Being within a range 10% above and below the recommended portion means: current > (recommended * 0.90) && current < (recommended * 1.10). Basically, the current portion should be between 90% and 110% of the recommended portion.
+4. Target Tampilan Output Console:
+Plaintext
+=== NON-DESTRUCTIVE PRICE SORTING ENGINE ===
+Agensi : PT. CAHAYA REMBULAN SEJATI
 
-TEST DATA:
-const dogs = [
-  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
-  { weight: 8, curFood: 200, owners: ['Matilda'] },
-  { weight: 13, curFood: 275, owners: ['Sarah', 'John', 'Leo'] },
-  { weight: 18, curFood: 244, owners: ['Joe'] },
-  { weight: 32, curFood: 340, owners: ['Michael'] },
-];
+[1] Data Asli (Urutan Kedatangan):
+Rp 15.000.000, Rp 4.500.000, Rp 28.000.000, Rp 8.500.000, Rp 12.000.000, Rp 6.000.000
 
-GOOD LUCK 😀
+[2] Data Terurut (Termurah -> Termahal):
+Rp 4.500.000, Rp 6.000.000, Rp 8.500.000, Rp 12.000.000, Rp 15.000.000, Rp 28.000.000
+
+============================================
+Immutability Check : PASSED (Array Asli Tidak Berubah)
 */
-const dogs = [
-  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
-  { weight: 8, curFood: 200, owners: ['Matilda'] },
-  { weight: 13, curFood: 275, owners: ['Sarah', 'John', 'Leo'] },
-  { weight: 18, curFood: 244, owners: ['Joe'] },
-  { weight: 32, curFood: 340, owners: ['Michael'] },
+
+const daftarHargaProyek = [
+  15000000, 4500000, 28000000, 8500000, 12000000, 6000000,
 ];
 
-//soal 1
-dogs.forEach(dog => {
-  dog.recFood = Math.floor(dog.weight ** 0.75 * 28);
-});
-console.log(dogs);
+const hargaTerurutTermurah = daftarHargaProyek.toSorted((a, b) => a - b);
 
-//soal2
-const sarahDog = dogs.find(dog => dog.owners.includes('Sarah'));
+const formatRupiah = function (nominal) {
+  return nominal.map(nom => `Rp ${nom.toLocaleString('id-ID')}`).join(', ');
+};
 console.log(
-  `Sarah dog eating too ${sarahDog.curFood > sarahDog.recFood ? 'Too Much' : 'Too littles'}`,
+  `=== NON-DESTRUCTIVE PRICE SORTING ENGINE ===\n` +
+    `Agensi : PT. CAHAYA REMBULAN SEJATI\n\n` +
+    `[1] Data Asli (Urutan Kedatangan):\n` +
+    `${formatRupiah(daftarHargaProyek)}\n\n` +
+    `[2] Data Terurut (Termurah -> Termahal):\n` +
+    `${formatRupiah(hargaTerurutTermurah)}\n\n` +
+    `============================================\n` +
+    `Immutability Check : PASSED (Array Asli Tidak Berubah)`,
 );
-
-//soal 3
-const ownersTooMuch = dogs
-  .filter(dog => dog.curFood > dog.recFood)
-  .flatMap(({ owners }) => owners);
-const ownersTooSmall = dogs
-  .filter(dog => dog.curFood < dog.recFood)
-  .flatMap(({ owners }) => owners);
-
-console.log(ownersTooMuch);
-console.log(ownersTooSmall);
-
-//soal 4
-console.log(`${ownersTooMuch.join(' and ')}'s dogs eat to much`);
-console.log(`${ownersTooSmall.join(' and ')}'s dogs eat to little`);
-
-//soal 5
-console.log(dogs.some(dog => dog.curFood === dog.recFood));
-
-//soal 6
-console.log(dogs.every(dog => dog.curFood === dog.recFood));
-
-//soal 7
-const checkEatingOkay = dog =>
-  dog.curFood < dog.recFood * 1.1 && dog.curFood > dog.recFood * 0.9;
-
-console.log(dogs.every(checkEatingOkay));
-
-//soal 8
-const groupByDogsEating = Object.groupBy(dogs, ({ recFood, curFood }) => {
-  if (recFood === curFood) return 'exact';
-  if (recFood > curFood) return 'tooMuch';
-  return 'tooLittle';
-});
-
-console.log(groupByDogsEating.exact);
-console.log(groupByDogsEating.tooMuch);
-console.log(groupByDogsEating.tooLittle);
-
-//soal 9
-const groupByDogOwners = Object.groupBy(
-  dogs,
-  ({ owners }) => `${owners.length}-owners`,
-);
-
-console.log(groupByDogOwners);
-
-//soal 10
-const sorted = dogs.toSorted((a, b) => a.recFood - b.recFood);
-console.log(sorted);
