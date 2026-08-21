@@ -51,245 +51,432 @@ const account2 = {
 
 const accounts = [account1, account2];
 
-// Elements
-const labelWelcome = document.querySelector('.welcome');
-const labelDate = document.querySelector('.date');
-const labelBalance = document.querySelector('.balance__value');
-const labelSumIn = document.querySelector('.summary__value--in');
-const labelSumOut = document.querySelector('.summary__value--out');
-const labelSumInterest = document.querySelector('.summary__value--interest');
-const labelTimer = document.querySelector('.timer');
+/*
+🧠 Challenge 1 — Bank Transaction Analyzer
 
-const containerApp = document.querySelector('.app');
-const containerMovements = document.querySelector('.movements');
+Diberikan data transaksi berikut:
 
-const btnLogin = document.querySelector('.login__btn');
-const btnTransfer = document.querySelector('.form__btn--transfer');
-const btnLoan = document.querySelector('.form__btn--loan');
-const btnClose = document.querySelector('.form__btn--close');
-const btnSort = document.querySelector('.btn--sort');
+const transactions = [
+  '1000',
+  '-250.50',
+  '300',
+  'invalid',
+  '450.75',
+  '-100',
+  '2000',
+];
 
-const inputLoginUsername = document.querySelector('.login__input--user');
-const inputLoginPin = document.querySelector('.login__input--pin');
-const inputTransferTo = document.querySelector('.form__input--to');
-const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputLoanAmount = document.querySelector('.form__input--loan-amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
-const inputClosePin = document.querySelector('.form__input--pin');
+Buat program yang:
 
-//GLOBAL VARIABLE
-let currentAccount;
-let sorted = false;
+Mengubah seluruh nilai transaksi yang valid menjadi Number.
+Mengabaikan transaksi yang bukan angka.
+Menghitung:
+total transaksi
+rata-rata transaksi
+transaksi terbesar
+transaksi terkecil
+Tampilkan hasil rata-rata dengan 2 angka di belakang koma.
 
-//Buat Username untuk tiap akun
-const generateUsernames = function (accounts) {
-  accounts.forEach(function (account) {
-    account.username = account.owner
-      .toLowerCase()
-      .split(' ')
-      .map(char => char[0])
-      .join('');
-  });
-};
+Contoh output:
 
-generateUsernames(accounts);
+Total       : 3400.25
+Average     : 566.71
+Max         : 2000
+Min         : -250.50
+Constraint
 
-//Fitur Login
-const login = function (e) {
-  e.preventDefault();
-  //get value
-  const username = inputLoginUsername.value;
-  const pin = inputLoginPin.value;
+Gunakan materi yang baru kamu pelajari:
 
-  //verifikasi username dan pin
-  currentAccount = verifyUser(username, pin);
+Number()
+Number.isNaN()
+Number.isFinite()
+toFixed()
+Math.max()
+Math.min()
+*/
 
-  //Tampilkan Informasi Informasi Akun
-  if (currentAccount) {
-    showAccountInformation(currentAccount);
-  } else return;
-};
-btnLogin.addEventListener('click', login);
+const soal1 = function () {
+  const transactions = [
+    '1000',
+    '-250.50',
+    '300',
+    'invalid',
+    '450.75',
+    '-100',
+    '2000',
+  ];
 
-//Fitur Transfer
-const transfer = function (e) {
-  e.preventDefault();
+  const transactionsNum = transactions
+    .map(transaction => {
+      return Number(transaction);
+    })
+    .filter(transaction => !Number.isNaN(transaction));
 
-  const inputDestinationAccount = inputTransferTo.value;
-  const transferAmount = Number(inputTransferAmount.value);
-
-  const destinationAccount = verifyUsername(inputDestinationAccount);
-  console.log(destinationAccount);
-
-  if (!destinationAccount) return;
-
-  //validate Transfer
-  const isValid = validateTransfer(
-    currentAccount,
-    destinationAccount,
-    transferAmount,
+  console.log(
+    `Total       : ${transactionsNum.reduce((acc, num) => acc + num, 0)}\n` +
+      `Average     : ${(transactionsNum.reduce((acc, num) => acc + num, 0) / transactionsNum.length).toFixed(2)} \n` +
+      `Max         : ${Math.max(...transactionsNum)}\n` +
+      `Min         : ${Math.min(...transactionsNum)}\n`,
   );
-
-  if (!isValid) return;
-  //lakukan transfer dan update UI
-  transferBalance(currentAccount, destinationAccount, transferAmount);
-  showAccountInformation(currentAccount);
 };
+soal1();
 
-btnTransfer.addEventListener('click', transfer);
+/*
+🏧 Challenge 2 — ATM Cash Withdrawal
 
-//Fitur Loan
-const loan = function (e) {
-  e.preventDefault();
+Sebuah ATM hanya menerima nominal penarikan dalam kelipatan 50.
 
-  const loanAmount = Number(inputLoanAmount.value);
+User memasukkan nominal dalam bentuk string:
 
-  const loanApproved = currentAccount.movements.some(
-    movement => movement >= loanAmount * 0.1,
+const withdrawal = '1250.75';
+
+Buat program yang:
+
+Mengubah input menjadi number.
+Membulatkan nominal ke bawah menjadi bilangan bulat.
+Mengecek apakah nominal merupakan kelipatan 50.
+Jika bukan kelipatan 50, cari nominal terdekat yang lebih kecil dan merupakan kelipatan 50.
+
+Contoh:
+
+Input       : 1250.75
+Rounded     : 1250
+ATM Amount  : 1250
+
+Jika:
+
+const withdrawal = '1278.90';
+
+maka:
+
+Input       : 1278.90
+Rounded     : 1278
+ATM Amount  : 1250
+Hint
+
+Coba pikirkan bagaimana:
+
+Math.floor()
+
+bisa dikombinasikan dengan operasi matematika.
+*/
+
+const soal2 = function () {
+  const inputUser = '1278.90';
+  const input = Math.floor(+inputUser);
+  const atmAmount = Math.floor(input / 50) * 50;
+
+  console.log(
+    `Input       : ${inputUser}\n` +
+      `Rounded : ${input} \n` +
+      `ATM Amount : ${atmAmount}\n`,
   );
-
-  if (loanAmount > 0 && loanApproved) {
-    currentAccount.movements.push(loanAmount);
-    showAccountInformation(currentAccount);
-  }
 };
 
-btnLoan.addEventListener('click', loan);
+soal2();
 
-//Fitur Tutup Account
-const closeAccount = function (e) {
-  e.preventDefault();
+/*
+💰 Challenge 3 — Currency Converter
 
-  const inputUsername = inputCloseUsername.value;
-  const inputPin = inputClosePin.value;
+Kamu memiliki saldo dalam USD:
 
-  if (
-    verifyUser(inputUsername, inputPin) &&
-    currentAccount.username === inputUsername
-  ) {
-    const getIndex = accounts.findIndex(acc => acc.username === inputUsername);
+const balanceUSD = '1575.89';
+const exchangeRate = 16450;
 
-    accounts.splice(getIndex, 1);
-    currentAccount = null;
+Konversikan saldo tersebut ke Rupiah.
 
-    containerApp.style.opacity = 0;
-    inputClosePin.value = '';
-    inputCloseUsername.value = '';
-    labelWelcome.textContent = `Log in to get started`;
-  }
-};
+Namun, hasil akhir harus:
 
-btnClose.addEventListener('click', closeAccount);
+dibulatkan ke rupiah terdekat
+kemudian ditampilkan menggunakan format angka dengan 2 digit desimal
 
-//FITUR SORT
-const sort = function (e) {
-  if (!sorted) {
-    displayTransactionHistory(
-      [...currentAccount.movements].sort((a, b) => a - b),
+Contoh konsep output:
+
+USD Balance : $1575.89
+IDR Balance : Rp25,912,?00.00
+Bonus
+
+Bagaimana jika input:
+
+const balanceUSD = 'not a number';
+
+Program harus menghasilkan:
+
+Invalid balance
+*/
+
+const soal3 = function () {
+  const balanceUSD = '1575.89';
+  const exchangeRate = 16450;
+
+  if (!isNaN(balanceUSD)) {
+    console.log(
+      `USD Balance : $${+balanceUSD}\n` +
+        `IDR Balance : ${Math.round(+balanceUSD * exchangeRate).toLocaleString('id-ID')}`,
     );
-    sorted = true;
   } else {
-    displayTransactionHistory(currentAccount.movements);
-    sorted = false;
+    console.log(`Invalid Balance`);
   }
 };
 
-btnSort.addEventListener('click', sort);
+soal3();
 
-//HELPER FUNCTION
-const validateTransfer = function (
-  account,
-  destinationAccount,
-  transferAmount,
-) {
-  //Dapatkan Jumlah Saldo currentAccoun
-  const currentBalance = calcCurrentBalance(account.movements);
-  console.log(currentBalance);
+/*
+🎯 Challenge 4 — Investment Calculator
 
-  //Validasi berupa : transferAmount harus > 0, currentBalance > transferAmount & gaboleh transfer ke diri sendiri
-  return (
-    transferAmount > 0 &&
-    currentBalance >= transferAmount &&
-    destinationAccount.username !== account.username
+Kamu melakukan investasi sebesar:
+
+const initialInvestment = '5000000';
+const annualReturn = '8.5';
+const years = '3';
+
+Hitung nilai investasi setelah 3 tahun menggunakan compound interest:
+
+Final=Initial×(1+rate)
+years
+
+Contoh konsep:
+
+Initial Investment : Rp5,000,000
+Annual Return      : 8.5%
+Years              : 3
+Final Value        : Rp6,?...
+Syarat
+
+Input semuanya masih berupa string.
+
+Kamu harus melakukan conversion terlebih dahulu.
+
+Gunakan:
+
+Math.pow()
+
+atau operator:
+
+**
+
+Kemudian bulatkan hasil akhirnya ke rupiah terdekat.
+*/
+
+const soal4 = function () {
+  const initialInvestment = '5000000';
+  const annualReturn = '8.5';
+  const years = '3';
+
+  console.log(
+    `Initial Investment : Rp${Number(initialInvestment).toLocaleString('id-ID')}\n`,
+    `Annual Return      :  ${+annualReturn}%\n`,
+    `Years              : ${+years}\n`,
+    `Final Value        : Rp${Math.round(+initialInvestment * (1 + +annualReturn / 100) ** +years).toLocaleString('id-ID')}`,
   );
 };
 
-const transferBalance = function (
-  currentAccount,
-  destinationAccount,
-  transferAmount,
-) {
-  currentAccount.movements.push(-transferAmount);
+soal4();
 
-  destinationAccount.movements.push(transferAmount);
-};
+/*
+🧮 Challenge 5 — Distance Calculator
 
-const verifyUsername = function (inputUsername) {
-  return accounts.find(({ username }) => inputUsername === username);
-};
-const verifyUser = function (inputUsername, inputPin) {
-  return accounts.find(
-    acc => acc.username === inputUsername && acc.pin === Number(inputPin),
+Sebuah aplikasi mencatat jarak perjalanan:
+
+const distances = ['12.7', '5.4', '8.9', '15.2', '3.8'];
+
+Hitung:
+
+Total jarak.
+Jarak rata-rata.
+Jarak terjauh.
+Jarak terdekat.
+
+Kemudian tampilkan:
+
+Total Distance   : 46.00 km
+Average Distance : 9.20 km
+Longest Trip     : 15.20 km
+Shortest Trip    : 3.80 km
+Constraint
+
+Hasil angka harus menggunakan:
+
+toFixed(2)
+*/
+
+const soal5 = function () {
+  const distances = ['12.7', '5.4', '8.9', '15.2', '3.8'];
+
+  const totDistance = distances.reduce((add, dis) => add + +dis, 0);
+  const maxDistance = Math.max(...distances.map(dis => +dis)).toFixed(2);
+  const minDistance = Math.min(...distances.map(dis => +dis)).toFixed(2);
+  console.log(maxDistance);
+
+  console.log(
+    `Total Distance   : ${totDistance.toFixed(2)} km\n` +
+      `Average Distance : ${(totDistance / distances.length).toFixed(2)} km\n` +
+      `Longest Trip     : ${maxDistance} km\n` +
+      `Shortest Trip    : ${minDistance} km\n`,
   );
 };
 
-const showAccountInformation = function (account) {
-  //styling
-  containerApp.style.opacity = 1;
-  inputLoginUsername.value = '';
-  inputLoginPin.value = '';
-  inputTransferTo.value = '';
-  inputTransferAmount.value = '';
-  labelWelcome.textContent = `Good Afternoon, ${account.owner.split(' ')[0]}!`;
+soal5();
 
-  //displaying account Information
-  displayTransactionHistory(account.movements);
-  const balance = calcCurrentBalance(account.movements);
-  labelBalance.textContent = `${balance}€`;
+/*
+🧠🔥 Challenge 6 — Bankist: Interest Calculator
 
-  accountSummary(account);
+Ini yang paling Jonas-style.
+
+Diberikan data rekening:
+
+const accounts = [
+  {
+    owner: 'Jonas Schmedtmann',
+    balance: 5000,
+    interestRate: 1.2,
+  },
+  {
+    owner: 'Jessica Davis',
+    balance: 12000,
+    interestRate: 2.5,
+  },
+  {
+    owner: 'Steven Williams',
+    balance: 8000,
+    interestRate: 1.8,
+  },
+];
+
+Bank menghitung bunga dengan:
+
+interest = balance × interestRate / 100
+
+Namun ada aturan:
+
+Jika bunga kurang dari 50, maka bunga tersebut dianggap 50.
+
+Buat program yang menghasilkan informasi:
+
+Jonas Schmedtmann
+Balance : $5000
+Interest: $60
+
+
+Jessica Davis
+Balance : $12000
+Interest: $300
+
+
+Steven Williams
+Balance : $8000
+Interest: $144
+Tantangan tambahan
+
+Gunakan:
+
+Math.max()
+
+untuk menentukan minimum interest sebesar 50.
+
+Jadi secara konsep:
+
+interest = Math.max(calculatedInterest, 50);
+*/
+
+const soal6 = function () {
+  const accounts = [
+    {
+      owner: 'Jonas Schmedtmann',
+      balance: 5000,
+      interestRate: 1.2,
+    },
+    {
+      owner: 'Jessica Davis',
+      balance: 12000,
+      interestRate: 2.5,
+    },
+    {
+      owner: 'Steven Williams',
+      balance: 8000,
+      interestRate: 1.8,
+    },
+  ];
+
+  for (const acc of accounts) {
+    console.log(`${acc.owner}`);
+    console.log(`Balance : $${acc.balance}`);
+    console.log(
+      `Interest : ${Math.max((acc.balance * acc.interestRate) / 100, 50)}`,
+    );
+    console.log(`\n`);
+  }
 };
 
-//Tampilkan History Transaksi
-const displayTransactionHistory = function (movements) {
-  //Kosongin Semua elemen yang membungkus class movements
-  containerMovements.innerHTML = '';
+soal6();
+/*
+🚀 Challenge 7 — The Receipt Challenge
 
-  // tampilkan transaksi ke halaman
-  movements.forEach(function (move, i) {
-    //1. pisahkan tipe transaksi
-    const transactionType = move >= 0 ? 'deposit' : 'withdrawal';
-    //2. tag HTML yang mau dimanipulasi & menampilkan value sesuai tipe transaksi
-    const displayMovement = `
-    <div class="movements__row">
-    <div class="movements__type movements__type--${transactionType}">${i + 1} ${transactionType.toUpperCase()}</div>
-    <div class="movements__value">${move}</div>
-    </div>
-    `;
+Ini challenge terakhir, dan menurutku paling cocok buat mengetes apakah materi kamu sudah benar-benar masuk.
 
-    //3. Masukin hasil manipulasi ke containerMovements agar tampil pada halaman
-    containerMovements.insertAdjacentHTML('afterbegin', displayMovement);
-  });
+Sebuah restoran mempunyai harga:
+
+const prices = ['12.50', '8.75', '15.20', '5.50', '20.00'];
+const tax = '10';
+const serviceCharge = '5';
+
+Hitung:
+
+Total harga makanan.
+Pajak 10%.
+Service charge 5%.
+Grand total.
+
+Tetapi ada aturan:
+
+Grand total harus dibulatkan ke kelipatan 500 rupiah terdekat.
+
+Misalnya:
+
+Total       : Rp62,000
+Tax         : Rp6,200
+Service     : Rp3,100
+Grand Total : Rp71,300
+
+Maka grand total harus dibulatkan menjadi:
+
+Rp71,500
+Yang ingin aku lihat dari kamu
+
+Coba manfaatkan:
+
+Number()
+Math.round()
+Math.floor()
+Math.ceil()
+toFixed()
+*/
+
+const soal7 = function () {
+  const prices = ['12.50', '8.75', '15.20', '5.55', '20.00'];
+  const tax = '10';
+  const serviceCharge = '5';
+
+  const total = prices.reduce((add, price) => add + +price, 0);
+
+  const countTax = (total * +tax) / 100;
+
+  const countService = (total * +serviceCharge) / 100;
+
+  const grandTotal = total + countTax + countService;
+
+  console.log(
+    `Total       : Rp${Math.round(total * 1000).toLocaleString('en-US')}`,
+  );
+  console.log(
+    `Tax         : Rp${Math.round(countTax * 1000).toLocaleString('en-US')}`,
+  );
+  console.log(
+    `Service     : Rp${Math.round(countService * 1000).toLocaleString('en-US')}`,
+  );
+  console.log(
+    `Grand Total : Rp${Math.round(grandTotal * 1000).toLocaleString('en-US')}`,
+  );
 };
 
-//Hitung & Tampilkan Saldo
-const calcCurrentBalance = function (movements) {
-  return movements.reduce((acc, move) => acc + move, 0);
-};
-
-// Hitung & Tampilkan accountSummary
-const accountSummary = function (account) {
-  //incomes
-  const income = account.movements
-    .filter(balance => balance > 0)
-    .reduce((acc, balance) => acc + balance, 0);
-  labelSumIn.textContent = `${income}€`;
-
-  const outcome = account.movements
-    .filter(balance => balance < 0)
-    .reduce((acc, balance) => acc + balance);
-  labelSumOut.textContent = `${Math.abs(outcome)}€`;
-
-  const interest = income * (account.interestRate / 100);
-  labelSumInterest.textContent = `${interest}€`;
-};
+soal7();
