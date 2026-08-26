@@ -78,8 +78,8 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 //GLOBAL VARIABLE
+let sortMode = 0;
 let currentAccount;
-let sorted = false;
 
 //Buat Username untuk tiap akun
 const generateUsernames = function (accounts) {
@@ -106,6 +106,7 @@ const login = function (e) {
 
   //Tampilkan Informasi Informasi Akun
   if (currentAccount) {
+    sortMode = 0;
     showAccountInformation(currentAccount);
   } else return;
 };
@@ -133,6 +134,7 @@ const transfer = function (e) {
   if (!isValid) return;
   //lakukan transfer dan update UI
   transferBalance(currentAccount, destinationAccount, transferAmount);
+  sortMode = 0;
   showAccountInformation(currentAccount);
 };
 
@@ -153,6 +155,7 @@ const loan = function (e) {
 
     currentAccount.movements.push(loanAmount);
     currentAccount.movementsDates.push(now);
+    sortMode = 0;
     showAccountInformation(currentAccount);
   }
 };
@@ -174,6 +177,7 @@ const closeAccount = function (e) {
 
     accounts.splice(getIndex, 1);
     currentAccount = null;
+    sortMode = 0;
 
     containerApp.style.opacity = 0;
     inputClosePin.value = '';
@@ -185,19 +189,39 @@ const closeAccount = function (e) {
 btnClose.addEventListener('click', closeAccount);
 
 //FITUR SORT
+
 const sort = function () {
-  if (!sorted) {
+  if (sortMode === 0) {
     const sortedMovements = [...currentAccount.movements].sort((a, b) => a - b);
 
     displayTransactionHistory({
       ...currentAccount,
       movements: sortedMovements,
     });
+    sortMode = 1;
+  } else if (sortMode === 1) {
+    const sortedTransaction = currentAccount.movements
+      .map((movement, i) => {
+        return {
+          movement,
+          date: currentAccount.movementsDates[i],
+        };
+      })
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+    console.log(sortedTransaction);
 
-    sorted = true;
-  } else {
-    displayTransactionHistory(currentAccount);
-    sorted = false;
+    const sortedMovements = sortedTransaction.map(
+      transaction => transaction.movement,
+    );
+    const sortedDates = sortedTransaction.map(transaction => transaction.date);
+
+    displayTransactionHistory({
+      ...currentAccount,
+      movements: sortedMovements,
+      movementsDates: sortedDates,
+    });
+
+    sortMode = 0;
   }
 };
 btnSort.addEventListener('click', sort);
@@ -208,6 +232,8 @@ const validateTransfer = function (
   destinationAccount,
   transferAmount,
 ) {
+  //reset sortMode
+
   //Dapatkan Jumlah Saldo currentAccoun
   const currentBalance = calcCurrentBalance(account.movements);
   console.log(currentBalance);
