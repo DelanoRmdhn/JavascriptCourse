@@ -71,6 +71,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 //GLOBAL VARIABLE
 let sortMode = 0;
 let currentAccount;
+let timer;
 
 //Buat Username untuk tiap akun
 const generateUsernames = function (accounts) {
@@ -99,6 +100,7 @@ const login = function (e) {
   if (currentAccount) {
     sortMode = 0;
     showAccountInformation(currentAccount);
+    startLogoutTimer();
   } else return;
 };
 btnLogin.addEventListener('click', login);
@@ -125,7 +127,12 @@ const transfer = function (e) {
   if (!isValid) return;
   //lakukan transfer dan update UI
   transferBalance(currentAccount, destinationAccount, transferAmount);
+
   sortMode = 0;
+
+  clearInterval(timer);
+  startLogoutTimer();
+
   showAccountInformation(currentAccount);
 };
 
@@ -142,12 +149,19 @@ const loan = function (e) {
   );
 
   if (loanAmount > 0 && loanApproved) {
-    const now = new Date().toISOString();
+    setTimeout(() => {
+      const now = new Date().toISOString();
 
-    currentAccount.movements.push(loanAmount);
-    currentAccount.movementsDates.push(now);
-    sortMode = 0;
-    showAccountInformation(currentAccount);
+      currentAccount.movements.push(loanAmount);
+      currentAccount.movementsDates.push(now);
+
+      sortMode = 0;
+      clearInterval(timer);
+      startLogoutTimer();
+
+      showAccountInformation(currentAccount);
+    }, 2500);
+    inputLoanAmount.value = '';
   }
 };
 
@@ -217,6 +231,37 @@ const sort = function () {
 };
 btnSort.addEventListener('click', sort);
 
+//TIMER LOGOUT
+const startLogoutTimer = function () {
+  const logoutTime = new Date(Date.now() + 5 * 60 * 1000);
+
+  timer = setInterval(() => {
+    const diff = logoutTime - new Date();
+
+    const minutes = Math.trunc(diff / 1000 / 60);
+    const seconds = Math.trunc((diff / 1000) % 60);
+
+    labelTimer.textContent = `${String(minutes).padStart(2, '0')}:${String(
+      seconds,
+    ).padStart(2, '0')}`;
+
+    if (diff <= 0) {
+      clearInterval(timer);
+
+      labelTimer.textContent = '00:00';
+
+      sortMode = 0;
+      currentAccount = null;
+      containerApp.style.opacity = 0;
+
+      inputLoginUsername.value = '';
+      inputLoginPin.value = '';
+      inputTransferTo.value = '';
+      inputTransferAmount.value = '';
+    }
+  }, 1000);
+};
+
 //HELPER FUNCTION
 const validateTransfer = function (
   account,
@@ -271,7 +316,7 @@ const showAccountInformation = function (account) {
   //displaying account Information
   displayTransactionHistory(account);
   const balance = calcCurrentBalance(account.movements);
-  labelBalance.textContent = `${balance}€`;
+  labelBalance.textContent = `${balance.toLocaleString(account.currency, { style: 'currency', currency: account.currency })}`;
 
   accountSummary(account);
 };
@@ -293,7 +338,7 @@ const displayTransactionHistory = function (account) {
     <div class="movements__row">
     <div class="movements__type movements__type--${transactionType}">${i + 1} ${transactionType.toUpperCase()}</div>
     <div class="movements__date">${formatDate(date)}</div>
-    <div class="movements__value">${move}</div>
+    <div class="movements__value">${move.toLocaleString(account.currency, { style: 'currency', currency: currentAccount.currency })}</div>
     </div>
     `;
 
@@ -314,14 +359,14 @@ const accountSummary = function (account) {
     .filter(movement => movement > 0)
     .reduce((acc, movement) => acc + movement, 0);
 
-  labelSumIn.textContent = `${income.toFixed(2)}€`;
+  labelSumIn.textContent = `${income.toLocaleString(account.currency, { style: 'currency', currency: account.currency })}`;
 
   // OUT
   const outcome = account.movements
     .filter(movement => movement < 0)
     .reduce((acc, movement) => acc + movement, 0);
 
-  labelSumOut.textContent = `${Math.abs(outcome).toFixed(2)}€`;
+  labelSumOut.textContent = `${Math.abs(outcome).toLocaleString(account.currency, { style: 'currency', currency: account.currency })}€`;
 
   // INTEREST
   const interest = account.movements
@@ -330,7 +375,7 @@ const accountSummary = function (account) {
     .filter(interest => interest >= 1)
     .reduce((acc, interest) => acc + interest, 0);
 
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  labelSumInterest.textContent = `${interest.toLocaleString(account.currency, { style: 'currency', currency: account.currency })}€`;
 };
 const calcDaysPassed = (date1, date2) =>
   Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
@@ -347,16 +392,20 @@ const formatDate = function (date) {
 };
 
 /////////////////////////
-const now = new Date();
-const options = {
-  hour: 'numeric',
-  minute: 'numeric',
-  day: 'numeric',
-  month: 'numeric',
-  year: 'numeric',
-  weekday: 'long',
-};
-const formatId = new Intl.DateTimeFormat('en-US', options).format(now);
-// const formatNow = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-labelDate.textContent = formatId;
+
+setInterval(() => {
+  const now = new Date();
+  const options = {
+    hour: '2-digit',
+    minute: 'numeric',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    weekday: 'long',
+    second: 'numeric',
+  };
+  const formatId = new Intl.DateTimeFormat('en-US', options).format(now);
+  // const formatNow = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  labelDate.textContent = formatId;
+}, 1000);
 /////////////////////////
