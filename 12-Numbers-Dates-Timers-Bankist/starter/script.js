@@ -1,97 +1,262 @@
 'use strict';
 
-//MINI CHALLANGE DAY 20
-
-/*
-Nama Task: Advanced Financial Ledger & Project Due-Date Audit Engine
-
-Topik: Number Parsing/Checking, Math & Rounding, Remainder Operator, BigInt, Date Operations, Intl API (Number & DateTime), serta setTimeout/setInterval
-
-Studi Kasus: Sistem Audit Transaksi & Jatuh Tempo Proyek PT. CAHAYA REMBULAN SEJATI
-
-1. Skenario Bisnis
-Sistem keuangan PT. CAHAYA REMBULAN SEJATI menerima input data transaksi dan jadwal termin proyek dalam berbagai format mentah. Tim operasional membutuhkan modul audit otomatis untuk:
-
-Melakukan validasi angka dan pembersihan tipe data (Type Coercion/Parsing).
-
-Menghitung pembulatan termin dan skema pembagian termin ganjil/genap menggunakan Remainder (%).
-
-Mengelola valuasi agensi skala besar menggunakan BigInt.
-
-Menghitung selisih hari jatuh tempo (Due Date) dengan operasi objek Date.
-
-Memformat seluruh angka dan tanggal ke standar lokal Indonesia (id-ID) menggunakan objek Intl.
-
-Menjalankan automated countdown/timer audit menggunakan setTimeout atau setInterval.
-
-const auditRawData = {
-  budgetInput: "  15750450.85px ",
-  targetDateStr: "2026-09-15T00:00:00",
-  currentDateStr: "2026-08-27T00:00:00",
-  totalCorporateValuation: 9007199254740991n + 5000000000n,
-  terminCount: 3
+const akun1 = {
+  pemilik: 'Rangga Pratama',
+  gerakanKas: [
+    5000000, 2500000, -1200000, 8000000, -3500000, -500000, 12000000,
+  ],
+  tanggalTransaksi: [
+    '2026-07-15T08:30:00.000Z',
+    '2026-07-28T14:15:00.000Z',
+    '2026-08-01T10:00:00.000Z',
+    '2026-08-10T16:45:00.000Z',
+    '2026-08-18T09:20:00.000Z',
+    '2026-08-25T11:00:00.000Z',
+    '2026-08-30T13:10:00.000Z',
+  ],
+  pin: 1111,
 };
 
-[1] VALIDASI & PEMBULATAN NILAI
-Budget Bersih Terparsing : Rp 15.750.451,00
-Status Finite Check      : VALID (Finite)
-
-[2] STATUS TERMIN & VALUASI KORPORASI
-Skema Termin (3x)        : Termin Ganjil
-Valuasi Portofolio CRS   : 9007204254740991 (BigInt Verified)
-
-[3] JATUH TEMPO & TANGGAL (Intl Formatted)
-Tanggal Audit            : Kamis, 27 Agustus 2026
-Batas Jatuh Tempo        : Selasa, 15 September 2026
-Sisa Waktu Pelunasan     : 19 Hari Menuju Deadline
-
-===========================================
-Status Mesin Audit       : All Numbers & Dates Synchronized
-*/
-
-const auditRawData = {
-  budgetInput: '  15750450.85px ',
-  targetDateStr: '2026-09-15T00:00:00',
-  currentDateStr: '2026-08-27T00:00:00',
-  totalCorporateValuation: 9007199254740991n + 5000000000n,
-  terminCount: 3,
+const akun2 = {
+  pemilik: 'Fadhil Nugraha Ilman',
+  gerakanKas: [3000000, -800000, 4500000, -1500000, 2000000],
+  tanggalTransaksi: [
+    '2026-08-05T09:00:00.000Z',
+    '2026-08-12T13:30:00.000Z',
+    '2026-08-19T11:20:00.000Z',
+    '2026-08-26T15:40:00.000Z',
+    '2026-08-31T08:50:00.000Z',
+  ],
+  pin: 2222,
 };
 
-const budgetBersih = Number.parseFloat(auditRawData.budgetInput);
+const daftarAkun = [akun1, akun2];
 
-const waktuPelunasan =
-  new Date(auditRawData.targetDateStr) - new Date(auditRawData.currentDateStr);
+// STATE GLOBAL
+let currentAccount;
 
-setTimeout(() => {
-  console.log(`=== SYSTEM AUDIT RUNNING (1000ms delay) ===\n`);
+// FORMAT
+const formatRupiah = new Intl.NumberFormat('id-ID', {
+  style: 'currency',
+  currency: 'IDR',
+});
 
-  console.log(
-    `[1] VALIDASI & PEMBULATAN NILAI\nBudget Bersih Terparsing\t : Rp ${budgetBersih.toLocaleString('id-ID')}\n`,
-    `Status Finite Check\t\t : ${Number.isFinite(budgetBersih) ? 'VALID (Finite)' : 'TIDAK VALID (Infinite)'}`,
+const formatTanggal = new Intl.DateTimeFormat('id-ID');
+
+// CREATE USERNAME
+const createUsername = function (name) {
+  return name
+    .toLowerCase()
+    .split(' ')
+    .map(nama => nama.at(0))
+    .join('');
+};
+
+daftarAkun.forEach(akun => {
+  akun.username = createUsername(akun.pemilik);
+});
+
+// SHOW UI
+const showUI = function () {
+  document.querySelector('.app').style.opacity = '1';
+};
+
+// CALCULATE & DISPLAY BALANCE
+const calcDisplayBalance = function (currentAccount) {
+  currentAccount.balance = currentAccount.gerakanKas.reduce(
+    (total, gerakan) => total + gerakan,
+    0,
   );
 
-  console.log(
-    `\n[2] STATUS TERMIN & VALUASI KORPORASI\n`,
-    `Skema Termin ${auditRawData.terminCount}x \t\t: Termin ${auditRawData.terminCount % 2 === 0 ? 'Genap' : 'Ganjil'}\n`,
-    `Valuasi Portofolio CRS : ${auditRawData.totalCorporateValuation.toString()} (BigInt Verified)`,
+  document.querySelector('.balance__value').textContent = formatRupiah.format(
+    currentAccount.balance,
+  );
+};
+
+// SHOW CURRENT DATE
+const currentDate = function () {
+  document.querySelector('.balance__date').textContent =
+    'Per Tanggal: ' + formatTanggal.format(new Date());
+};
+
+// CALCULATE MONEY IN
+const calcMoneyIn = function (currentAccount) {
+  const getMoneyIn = currentAccount.gerakanKas.filter(gerakan => gerakan >= 0);
+
+  const totalBalance = getMoneyIn.reduce(
+    (total, gerakan) => total + gerakan,
+    0,
   );
 
-  console.log(
-    `\n[3] JATUH TEMPO & TANGGAL (Intl Formatted)\n`,
-    `Tanggal Audit \t\t\t : ${new Intl.DateTimeFormat('id-ID', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(auditRawData.currentDateStr))}\n`,
-    `Batas Jatuh Tempo \t\t : ${new Intl.DateTimeFormat('id-ID', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(auditRawData.targetDateStr))}\n`,
-    `Sisa Waktu Pelunasan \t : ${Math.ceil(waktuPelunasan / (1000 * 60 * 60 * 24))} Hari Menuju Deadline\n\n`,
-    `===========================================\n`,
-    `Status Mesin Audit      : All Numbers & Dates Synchronized`,
+  document.querySelector('.summary__value--in').textContent =
+    formatRupiah.format(totalBalance);
+};
+
+// CALCULATE MONEY OUT
+const calcMoneyOut = function (currentAccount) {
+  const getMoneyOut = currentAccount.gerakanKas.filter(gerakan => gerakan < 0);
+
+  const totalBalance = Math.abs(
+    getMoneyOut.reduce((total, gerakan) => total + gerakan, 0),
   );
-}, 1000);
+
+  document.querySelector('.summary__value--out').textContent =
+    formatRupiah.format(totalBalance);
+};
+
+// GET MOVEMENTS
+const getMovements = function (currentAccount) {
+  return currentAccount.gerakanKas.map((gerakan, i) => ({
+    gerakan,
+    tanggal: currentAccount.tanggalTransaksi[i],
+  }));
+};
+
+// DISPLAY MOVEMENTS
+const displayBalance = function (movements) {
+  const container = document.querySelector('.movements');
+
+  container.innerHTML = '';
+
+  movements.forEach(({ gerakan, tanggal }, i) => {
+    const tipe = gerakan > 0 ? 'deposit' : 'withdrawal';
+    const labelTipe = gerakan > 0 ? 'MASUK' : 'KELUAR';
+
+    const tanggalFormat = formatTanggal.format(new Date(tanggal));
+
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${tipe}">
+          ${i + 1} ${labelTipe}
+        </div>
+
+        <div class="movements__date">
+          ${tanggalFormat}
+        </div>
+
+        <div class="movements__value">
+          ${formatRupiah.format(gerakan)}
+        </div>
+      </div>
+    `;
+
+    container.insertAdjacentHTML('afterbegin', html);
+  });
+};
+
+// SORT MOVEMENTS
+const sortMovements = function () {
+  const movements = getMovements(currentAccount);
+
+  const sortedMovements = movements.toSorted((a, b) => a.gerakan - b.gerakan);
+
+  displayBalance(sortedMovements);
+};
+
+document.querySelector('.btn-sort').addEventListener('click', sortMovements);
+
+//tarikDana
+const withdrawal = function (e) {
+  e.preventDefault();
+
+  const inputWithdrawal = Number(
+    document.querySelector('.form__input--amount').value,
+  );
+
+  if (inputWithdrawal <= 0) return;
+
+  const totalBalance = currentAccount.gerakanKas.reduce(
+    (total, gerakan) => total + gerakan,
+    0,
+  );
+
+  if (inputWithdrawal > totalBalance) return;
+
+  currentAccount.gerakanKas.push(-inputWithdrawal);
+
+  currentAccount.tanggalTransaksi.push(new Date().toISOString());
+
+  displayBalance(getMovements(currentAccount));
+  calcDisplayBalance(currentAccount);
+  calcMoneyOut(currentAccount);
+
+  document.querySelector('.form__input--amount').value = '';
+};
+
+document
+  .querySelector('.form__btn--expense')
+  .addEventListener('click', withdrawal);
+
+// LOGIN SUCCESS
+const isLoggedIn = function (currentAccount) {
+  calcDisplayBalance(currentAccount);
+  currentDate();
+  calcMoneyIn(currentAccount);
+  calcMoneyOut(currentAccount);
+
+  const movements = getMovements(currentAccount);
+
+  displayBalance(movements);
+
+  startLogoutTimer();
+};
+
+//TIMER LOGOUT
+const startLogoutTimer = function () {
+  let time = 120;
+
+  const timer = setInterval(() => {
+    const menit = Math.trunc(time / 60);
+    const detik = time % 60;
+
+    document.querySelector('.timer').textContent =
+      `${String(menit).padStart(2, '0')}:${String(detik).padStart(2, '0')}`;
+
+    time--;
+
+    if (time < 0) {
+      clearInterval(timer);
+      logout();
+    }
+  }, 1000);
+};
+
+// LOGIN VALIDATION
+const validasiLogin = function (e) {
+  e.preventDefault();
+
+  const inputUsername = document
+    .querySelector('.login__input--user')
+    .value.trim()
+    .toLowerCase();
+
+  const inputPassword = Number(
+    document.querySelector('.login__input--pin').value,
+  );
+
+  currentAccount = daftarAkun.find(akun => akun.username === inputUsername);
+
+  if (currentAccount && currentAccount.pin === inputPassword) {
+    console.log('login berhasil');
+
+    showUI();
+    isLoggedIn(currentAccount);
+  } else {
+    alert('Username / Password Salah!');
+  }
+
+  document.querySelector('.login__input--user').value = '';
+  document.querySelector('.login__input--pin').value = '';
+};
+
+//LOGOUT
+const logout = function () {
+  document.querySelector('.app').style.opacity = '0';
+  document.querySelector('.login__input--user').value = '';
+  document.querySelector('.login__input--pin').value = '';
+
+  clearInterval();
+  currentAccount = null;
+};
+
+document.querySelector('.login__btn').addEventListener('click', validasiLogin);
